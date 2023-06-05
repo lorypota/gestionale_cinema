@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Subscribed Users</title>
+  </head>
+
+  <body>
+    <h2>Add a new contact</h2>
+
+    <form id="add-contact" action="/contacts" method="POST">
+      <label for="input-name">Name: </label>
+      <input type="text" id="input-name" required>
+      <p />
+      <label for="input-number">Number: </label>
+      <input type="text" id="input-number" required>
+      <p />
+      <input type="submit" value="Subscribe!">
+    </form>
+
+    <hr />
+
+    <h2>Contact list</h2>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Number</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+
+      </tbody>
+    </table>
+    <script>
+      const API_URI = "http://localhost:8080";
+
+      // getUsers restituisce i contatti nella rubrica telefonica.
+      async function getContacts() {
+        // Bisogna effettuare i seguenti passi:
+        //
+        //	1. Chiamare GET "http://localhost:8080/contacts",
+        //	2. Controllare che la chiamata abbia avuto successo,
+        //	3. Restituise l'oggetto (lista di contatti) facendo il parsing del JSON.
+
+        // L'interpolazione di stringhe permette di inserire espressioni in un
+        // letterale. Comodo per costruire stringhe speciali.
+        //
+        // Info: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+        const endpoint = `${API_URI}/contacts`;
+
+        // Senza parametri, a parte l'URL, fa una chiamata GET. fetch è
+        // asincrona, per questo uso await.
+        const response = await fetch(endpoint);
+
+        // Controllo di eventuali errori.
+        if (!response.ok)
+          throw new Error(`Response from "${endpoint}" was not successful: ${response.status} ${response.statusText}`);
+
+        // Effettua il parsing del JSON e restituisce l'oggetto. Il parsing
+        // avviene in modo asicrono, per questo uso "await".
+        return await response.json();
+      }
+
+      // getContact restituisce il singolo contatto.
+      async function getContact(id) {
+        // La funzione è molto simile a getContacts. Bisogna effettuare i
+        // seguenti passi:
+        //
+        //	1. Chiamare GET "http://localhost:8080/contacts/{id}",
+        //	2. Controllare che la chiamata abbia avuto successo,
+        //	3. Restituise l'oggetto (il contatto) facendo il parsing del JSON.
+        const endpoint = `${API_URI}/contacts/${id}`;
+
+        const response = await fetch(endpoint);
+
+        if (!response.ok)
+          throw new Error(`Response from "${endpoint}" was not successful: ${response.status} ${response.statusText}`);
+
+        return await response.json();
+      }
+
+      // newContact aggiunge un contatto al server, restituisce il nuovo ID.
+      async function newContact(contact) {
+        // Bisogna effettuare i seguenti passi:
+        //
+        //	1. Chiamare POST "http://localhost:8080/contacts" con
+        //		 nel body la rappresentazione JSON del nuovo utente,
+        //	2. Controllare che la chiamata abbia avuto successo,
+        //	3. Controllare l'header "Location", estrarre l'ID alla fine
+        //		 e restituirlo.
+        const endpoint = `${API_URI}/contacts`;
+
+        // In questo caso nella fetch devo passare delle opzioni:
+        //	* method: per indicare il metodo utilizzato,
+        //	* headers: gli header utilizati,
+        //	* body: il body della richiesta.
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contact)
+        });
+
+        if (!response.ok)
+          throw new Error(`Response from "${endpoint}" was not successful: ${response.status} ${response.statusText}`);
+
+        const location = response.headers.get("Location");
+
+        // Fa lo split e restituisce l'ultima sottostringa, che è l'ID.
+        return location.split("/").pop();
+
+      }
+
+      // Funziona di utilità che mostra l'errore nella console e in un alert
+      // del browser.
+      function onError(msg, error) {
+        const out = `${msg}: ${error}`;
+        console.error(out);
+        alert(out);
+      }
+
+      // newContactDOM viene eseguita all'invio del from. Aggiunge un nuovo
+      // contatto, prima inviandolo al server e poi mettendolo nella tabella.
+      async function newContactDOM(event) {
+        // Evito che il form venga davvero inviato.
+        event.preventDefault();
+
+        // Recuperi i dati da inviare dal form.
+        const name = document.getElementById("input-name");
+        const number = document.getElementById("input-number");
+        let contact = {
+          "name": name.value,
+          "number": number.value
+        };
+
+        // Pulisco i campi del form, ormai non servono più.
+        name.value = "";
+        number.value = "";
+
+        try {
+          // Creo il nuovo oggetto e lo invio al server, restituisce il
+          // nuovo ID.
+          contact["id"] = await newContact(contact)
+
+          // Ottengo il nuovo contatto con tutte le informazioni.
+          contact = await getContact(contact["id"]);
+
+          // Infine lo aggiungo alla tabella.
+          addContactDOM(contact);
+        } catch (error) {
+          onError("Failed to add a new user", error);
+        }
+      }
+
+      // addContactDOM aggiunge il contatto fornito in una nuova riga della tabella.
+      function addContactDOM(contact) {
+        // Selezione di <tbody> e aggiunta di una nuova riga.
+        const tbody = document.getElementById("table-body");
+        const row = tbody.insertRow();
+
+        // Aggiunta dell'ID.
+        const id = row.insertCell();
+        id.setAttribute("align", "center");
+        const idText = document.createTextNode(contact["id"]);
+        id.appendChild(idText);
+
+        // Aggiunta del nome.
+        const name = row.insertCell();
+        name.setAttribute("align", "center");
+        const nameText = document.createTextNode(contact["name"]);
+        name.appendChild(nameText);
+
+        // Aggiunta del numero.
+        const number = row.insertCell();
+        number.setAttribute("align", "center");
+        const numberText = document.createTextNode(contact["number"]);
+        number.appendChild(numberText);
+      }
+
+      // Ho definito init come una funzione asincrona, per cui l'esecuzione è slegata
+      // dal flusso sequenziale dello script. Il browser si occupa di gestire queste
+      // funzioni, che prima o poi verranno eseguite e completate.
+      window.onload = init();
+
+      async function init() {
+        // getUsers è asincrona, per cui restituisce una Promise che verrà eseguita
+        // in modo asincrono. Il metodo then permette di eseguire due funzioni: la
+        // prima in caso di successo, la seconda in caso di errore.
+        getContacts().then((users) => users.forEach(addContactDOM),
+          (error) => onError("Failed to get users", error));
+
+        // Aggiungo l'handler per l'evento di invio al form.
+        const form = document.getElementById("add-contact");
+        form.addEventListener("submit", newContactDOM);
+      }
+
+    </script>
+  </body>
+
+</html>
