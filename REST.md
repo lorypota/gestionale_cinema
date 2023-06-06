@@ -1,54 +1,386 @@
 # Progetto Sistemi Distribuiti 2022-2023 - API REST
 
-Documentazione delle API REST di esempio. Si assume che i dati vengano scambiati in formato JSON.
+Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
-## `/contacts`
-
-Ogni risorsa ha la sua sezione. In questo caso la risorsa da documentare è quella dei contatti.
+## `/movies`
 
 ### GET
 
-**Descrizione**: una breve descrizione di cosa fa il metodo applicato alla risorsa. In questo caso restituisce l'elenco dei contatti salvati.
+**Descrizione**: Restituisce l'elenco di tutti i film.
 
-**Parametri**: un elenco dei parametri se previsti, sia nel percorso (esempio `/contacts/{id}`) che nella richiesta (esempio `/contacts?id={id}`) o anche negli header. In questo caso non sono previsti.
+**Parametri**: Nessuno.
 
-**Body richiesta**: cosa ci deve essere nel body della richiesta. In questo caso nulla perché è una GET.
+**Body richiesta**: Non previsto.
 
-**Risposta**: cosa viene restituito in caso di successo. In questo caso viene restituito la rappresentazione in JSON del contatto, un oggetto JSON con i campi `id` (un intero), `name` e `number` (due stringhe).
+**Risposta**: Un array di oggetti, ognuno rappresentante un film disponibile. Ogni film ha i seguenti campi:
+* `id` (un intero)
+* `name` (una stringa)
+* `description` (una stringa)
+* `duration` (una stringa)
 
-**Codici di stato restituiti**: elenco dei codici di stato, se necessario dettagliare e non elencare quelli già previsti da Jackarta in automatico. In questo caso c'è solo lo stato `200 OK` da segnalare:
-
+**Codici di stato restituiti**:
 * 200 OK
 
 ### POST
 
-**Descrizione**: aggiunge un contatto alla rubrica telefonica.
+**Descrizione**: Aggiunge un nuovo film.
 
-**Parametri**: ci deve essere l'header `Content-Type: application/json`.
+**Parametri**: L'header `Content-Type: application/json`.
 
-**Body richiesta**: rappresentazione in formato JSON del contatto con i campi `name` e `number` che sono due stringhe.
+**Body richiesta**: Un oggetto JSON che rappresenta il nuovo film, con i seguenti campi:
+* `name` (una stringa)
+* `description` (una stringa)
+* `duration` (una stringa)
 
-**Risposta**: in caso di successo il body è vuoto e la risorsa creata è indicata nell'header `Location`.
+**Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
-
 * 201 Created
-* 400 Bad Request: c'è un errore del client (JSON, campo mancante o altro).
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 
-## `/contacts/{id}`
+## `/movies/{movie_id}`
 
 ### GET
 
-**Descrizione**: restituisce il contatto con l'id fornito.
+**Descrizione**: Restituisce i dettagli del film specificato.
 
-**Parametri**: un parametro nel percorso `id` che rappresenta l'identificativo del contatto da restituire.
+**Parametri**: `movie_id` (un intero) nell'URL, che rappresenta l'ID del film.
 
-**Body richiesta**: vuoto.
+**Body richiesta**: Non previsto.
 
-**Risposta**: In caso di successo la rappresentazione in JSON del contatto, un oggetto JSON con i campi `id` (un intero), `name` e `number` (due stringhe).
+**Risposta**: Un oggetto che rappresenta il film, con i seguenti campi:
+* `id` (un intero)
+* `name` (una stringa)
+* `description` (una stringa)
+* `duration` (una stringa)
 
 **Codici di stato restituiti**:
-
 * 200 OK
-* 400 Bad Request: c'è un errore del client (ID non valido).
-* 404 Not Found: contatto non trovato.
+* 404 Not Found: Film non trovato.
+
+### PUT
+
+**Descrizione**: Aggiorna un film esistente.
+
+**Parametri**: `movie_id` (un intero) nell'URL, che rappresenta l'ID del film da aggiornare. L'header `Content-Type: application/json`.
+
+**Body richiesta**: Un oggetto JSON che rappresenta il film aggiornato, con i seguenti campi:
+* `name` (una stringa)
+* `description` (una stringa)
+* `duration` (una stringa)
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+* 404 Not Found: Film non trovato.
+
+### DELETE
+
+**Descrizione**: Elimina un film.
+
+**Parametri**: `movie_id` (un intero) nell'URL, che rappresenta l'ID del film da eliminare.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 404 Not Found: Film non trovato.
+
+## `/halls`
+
+### GET
+
+**Descrizione**: Restituisce l'elenco di tutte le sale.
+
+**Parametri**: Nessuno.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: Un array di oggetti, ognuno rappresentante una sala. Ogni sala ha i seguenti campi:
+* `id` (un intero)
+* `name` (una stringa)
+* `description` (una stringa)
+
+**Codici di stato restituiti**:
+* 200 OK
+
+### POST
+
+**Descrizione**: Aggiunge una nuova sala.
+
+**Parametri**: L'header `Content-Type: application/json`.
+
+**Body richiesta**: Un oggetto JSON che rappresenta la nuova sala, con i seguenti campi:
+* `name` (una stringa)
+* `description` (una stringa)
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 201 Created
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+
+## `/halls/{hall_id}`
+
+### GET
+
+**Descrizione**: Restituisce i dettagli della sala specificata.
+
+**Parametri**: `hall_id` (un intero) nell'URL, che rappresenta l'ID della sala.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: Un oggetto che rappresenta la sala, con i seguenti campi:
+* `id` (un intero)
+* `name` (una stringa)
+* `description` (una stringa)
+
+**Codici di stato restituiti**:
+* 200 OK
+* 404 Not Found: Sala non trovata.
+
+### PUT
+
+**Descrizione**: Aggiorna una sala esistente.
+
+**Parametri**: `hall_id` (un intero) nell'URL, che rappresenta l'ID della sala da aggiornare. L'header `Content-Type: application/json`.
+
+**Body richiesta**: Un oggetto JSON che rappresenta la sala aggiornata, con i seguenti campi:
+* `name` (una stringa)
+* `description` (una stringa)
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+* 404 Not Found: Sala non trovata.
+
+### DELETE
+
+**Descrizione**: Elimina una sala.
+
+**Parametri**: `hall_id` (un intero) nell'URL, che rappresenta l'ID della sala da eliminare.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 404 Not Found: Sala non trovata.
+
+## `/projections`
+
+### GET
+
+**Descrizione**: Restituisce tutte le proiezioni. Se viene fornito un `movie_id`, restituisce solo le proiezioni per quel film.
+
+**Parametri**: `movie_id` (un intero) nella query string dell'URL, opzionale.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: Un array di oggetti, ognuno rappresentante una proiezione. Ogni proiezione ha i seguenti campi:
+* `id` (un intero)
+* `hall_id` (un intero)
+* `movie_id` (un intero)
+* `date` (una stringa nel formato "gg/mm/aaaa")
+* `timetable` (una stringa nel formato "hh:mm")
+
+**Codici di stato restituiti**:
+* 200 OK
+
+### POST
+
+**Descrizione**: Inserisce una nuova proiezione.
+
+**Parametri**: L'header `Content-Type: application/json`.
+
+**Body richiesta**: Un oggetto JSON che rappresenta la nuova proiezione, con i seguenti campi:
+* `hall_id` (un intero)
+* `movie_id` (un intero)
+* `date` (una stringa nel formato "gg/mm/aaaa")
+* `timetable` (una stringa nel formato "hh:mm")
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 201 Created
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+
+## `/projections/{proj_id}`
+
+### GET
+
+**Descrizione**: Restituisce i dettagli della proiezione specificata.
+
+**Parametri**: `proj_id` (un intero) nell'URL, che rappresenta l'ID della proiezione.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: Un oggetto che rappresenta la proiezione, con i seguenti campi:
+* `id` (un intero)
+* `hall_id` (un intero)
+* `movie_id` (un intero)
+* `date` (una stringa nel formato "gg/mm/aaaa")
+* `timetable` (una stringa nel formato "hh:mm")
+
+**Codici di stato restituiti**:
+* 200 OK
+* 404 Not Found: Proiezione non trovata.
+
+### PUT
+
+**Descrizione**: Aggiorna una proiezione esistente.
+
+**Parametri**: `proj_id` (un intero) nell'URL, che rappresenta l'ID della proiezione da aggiornare. L'header `Content-Type: application/json`.
+
+**Body richiesta**: Un oggetto JSON che rappresenta la proiezione aggiornata, con i seguenti campi:
+* `hall_id` (un intero)
+* `movie_id` (un intero)
+* `date` (una stringa nel formato "gg/mm/aaaa")
+* `timetable` (una stringa nel formato "hh:mm")
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+* 404 Not Found: Proiezione non trovata.
+
+### DELETE
+
+**Descrizione**: Elimina una proiezione.
+
+**Parametri**: `proj_id` (un intero) nell'URL, che rappresenta l'ID della proiezione da eliminare.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 404 Not Found: Proiezione non trovata.
+
+## `/bookings`
+
+### GET
+
+**Descrizione**: Restituisce tutte le prenotazioni. Se viene fornito un `proj_id`, restituisce solo le prenotazioni per quella proiezione.
+
+**Parametri**: `proj_id` (un intero) nell'URL, opzionale.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: Un array di oggetti, ognuno rappresentante una prenotazione. Ogni prenotazione ha i seguenti campi:
+* `id` (un intero)
+* `proj_id` (un intero)
+* `row` (un intero)
+* `column` (un intero)
+* `name` (una stringa)
+* `surname` (una stringa)
+* `email` (una stringa)
+
+**Codici di stato restituiti**:
+* 200 OK
+
+### POST
+
+**Descrizione**: Inserisce una nuova prenotazione.
+
+**Parametri**: L'header `Content-Type: application/json`.
+
+**Body richiesta**: Un oggetto JSON che rappresenta la nuova prenotazione, con i seguenti campi:
+* `proj_id` (un intero)
+* `row` (un intero)
+* `column` (un intero)
+* `name` (una stringa)
+* `surname` (una stringa)
+* `email` (una stringa)
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 201 Created
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+
+## `/bookings/{book_id}`
+
+### GET
+
+**Descrizione**: Restituisce i dettagli della prenotazione specificata.
+
+**Parametri**: `book_id` (un intero) nell'URL, che rappresenta l'ID della prenotazione.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: Un oggetto che rappresenta la prenotazione, con i seguenti campi:
+* `id` (un intero)
+* `proj_id` (un intero)
+* `row` (un intero)
+* `column` (un intero)
+* `name` (una stringa)
+* `surname` (una stringa)
+* `email` (una stringa)
+
+**Codici di stato restituiti**:
+* 200 OK
+* 404 Not Found: Prenotazione non trovata.
+
+### PUT
+
+**Descrizione**: Aggiorna una prenotazione esistente.
+
+**Parametri**: `book_id` (un intero) nell'URL, che rappresenta l'ID della prenotazione da aggiornare. L'header `Content-Type: application/json`.
+
+**Body richiesta**: Un oggetto JSON che rappresenta la prenotazione aggiornata, con i seguenti campi:
+* `proj_id` (un intero)
+* `row` (un intero)
+* `column` (un intero)
+* `name` (una stringa)
+* `surname` (una stringa)
+* `email` (una stringa)
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+* 404 Not Found: Prenotazione non trovata.
+
+### DELETE
+
+**Descrizione**: Elimina una prenotazione.
+
+**Parametri**: `book_id` (un intero) nell'URL, che rappresenta l'ID della prenotazione da eliminare.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: In caso di successo, il body è vuoto.
+
+**Codici di stato restituiti**:
+* 204 No Content
+* 404 Not Found: Prenotazione non trovata.
+
+## `/projections/{proj_id}/seats`
+
+### GET
+
+**Descrizione**: Restituisce tutti i posti prenotati per una data proiezione.
+
+**Parametri**: `proj_id` (un intero) nell'URL, che rappresenta l'ID della proiezione.
+
+**Body richiesta**: Non previsto.
+
+**Risposta**: Un array di oggetti, ognuno rappresentante un posto prenotato. Ogni posto ha i seguenti campi:
+* `proj_id` (un intero)
+* `row` (un intero)
+* `column` (un intero)
+
+**Codici di stato restituiti**:
+* 200 OK
+* 404 Not Found: Proiezione non trovata.
