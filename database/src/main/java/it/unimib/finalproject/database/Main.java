@@ -1,7 +1,11 @@
 package it.unimib.finalproject.database;
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * Classe principale in cui parte il database.
@@ -20,6 +24,39 @@ public class Main {
     public static void startServer() {
         try {
             var server = new ServerSocket(PORT);
+
+            /** Stucture proposal per command syntax
+             * SET key <JSON> <--- Note: here Direct JSON instead of only strings like Redis
+             * HSET key field <JSON> <--- Note: here Direct JSON instead of only strings like Redis
+             * Check Redis docs for more info about the 2 commands above
+             *
+             *
+             * var map1 = new ConcurrentHashMap<String, HashMap<String, String>>();
+             * var map2 = new ConcurrentHashMap<String, String>();
+             * var map = new ConcurrentHashMap<String, Object>();
+             * map.put("key", new HashMap<String, String>());
+             * var gay = map.get("key");
+             * if (gay != null) {
+             *  if (gay instanceof HashMap<?, ?> && command.equal("HGET")) {
+             *      var hs = (HashMap<?, ?>) gay;
+             *      System.out.println("Sono hashmap gay");
+             *  } else if (gay instanceof String) {
+             *      System.out.println("Sono stringa gay");
+             *  } 
+             * }
+             */
+
+            /**
+             * Handling logic
+             *
+             *
+             * new Handler(server.accept(), map).start();
+             * get cycle
+             * parse COMMAND, ARGS[]
+             * Constuct concrete command based on single abstract command in a switch (throw if arguments are wrong)
+             * execute command
+             * return result
+             */
 
             System.out.println("Database listening at localhost:" + PORT);
             while (true)
@@ -74,4 +111,3 @@ public class Main {
         startServer();
     }
 }
-
