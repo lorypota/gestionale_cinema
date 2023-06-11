@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+}
+
+.half {
+  flex: auto;
+  flex-wrap: 1;
+  padding: 10px;
+}
+
+.seat {
+  height: 50px;
+  width: 50px;
+  margin: 5px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.seat.occupied {
+  background-color: red;
+}
+
+.seat.selected {
+  background-color: #28a745;
+}
