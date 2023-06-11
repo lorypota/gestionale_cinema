@@ -1,11 +1,11 @@
 package it.unimib.finalproject.database;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
+
+import it.unimib.finalproject.database.command.CommandRegistry;
+import it.unimib.finalproject.database.command.PingCommand;
 
 /**
  * Classe principale in cui parte il database.
@@ -15,6 +15,8 @@ public class Main {
      * Porta di ascolto.
      */
     public static final int PORT = 3030;
+
+    public static final ConcurrentHashMap<String, Object> store = new ConcurrentHashMap<String, Object>();
 
     /**
      * Avvia il database e l'ascolto di nuove connessioni.
@@ -60,43 +62,9 @@ public class Main {
 
             System.out.println("Database listening at localhost:" + PORT);
             while (true)
-                new Handler(server.accept()).start();
+                new Handler(server.accept(), store).start();
         } catch (IOException e) {
             System.err.println(e);
-        }
-    }
-
-    /**
-     * Handler di una connessione del client.
-     */
-    private static class Handler extends Thread {
-        private Socket client;
-
-        public Handler(Socket client) {
-            this.client = client;
-        }
-
-        public void run() {
-            try {
-                var out = new PrintWriter(client.getOutputStream(), true);
-                var in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-                String inputLine;
-
-                while ((inputLine = in.readLine()) != null) {
-                    if (".".equals(inputLine)) {
-                        out.println("bye");
-                        break;
-                    }
-                    out.println(inputLine);
-                }
-
-                in.close();
-                out.close();
-                client.close();
-            } catch (IOException e) {
-                System.err.println(e);
-            }
         }
     }
 
@@ -108,6 +76,8 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+        CommandRegistry.registerCommand(new PingCommand());
+
         startServer();
     }
 }
