@@ -19,9 +19,15 @@ public class ContactsResource {
     /**
      * Implementazione di GET "/contacts".
      */
+    @Path("/{username}/{number}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContacts() {
+    public Response getContacts(@PathParam("username") String username, @PathParam("number") int number) {
+        Contact contact = new Contact();
+        contact.setId(3);
+        contact.setName(username);
+        contact.setNumber("" + number);
+        return Response.ok(contact).build();
         // Si apre una socket verso il database, si ottengono i dati e si
         // costruisce la risposta.
     }
@@ -31,7 +37,7 @@ public class ContactsResource {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getContacts(String body) {
+    public Response getContacts1(String body) {
         var contact = new Contact();
 
         try {
@@ -66,13 +72,13 @@ public class ContactsResource {
     /**
      * Implementazione di GET "/contacts/{id}".
      */
-    @Path("/{id}")
+    @Path("/a/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContact(@PathParam("id") int id) {
+    public Response getContact2(@PathParam("id") int id) {
         // Si apre una socket verso il database, si ottiene il contatto con
         // l'ID specificato.
-
+        Contact contact = null;
         if (contact == null)
             return Response.status(Response.Status.NOT_FOUND).build();
 
