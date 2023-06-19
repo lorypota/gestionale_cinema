@@ -1,6 +1,6 @@
 package it.unimib.finalproject.database.resp.types;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -9,8 +9,26 @@ import java.util.ListIterator;
 public class RESPArray implements List<RESPType>, RESPType {
     protected List<RESPType> array;
 
+    public RESPArray() {
+        this.array = new ArrayList<>(1);
+    }
+
+    public RESPArray(RESPType type) {
+        this(new RESPType[] { type });
+    }
+    
+    public RESPArray(String string) {
+        this((RESPType) new RESPBulkString(string));
+    }
+
+    public RESPArray(RESPString string) {
+        this((RESPType) new RESPBulkString(string.getString()));
+    }
+
     public RESPArray(RESPType[] array) {
-        this.array = Arrays.asList(array);
+        this.array = new ArrayList<>(array.length);
+        for (var element : array)
+            this.array.add(element);
     }
 
     @Override

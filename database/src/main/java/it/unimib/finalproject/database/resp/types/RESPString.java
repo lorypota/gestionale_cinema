@@ -16,6 +16,6 @@ public class RESPString implements RESPType {
 
     @Override
     public String toString() {
-        return "+" + string;
+        return String.format("+%s", this.string);
     }
 }

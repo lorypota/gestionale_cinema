@@ -5,7 +5,12 @@ import java.net.ServerSocket;
 import java.util.concurrent.ConcurrentHashMap;
 
 import it.unimib.finalproject.database.command.CommandRegistry;
+import it.unimib.finalproject.database.command.DelCommand;
+import it.unimib.finalproject.database.command.GetCommand;
+import it.unimib.finalproject.database.command.LenCommand;
 import it.unimib.finalproject.database.command.PingCommand;
+import it.unimib.finalproject.database.command.SetCommand;
+import it.unimib.finalproject.database.command.StringsCommand;
 
 /**
  * Classe principale in cui parte il database.
@@ -24,45 +29,22 @@ public class Main {
      * @return Un server HTTP Grizzly.
      */
     public static void startServer() {
+        // Utility commands
+        CommandRegistry.registerCommand(new PingCommand());
+        CommandRegistry.registerCommand(new StringsCommand());
+
+        // String commands
+        CommandRegistry.registerCommand(new GetCommand());
+        CommandRegistry.registerCommand(new SetCommand());
+        CommandRegistry.registerCommand(new LenCommand());
+        CommandRegistry.registerCommand(new DelCommand());
+
         try {
-            var server = new ServerSocket(PORT);
-
-            /** Stucture proposal per command syntax
-             * SET key <JSON> <--- Note: here Direct JSON instead of only strings like Redis
-             * HSET key field <JSON> <--- Note: here Direct JSON instead of only strings like Redis
-             * Check Redis docs for more info about the 2 commands above
-             *
-             *
-             * var map1 = new ConcurrentHashMap<String, HashMap<String, String>>();
-             * var map2 = new ConcurrentHashMap<String, String>();
-             * var map = new ConcurrentHashMap<String, Object>();
-             * map.put("key", new HashMap<String, String>());
-             * var gay = map.get("key");
-             * if (gay != null) {
-             *  if (gay instanceof HashMap<?, ?> && command.equal("HGET")) {
-             *      var hs = (HashMap<?, ?>) gay;
-             *      System.out.println("Sono hashmap gay");
-             *  } else if (gay instanceof String) {
-             *      System.out.println("Sono stringa gay");
-             *  } 
-             * }
-             */
-
-            /**
-             * Handling logic
-             *
-             *
-             * new Handler(server.accept(), map).start();
-             * get cycle
-             * parse COMMAND, ARGS[]
-             * Constuct concrete command based on single abstract command in a switch (throw if arguments are wrong)
-             * execute command
-             * return result
-             */
-
-            System.out.println("Database listening at localhost:" + PORT);
-            while (true)
-                new Handler(server.accept(), store).start();
+            try (var server = new ServerSocket(PORT)) {
+                System.out.println("Database listening at localhost:" + PORT);
+                while (true)
+                    new Handler(server.accept(), store).start();
+            }
         } catch (IOException e) {
             System.err.println(e);
         }
@@ -76,8 +58,6 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        CommandRegistry.registerCommand(new PingCommand());
-
         startServer();
     }
 }

@@ -23,44 +23,47 @@ public class Handler extends Thread {
 
     public Handler(Socket client, AbstractMap<String, Object> store) {
         this.client = client;
+        this.store = store;
     }
 
     public void run() {
         try {
-            var out = new PrintWriter(client.getOutputStream(), true);
-            var in = new RESPReader(new BufferedReader(new InputStreamReader(client.getInputStream())));
+            try (var out = new PrintWriter(client.getOutputStream(), true)) {
+                try (var in = new RESPReader(new BufferedReader(new InputStreamReader(client.getInputStream())))) {
 
-            RESPType input;
+                    RESPType input;
 
-            while ((input = in.readRESP()) != null) {
+                    try {
 
-                try {
+                        while ((input = in.readRESP()) != null) {
+                            try {
 
-                    String commandName = null;
-                    String[] args = null;
+                                String commandName = null;
+                                RESPType[] args = null;
 
-                    if (input instanceof RESPArray) {
-                        var array = (RESPArray) input;
-                        commandName = ((RESPString) array.get(0)).getString();
-                        args = new String[array.size() - 1];
-                        for (int i = 1; i < array.size(); i++) {
-                            args[i - 1] = ((RESPString) array.get(i)).getString();
+                                if (input instanceof RESPArray) {
+                                    var array = (RESPArray) input;
+                                    commandName = ((RESPString) array.get(0)).getString();
+                                    args = array.stream().skip(1).toArray(RESPType[]::new);
+                                } else if (input instanceof RESPString) {
+                                    commandName = ((RESPString) input).getString();
+                                    args = new RESPType[0];
+                                }
+
+                                var command = CommandRegistry.get(commandName);
+                                var result = command.execute(store, args);
+                                out.print(result);
+                            } catch (RESPError e) {
+                                out.print(e);
+                            }
+
+                            out.flush();
                         }
-                    } else if (input instanceof RESPString) {
-                        commandName = ((RESPString) input).getString();
-                        args = new String[0];
+                    } catch (NumberFormatException e) {
+                        out.println(new RESPError("Invalid number format"));
                     }
-
-                    var command = CommandRegistry.get(commandName);
-                    var result = command.execute(store, args);
-                    out.println(result);
-                } catch (Exception e) {
-                    out.println(new RESPError(e.getMessage()));
                 }
             }
-
-            in.close();
-            out.close();
             client.close();
         } catch (IOException e) {
             System.err.println(e);

@@ -1,6 +1,6 @@
 package it.unimib.finalproject.database.resp.types;
 
-public class RESPError implements RESPType{
+public class RESPError extends Throwable implements RESPType{
     protected String error;
 
     public RESPError(String error) {
@@ -13,6 +13,11 @@ public class RESPError implements RESPType{
 
     @Override
     public String toString() {
-        return "-" + error;
+        return String.format("-%s\r\n", this.error);
+    }
+
+    @Override
+    public String getMessage() {
+        return error;
     }
 }

@@ -2,6 +2,8 @@ package it.unimib.finalproject.database.resp.types;
 
 public class RESPBulkString extends RESPString {
 
+    public static final RESPBulkString OK = new RESPBulkString("OK");
+
     public RESPBulkString(String string) {
         super(string);
     }

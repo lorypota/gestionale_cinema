@@ -3,6 +3,8 @@ package it.unimib.finalproject.database.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unimib.finalproject.database.resp.types.RESPError;
+
 public class CommandRegistry {
 
     private static final List<Command> commands = new ArrayList<>();
@@ -12,10 +14,10 @@ public class CommandRegistry {
         return command;
     }
 
-    public static Command get(String expectedCommand) throws Exception {
+    public static Command get(String expectedCommand) throws RESPError {
 
         if (expectedCommand == null) {
-            throw new Exception("Invalid command");
+            throw new RESPError("Invalid command");
         }
 
         for (Command command : commands) {
@@ -24,6 +26,6 @@ public class CommandRegistry {
             }
         }
 
-        throw new Exception("Invalid command");
+        throw new RESPError("Invalid command");
     }
 }

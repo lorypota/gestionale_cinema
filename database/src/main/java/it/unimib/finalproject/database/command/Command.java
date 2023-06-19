@@ -2,6 +2,8 @@ package it.unimib.finalproject.database.command;
 
 import java.util.AbstractMap;
 
+import it.unimib.finalproject.database.resp.types.RESPArray;
+import it.unimib.finalproject.database.resp.types.RESPError;
 import it.unimib.finalproject.database.resp.types.RESPType;
 
 public abstract class Command {
@@ -19,7 +21,11 @@ public abstract class Command {
         return this.getCommandName();
     }
 
-    public abstract RESPType execute(AbstractMap<String, Object> store, String[] args) throws Exception;
+    protected RESPError getSyntaxError() {
+        return new RESPError(String.format("Syntax error: %s", this.getCommandSyntax()));
+    }
+
+    public abstract RESPArray execute(AbstractMap<String, Object> store, RESPType[] args) throws RESPError;
 
     @Override
     public String toString() {
