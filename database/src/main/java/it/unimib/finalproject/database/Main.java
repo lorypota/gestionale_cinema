@@ -5,12 +5,25 @@ import java.net.ServerSocket;
 import java.util.concurrent.ConcurrentHashMap;
 
 import it.unimib.finalproject.database.command.CommandRegistry;
-import it.unimib.finalproject.database.command.DelCommand;
-import it.unimib.finalproject.database.command.GetCommand;
-import it.unimib.finalproject.database.command.LenCommand;
-import it.unimib.finalproject.database.command.PingCommand;
-import it.unimib.finalproject.database.command.SetCommand;
-import it.unimib.finalproject.database.command.StringsCommand;
+import it.unimib.finalproject.database.command.hash.HDelCommand;
+import it.unimib.finalproject.database.command.hash.HExistsCommand;
+import it.unimib.finalproject.database.command.hash.HGetAllCommand;
+import it.unimib.finalproject.database.command.hash.HGetCommand;
+import it.unimib.finalproject.database.command.hash.HKeysCommand;
+import it.unimib.finalproject.database.command.hash.HLenCommand;
+import it.unimib.finalproject.database.command.hash.HSetCommand;
+import it.unimib.finalproject.database.command.hash.HStrLenCommand;
+import it.unimib.finalproject.database.command.hash.HValsCommand;
+import it.unimib.finalproject.database.command.string.DecrCommand;
+import it.unimib.finalproject.database.command.string.DelCommand;
+import it.unimib.finalproject.database.command.string.GetCommand;
+import it.unimib.finalproject.database.command.string.IncrCommand;
+import it.unimib.finalproject.database.command.string.SetCommand;
+import it.unimib.finalproject.database.command.string.StrLenCommand;
+import it.unimib.finalproject.database.command.util.CommandCommand;
+import it.unimib.finalproject.database.command.util.HashesCommand;
+import it.unimib.finalproject.database.command.util.PingCommand;
+import it.unimib.finalproject.database.command.util.StringsCommand;
 
 /**
  * Classe principale in cui parte il database.
@@ -30,14 +43,29 @@ public class Main {
      */
     public static void startServer() {
         // Utility commands
-        CommandRegistry.registerCommand(new PingCommand());
-        CommandRegistry.registerCommand(new StringsCommand());
+        CommandRegistry.inst().registerCommand(new CommandCommand(CommandRegistry.inst()));
+        CommandRegistry.inst().registerCommand(new HashesCommand());
+        CommandRegistry.inst().registerCommand(new PingCommand());
+        CommandRegistry.inst().registerCommand(new StringsCommand());
 
         // String commands
-        CommandRegistry.registerCommand(new GetCommand());
-        CommandRegistry.registerCommand(new SetCommand());
-        CommandRegistry.registerCommand(new LenCommand());
-        CommandRegistry.registerCommand(new DelCommand());
+        CommandRegistry.inst().registerCommand(new DecrCommand());
+        CommandRegistry.inst().registerCommand(new DelCommand());
+        CommandRegistry.inst().registerCommand(new GetCommand());
+        CommandRegistry.inst().registerCommand(new IncrCommand());
+        CommandRegistry.inst().registerCommand(new SetCommand());
+        CommandRegistry.inst().registerCommand(new StrLenCommand());
+
+        // Hash commands
+        CommandRegistry.inst().registerCommand(new HDelCommand());
+        CommandRegistry.inst().registerCommand(new HExistsCommand());
+        CommandRegistry.inst().registerCommand(new HGetAllCommand());
+        CommandRegistry.inst().registerCommand(new HGetCommand());
+        CommandRegistry.inst().registerCommand(new HKeysCommand());
+        CommandRegistry.inst().registerCommand(new HLenCommand());
+        CommandRegistry.inst().registerCommand(new HSetCommand());
+        CommandRegistry.inst().registerCommand(new HStrLenCommand());
+        CommandRegistry.inst().registerCommand(new HValsCommand());
 
         try {
             try (var server = new ServerSocket(PORT)) {

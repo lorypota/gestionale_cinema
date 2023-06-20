@@ -11,11 +11,15 @@ public class RESPString implements RESPType {
     }
 
     public String getString() {
-        return string;
+        return this.string;
+    }
+
+    public String getRaw() {
+        return this.string;
     }
 
     @Override
     public String toString() {
-        return String.format("+%s", this.string);
+        return String.format("+%s\r\n", this.string);
     }
 }

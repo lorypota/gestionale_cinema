@@ -50,7 +50,7 @@ public class Handler extends Thread {
                                     args = new RESPType[0];
                                 }
 
-                                var command = CommandRegistry.get(commandName);
+                                var command = CommandRegistry.inst().get(commandName);
                                 var result = command.execute(store, args);
                                 out.print(result);
                             } catch (RESPError e) {

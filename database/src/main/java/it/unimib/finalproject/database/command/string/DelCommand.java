@@ -1,10 +1,11 @@
-package it.unimib.finalproject.database.command;
+package it.unimib.finalproject.database.command.string;
 
 import java.util.AbstractMap;
 
+import it.unimib.finalproject.database.command.Command;
 import it.unimib.finalproject.database.resp.types.RESPArray;
-import it.unimib.finalproject.database.resp.types.RESPBulkString;
 import it.unimib.finalproject.database.resp.types.RESPError;
+import it.unimib.finalproject.database.resp.types.RESPNumber;
 import it.unimib.finalproject.database.resp.types.RESPString;
 import it.unimib.finalproject.database.resp.types.RESPType;
 
@@ -17,24 +18,21 @@ public class DelCommand extends Command {
 
     @Override
     public String getCommandSyntax() {
-        return "DEL <key>";
+        return "<key:String>";
     }
 
     @Override
     public RESPArray execute(AbstractMap<String, Object> store, RESPType[] args) throws RESPError {
-        if (args.length != 1) {
-            this.getSyntaxError();
+        if (!(args.length == 1 && args[0] instanceof RESPString)) {
+            throw this.getSyntaxError();
         }
 
-        var key = args[0];
-
-        if (!(key instanceof RESPString)) {
-            throw new RESPError("Key must be a string");
+        var key = ((RESPString) args[0]).getString();
+        if (!store.containsKey(key)) {
+            return new RESPArray(RESPNumber.ZERO);
         }
+        store.remove(key);
 
-        var keyString = ((RESPString) args[0]).getString();
-        store.remove(keyString);
-
-        return new RESPArray(RESPBulkString.OK);
+        return new RESPArray(RESPNumber.ONE);
     }
 }

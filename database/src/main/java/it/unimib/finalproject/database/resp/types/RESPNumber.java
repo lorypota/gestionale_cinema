@@ -1,18 +1,21 @@
 package it.unimib.finalproject.database.resp.types;
 
 public class RESPNumber implements RESPType {
-    protected double number;
+    public static final RESPNumber ONE = new RESPNumber(1);
+    public static final RESPNumber ZERO = new RESPNumber(0);
 
-    public RESPNumber(double number) {
+    protected int number;
+
+    public RESPNumber(int number) {
         this.number = number;
     }
 
-    public double getNumber() {
+    public int getNumber() {
         return number;
     }
 
     @Override
     public String toString() {
-        return String.format(":%s\r\n", this.number);
+        return String.format(":%d\r\n", this.number);
     }
 }

@@ -1,9 +1,9 @@
-package it.unimib.finalproject.database.command;
+package it.unimib.finalproject.database.command.util;
 
 import java.util.AbstractMap;
 
-import it.unimib.finalproject.database.resp.types.RESPArray;
-import it.unimib.finalproject.database.resp.types.RESPBulkString;
+import it.unimib.finalproject.database.command.Command;
+import it.unimib.finalproject.database.resp.types.RESPString;
 import it.unimib.finalproject.database.resp.types.RESPType;
 
 public class PingCommand extends Command {
@@ -19,7 +19,7 @@ public class PingCommand extends Command {
     }
 
     @Override
-    public RESPArray execute(AbstractMap<String, Object> store, RESPType[] args) {
-        return new RESPArray(new RESPBulkString("PONG"));
+    public RESPType execute(AbstractMap<String, Object> store, RESPType[] args) {
+        return new RESPString("PONG");
     }
 }
