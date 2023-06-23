@@ -14,24 +14,25 @@ import it.unimib.finalproject.server.model.Booking;
 public class CustomMapper {
 
     public Booking mapBooking(String body) throws ServerErrorResponseExcpetion, BadRequestResponseException {
+        Booking booking;
         try {
             var mapper = new ObjectMapper();
-            Booking booking = mapper.readValue(body, Booking.class);
+            booking = mapper.readValue(body, Booking.class);
 
-            // 
+            
             if (booking.getName() == null || booking.getSurname() == null ||
                 booking.getEmail() == null)
-                throw new BadRequestResponseException();
+                throw new BadRequestResponseException("body is not formatted correctly");
 
         } catch (JsonParseException | JsonMappingException e) {
             System.out.println(e);
-            throw new BadRequestResponseException();
+            throw new BadRequestResponseException("body is not formatted correctly");
         } catch (IOException e) {
             System.out.println(e);
-            throw new ServerErrorResponseExcpetion();
+            throw new ServerErrorResponseExcpetion("server error");
         }
 
-        return null;
+        return booking;
     }
     
 }

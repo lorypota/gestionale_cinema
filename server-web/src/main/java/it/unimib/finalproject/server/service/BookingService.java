@@ -7,8 +7,8 @@ import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.utils.CustomMapper;
 
 public class BookingService {
-    private final BookingRepository bookingRepository;
-
+    BookingRepository bookingRepository;
+    
     public BookingService(){
         bookingRepository = new BookingRepository();
     }

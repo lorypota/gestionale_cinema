@@ -1,19 +1,13 @@
 package it.unimib.finalproject.server.model;
 
 public class Booking {
-    private int id;
     private int proj_id;
     private String name;
     private String surname;
     private String email;
     private int row;
     private int column;
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    
     public int getProj_id() {
         return proj_id;
     }
