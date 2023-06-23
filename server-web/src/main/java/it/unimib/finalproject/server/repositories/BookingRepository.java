@@ -3,6 +3,9 @@ package it.unimib.finalproject.server.repositories;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
 import it.unimib.finalproject.server.model.Booking;
 import it.unimib.finalproject.server.utils.DbConnector;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
@@ -27,8 +30,16 @@ public class BookingRepository {
 
     public int createBooking(Booking booking) {
         try {
+            var mapper = new JsonMapper();
+            String jsonBooking = mapper.writeValueAsString(booking);
+
             int id = dbConnector.incr("bookings_id");
-            int created = dbConnector.;
+            int created = dbConnector.hset("movies", ""+id, jsonBooking);
+            
+            System.out.println(created);
+            System.out.println(id);
+
+            getBookings(0);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
@@ -38,16 +49,15 @@ public class BookingRepository {
         }
         return 0;
     }
-
-    public String  ping(){
+    
+    public Booking getBookings(int id){
         try {
-            return dbConnector.ping();
+            System.out.print(dbConnector.getString(""+id));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        return "null";
+        return null;
     }
     
 }
