@@ -5,6 +5,7 @@
     <title>Cinema</title>
     <script src="app.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -22,15 +23,15 @@
     <section id="booking-section">
         <h2>Prenota i tuoi posti</h2>
         <form id="booking-form">
-            <label for="projection-id-input">ID Proiezione:</label>
-            <input id="projection-id-input" type="number" required />
+            <label for="projection-id-input">Seleziona proiezione:</label>
+            <input id="projection-id-input" onselect="showSeats()" />
 
             <section id="seating-section" class="container">
               <div id="seating-container" class="half">
                   <!-- mostro elenco posti -->
               </div>
               
-              <div id="legend" class="half">
+              <div id="legend" class="half hidden">
                 <button class="seat occupied"></button>Occupied seat<br>
                 <button class="seat"></button>Free seat<br>
                 <button class="seat selected"></button>Selected seat

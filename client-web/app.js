@@ -1,24 +1,40 @@
 const API_URI = "http://localhost:8080";
 
-document.addEventListener('DOMContentLoaded', () => showSeats(15, 7));
+//when the document is ready
+$(document).ready(async () => {
+  //fetch projections
+  let projections = await getAllProjections();
+
+  //show projections
+  const projContainer = $('projections-container');
+  projections.forEach(proj => {
+    const movie = getMovieById(proj.movie_id);
+    const projLabel = $('button').addClass('projLabel');
+    const title = $('div').addClass('title').text(movie.name);
+    const date = $('div').addClass('date').text(proj.date);
+    const timetable = $('div').addClass('timetable').text(proj.timetable);
+    const duration = $('div').addClass('duration').text(movie.duration);
+    projLabel.appendChild(title, date, timetable, duration);
+    projContainer.appendChild(projLabel);
+  });
+})
 
 async function showSeats (columns, rows) {
-  const container = document.getElementById('seating-container');
+  
+  const container = $('#seating-container');
 
   const columnLabels = [...Array(columns).keys()].map(i => String.fromCharCode(i + 65));
   const rowLabels = [...Array(rows).keys()].map(i => i + 1);
 
   rowLabels.forEach(rowLabel => {
       columnLabels.forEach(columnLabel => {
-          const seatButton = document.createElement('button');
-          seatButton.classList.add('seat');
-          seatButton.textContent = `${columnLabel}${rowLabel}`;
-          seatButton.addEventListener('click', function() {
-              this.classList.toggle('selected');
+          const seatButton = $('button').addClass('seat').text(columnLabel + rowLabel);
+          seatButton.on('click', function() {
+              $(this).toggleClass('selected');
           });
           container.appendChild(seatButton);
       });
-      container.appendChild(document.createElement('br'));
+      container.appendChild('<br>');
   });
 }
 
@@ -26,12 +42,14 @@ async function showSeats (columns, rows) {
 //APIs functions ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Movies
-function getAllMovies() {
-  return fetch(`${API_URL}/movies`).then(response => response.json());
+async function getAllMovies() {
+  res = await fetch(`${API_URL}/movies`);
+  return res.json();
 }
 
 function getMovieById(id) {
-  return fetch(`${API_URL}/movies/${id}`).then(response => response.json());
+  res = await fetch(`${API_URL}/movies/${id}`);
+  return res.json();
 }
 
 function addMovie(movie) {
@@ -89,7 +107,8 @@ function deleteHall(id) {
 
 // Projections
 function getAllProjections(movieId = 0) {
-  return fetch(`${API_URL}/projections?movie_id=${movieId}`).then(response => response.json());
+  res = fetch(`${API_URL}/projections?movie_id=${movieId}`);
+  return res.json();
 }
 
 function getProjectionById(id) {
