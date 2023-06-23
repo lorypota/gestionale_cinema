@@ -14,9 +14,9 @@ public class ProjectionController {
     
     private final ProjectionService projectionService = new ProjectionService(); 
 
-    @GET
+    @POST
     @Path("/{movieId}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response getProjections(@PathParam("movieId") int movieId) {
         List<Projection> lista = projectionService.getProjectionsByMovie(movieId);
         
@@ -26,4 +26,5 @@ public class ProjectionController {
          
         return Response.ok(lista).build();
     }
+       
 }
