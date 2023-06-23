@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Optional;
 
 import it.unimib.finalproject.server.utils.dbclient.resp.RESPReader;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPArray;
@@ -19,6 +20,9 @@ import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPType;
 public class DbConnector implements Closeable {
 
     // TODO: Error handling, multiple type handling
+    // TODO: Gestire RESPNull tramite Optional
+    // TODO: Gestire multi type
+    // TODO: Documenta i metodi
     private Socket client;
     private RESPReader reader;
     private PrintWriter writer;
@@ -26,7 +30,19 @@ public class DbConnector implements Closeable {
     public DbConnector(String host, int port) throws UnknownHostException, IOException {
         client = new Socket(host, port);
         reader = new RESPReader(new BufferedReader(new InputStreamReader(client.getInputStream())));
-        writer = new PrintWriter(client.getOutputStream(), true);
+        writer = new PrintWriter(client.getOutputStream());
+    }
+
+    public RESPArray command(Optional<String> command) throws NumberFormatException, IOException {
+        var cmdToSend = new RESPArray(new RESPType[] {
+            new RESPString("COMMAND"),
+        });
+        if (command.isPresent())
+            cmdToSend.add(new RESPString(command.get()));
+        this.writer.print(cmdToSend);
+        this.writer.flush();
+        
+        return (RESPArray) this.reader.readRESP();
     }
 
     public String ping() throws IOException {
@@ -104,6 +120,15 @@ public class DbConnector implements Closeable {
         return ((RESPNumber) this.reader.readRESP()).getNumber();
     }
 
+    public Integer del(String key) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("DEL"), new RESPBulkString(key)
+        }));
+        this.writer.flush();
+
+        return ((RESPNumber) this.reader.readRESP()).getNumber();
+    }
+
     public Integer strlen(String key) throws IOException {
         this.writer.print(new RESPArray(new RESPType[] {
                 new RESPBulkString("STRLEN"), new RESPBulkString(key)
@@ -113,13 +138,94 @@ public class DbConnector implements Closeable {
         return ((RESPNumber) this.reader.readRESP()).getNumber();
     }
 
-    public Integer del(String key) throws IOException {
+    public Integer hdel(String key, String field) throws IOException {
         this.writer.print(new RESPArray(new RESPType[] {
-                new RESPBulkString("DEL"), new RESPBulkString(key)
+                new RESPBulkString("HDEL"), new RESPBulkString(key), new RESPBulkString(field)
         }));
         this.writer.flush();
 
         return ((RESPNumber) this.reader.readRESP()).getNumber();
+    }
+
+    public Integer hexists(String key, String field) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HEXISTS"), new RESPBulkString(key), new RESPBulkString(field)
+        }));
+        this.writer.flush();
+
+        return ((RESPNumber) this.reader.readRESP()).getNumber();
+    }
+
+    public RESPArray hgetall(String key) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HGETALL"), new RESPBulkString(key)
+        }));
+        this.writer.flush();
+
+        return (RESPArray) this.reader.readRESP();
+    }
+
+    public Optional<RESPString> hget(String key, String field) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HGET"), new RESPBulkString(key), new RESPBulkString(field)
+        }));
+        this.writer.flush();
+
+        return Optional.ofNullable((RESPString) this.reader.readRESP());
+    }
+
+    public String[] hkeys(String key) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HKEYS"), new RESPBulkString(key)
+        }));
+        this.writer.flush();
+
+        return ((RESPArray) this.reader.readRESP()).stream().map(r -> ((RESPString) r).getString()).toArray(String[]::new);
+    }
+
+    public Integer hlen(String key) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HLEN"), new RESPBulkString(key)
+        }));
+        this.writer.flush();
+
+        return ((RESPNumber) this.reader.readRESP()).getNumber();
+    }
+
+    public Integer hset(String key, String field, String value) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HSET"), new RESPBulkString(key), new RESPBulkString(field), new RESPBulkString(value)
+        }));
+        this.writer.flush();
+
+        return ((RESPNumber) this.reader.readRESP()).getNumber();
+    }
+
+    public Integer hset(String key, String field, Integer value) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HSET"), new RESPBulkString(key), new RESPBulkString(field), new RESPNumber(value)
+        }));
+        this.writer.flush();
+
+        return ((RESPNumber) this.reader.readRESP()).getNumber();
+    }
+
+    public Integer hstrlen(String key, String field) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HSTRLEN"), new RESPBulkString(key), new RESPBulkString(field)
+        }));
+        this.writer.flush();
+
+        return ((RESPNumber) this.reader.readRESP()).getNumber();
+    }
+
+    public String[] hvals(String key) throws IOException {
+        this.writer.print(new RESPArray(new RESPType[] {
+                new RESPBulkString("HVALS"), new RESPBulkString(key)
+        }));
+        this.writer.flush();
+
+        return ((RESPArray) this.reader.readRESP()).stream().map(r -> ((RESPString) r).getString()).toArray(String[]::new);
     }
 
     @Override
