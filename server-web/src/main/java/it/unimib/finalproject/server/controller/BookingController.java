@@ -14,23 +14,19 @@ public class BookingController {
     private final BookingService  bookingService = new BookingService(); 
 
     @POST
-    @Path("/{movieId}")
+    @Path("/booking")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createBooking(String body) {
         try {
             int id = bookingService.createBooking(body);
-        } catch (ServerErrorResponseExcpetion e) {
-            
-        } catch(BadRequestResponseException e){
-
-        }
-
-        try {
             var uri = new URI("/contacts/");
 
             return Response.created(uri).build();
-        } catch (URISyntaxException e) {
-            System.out.println(e);
+        } catch (ServerErrorResponseExcpetion e) {
+            return Response.serverError().build();
+        } catch(BadRequestResponseException e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch(URISyntaxException e){
             return Response.serverError().build();
         }
     }
