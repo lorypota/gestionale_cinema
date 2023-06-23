@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Optional;
 
+import org.glassfish.hk2.api.PerLookup;
+
 import it.unimib.finalproject.server.utils.dbclient.resp.RESPReader;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPArray;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPBulkString;
@@ -17,6 +19,7 @@ import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPNumber;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPString;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPType;
 
+@PerLookup
 public class DbConnector implements Closeable {
 
     // TODO: Error handling, multiple type handling

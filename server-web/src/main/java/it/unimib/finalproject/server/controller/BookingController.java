@@ -1,15 +1,22 @@
 package it.unimib.finalproject.server.controller;
 
-import jakarta.ws.rs.core.*;
-import jakarta.ws.rs.*;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
+@Path("bookings")
 public class BookingController {
-    private final BookingService  bookingService = new BookingService(); 
+    @Inject
+    private BookingService bookingService; 
 
-    @POST
-    @Path("/{movieId}")
+    @GET
+    @Path("{movieId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProjections(@PathParam("movieId") int movieId) {
-        p
+        return Response.ok(bookingService.ciao()).build();
     }
 }

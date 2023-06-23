@@ -1,11 +1,17 @@
 package it.unimib.finalproject.server;
 
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
-
 import java.io.IOException;
 import java.net.URI;
+import java.net.UnknownHostException;
+
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.internal.inject.AbstractBinder;
+import org.glassfish.jersey.server.ResourceConfig;
+
+import it.unimib.finalproject.server.controller.BookingService;
+import it.unimib.finalproject.server.utils.DbConnector;
+import jakarta.inject.Singleton;
 
 /**
  * Classe principale.
@@ -24,7 +30,21 @@ public class Main {
     public static HttpServer startServer() {
         // Crea una file di configurazione per una risorsa, in questo caso tutte
         // le classi del package dell'esercizio.
-        final var rc = new ResourceConfig().packages(Main.class.getPackageName());
+        final var rc = new ResourceConfig()
+        .register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                try {
+                    bind(new DbConnector("localhost", 3030)).to(DbConnector.class);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bind(BookingService.class).to(BookingService.class).in(Singleton.class);
+            }
+        })
+        .packages(Main.class.getPackageName());
 
         // Crea e avvia un server HTTP che espone l'applicazione Jersey all'URL
         // predefinito.
@@ -46,4 +66,3 @@ public class Main {
         server.shutdownNow();
     }
 }
-
