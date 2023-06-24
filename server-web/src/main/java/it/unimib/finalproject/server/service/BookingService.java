@@ -1,6 +1,7 @@
 package it.unimib.finalproject.server.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseExcpetion;
@@ -27,8 +28,10 @@ public class BookingService {
         return id;
     }
 
-    public Booking[] getBookings() throws NumberFormatException, IOException, RESPError {
-        return this.bookingRepository.getBookings();
+    public List<Booking> getBookings() throws NumberFormatException, IOException, RESPError {
+        var list = this.bookingRepository.getBookings();
+        list.sort((a,b) -> a.id < b.id ? -1 : 1);
+        return list;
     }
     
 }

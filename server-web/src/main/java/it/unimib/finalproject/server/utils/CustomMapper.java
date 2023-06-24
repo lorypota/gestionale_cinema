@@ -1,6 +1,5 @@
 package it.unimib.finalproject.server.utils;
 
-
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -19,9 +18,8 @@ public class CustomMapper {
             var mapper = new ObjectMapper();
             booking = mapper.readValue(body, Booking.class);
 
-            
-            if (booking.getName() == null || booking.getSurname() == null ||
-                booking.getEmail() == null)
+            if (booking.name == null || booking.surname == null ||
+                    booking.email == null)
                 throw new BadRequestResponseException("body is not formatted correctly");
 
         } catch (JsonParseException | JsonMappingException e) {
@@ -34,5 +32,5 @@ public class CustomMapper {
 
         return booking;
     }
-    
+
 }

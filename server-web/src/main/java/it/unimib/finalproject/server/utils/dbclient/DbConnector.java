@@ -297,13 +297,13 @@ public class DbConnector implements Closeable {
      * @throws IOException
      * @throws RESPError
      */
-    public Optional<RESPString> hgetString(String key, String field) throws NumberFormatException, IOException, RESPError {
+    public Optional<String> hgetString(String key, String field) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
                 new RESPBulkString("HGET"), new RESPBulkString(key), new RESPBulkString(field)
         }));
         this.writer.flush();
 
-        return Optional.ofNullable((RESPString) this.reader.readRESP());
+        return Optional.ofNullable(((RESPString) this.reader.readRESP()).getString());
     }
 
     /**
@@ -314,13 +314,13 @@ public class DbConnector implements Closeable {
      * @throws IOException
      * @throws RESPError
      */
-    public Optional<RESPString> hgetInteger(String key, String field) throws NumberFormatException, IOException, RESPError {
+    public Optional<Integer> hgetInteger(String key, String field) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
                 new RESPBulkString("HGET"), new RESPBulkString(key), new RESPBulkString(field)
         }));
         this.writer.flush();
 
-        return Optional.ofNullable((RESPString) this.reader.readRESP());
+        return Optional.ofNullable(((RESPNumber) this.reader.readRESP()).getNumber());
     }
 
     /**

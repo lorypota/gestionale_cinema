@@ -1,6 +1,8 @@
 package it.unimib.finalproject.server.repositories;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,7 +18,7 @@ import jakarta.inject.Singleton;
 @Singleton
 public class BookingRepository {
     @Inject
-    DbConnector dbConnector;
+    DbConnector db;
 
     @Inject
     JsonMapper mapper;
@@ -25,8 +27,8 @@ public class BookingRepository {
         try {
             String jsonBooking = mapper.writeValueAsString(booking);
 
-            int id = dbConnector.incr("bookings_id");
-            int created = dbConnector.hset("movies", "" + id, jsonBooking);
+            int id = db.incr("bookings_id");
+            int created = db.hset("movies", "" + id, jsonBooking);
 
             System.out.println(created);
             System.out.println(id);
@@ -39,8 +41,10 @@ public class BookingRepository {
         return 0;
     }
 
-    public Booking[] getBookings() throws NumberFormatException, IOException, RESPError {
-        var bookingsStrings = this.dbConnector.hvals("bookings");
+    // TODO: Error handling
+    public List<Booking> getBookings() throws NumberFormatException, IOException, RESPError {
+        var bookingsStrings = this.db.hvals("bookings");
+
         return Stream.of(bookingsStrings).map(s -> {
             try {
                 return mapper.readValue(s, Booking.class);
@@ -50,6 +54,6 @@ public class BookingRepository {
                 e.printStackTrace();
             }
             return null;
-        }).toArray(Booking[]::new);
+        }).collect(Collectors.toList());
     }
 }
