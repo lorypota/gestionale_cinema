@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Optional;
 
+import it.unimib.finalproject.server.config.DatabaseConfigs;
 import it.unimib.finalproject.server.utils.dbclient.resp.RESPReader;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPArray;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPBulkString;
@@ -16,7 +17,9 @@ import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPNumber;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPString;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPType;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class DbConnector implements Closeable {
 
     // TODO: Error handling, multiple type handling
@@ -26,6 +29,10 @@ public class DbConnector implements Closeable {
     private Socket client;
     private RESPReader reader;
     private PrintWriter writer;
+
+    public DbConnector() throws UnknownHostException, IOException{
+        this(DatabaseConfigs.DATABASE_HOST, DatabaseConfigs.DATABASE_PORT);
+    }
 
     public DbConnector(String host, int port) throws UnknownHostException, IOException {
         client = new Socket(host, port);

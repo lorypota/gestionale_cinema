@@ -2,7 +2,9 @@ package it.unimib.finalproject.server;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+import it.unimib.finalproject.server.utils.DbConnector;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,7 +26,18 @@ public class Main {
     public static HttpServer startServer() {
         // Crea una file di configurazione per una risorsa, in questo caso tutte
         // le classi del package dell'esercizio.
-        final var rc = new ResourceConfig().packages(Main.class.getPackageName());
+        final var rc = new ResourceConfig()
+            .packages(Main.class.getPackageName())
+            .register(new AbstractBinder() {
+                @Override protected void configure(){
+                    try {
+                        bind(new DbConnector()).to(DbConnector.class);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            });
 
         // Crea e avvia un server HTTP che espone l'applicazione Jersey all'URL
         // predefinito.
