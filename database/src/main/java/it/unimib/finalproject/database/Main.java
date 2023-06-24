@@ -110,10 +110,10 @@ public class Main {
         var projectionsJson = Main.readJsonFile(projectionsStream);
         var bookingsJson = Main.readJsonFile(bookingsStream);
 
-        var moviesArray = moviesJson.substring(1, moviesJson.length()-1).split("},");
-        var hallsArray = hallsJson.substring(1, hallsJson.length()-1).split("},");
-        var projectionsArray = projectionsJson.substring(1, projectionsJson.length()-1).split("},");
-        var bookingsArray = bookingsJson.substring(1, bookingsJson.length()-1).split("},");
+        var moviesArray = moviesJson.substring(1, moviesJson.length() - 1).split("},");
+        var hallsArray = hallsJson.substring(1, hallsJson.length() - 1).split("},");
+        var projectionsArray = projectionsJson.substring(1, projectionsJson.length() - 1).split("},");
+        var bookingsArray = bookingsJson.substring(1, bookingsJson.length() - 1).split("},");
 
         for (var movie : moviesArray) {
             var movieId = movie.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
@@ -148,10 +148,12 @@ public class Main {
         store.put("projections", projections);
         store.put("bookings", bookings);
 
-        store.put("movies_id", movies.size());
-        store.put("halls_id", halls.size());
-        store.put("projections_id", projections.size());
-        store.put("bookings_id", bookings.size());
+        store.put("movies_id", (Integer) movies.size());
+        store.put("halls_id", (Integer) halls.size());
+        store.put("projections_id", (Integer) projections.size());
+        store.put("bookings_id", (Integer) bookings.size());
+
+        store.put("test", "test\"\r\n\" ciao");
     }
 
     private static String readJsonFile(InputStream stream) throws IOException {

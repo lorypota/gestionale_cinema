@@ -54,14 +54,17 @@ public class Handler extends Thread {
                                 var result = command.execute(store, args);
                                 out.print(result);
                             } catch (RESPError e) {
+                                System.err.print(e);
                                 out.print(e);
                             }
 
                             out.flush();
                         }
                     } catch (NumberFormatException e) {
+                        System.err.println(e);
                         out.print(new RESPError("Invalid number format"));
                     } catch (RESPError e) {
+                        System.err.print(e);
                         out.print(e);
                     }
                 }

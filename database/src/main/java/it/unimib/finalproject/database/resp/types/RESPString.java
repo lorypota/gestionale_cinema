@@ -3,6 +3,7 @@ package it.unimib.finalproject.database.resp.types;
 public class RESPString implements RESPType {
 
     public static final RESPString OK = new RESPString("OK");
+    public static final RESPString NULL = new RESPString(null);
 
     protected String string;
 
