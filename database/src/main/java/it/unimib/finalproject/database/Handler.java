@@ -60,7 +60,9 @@ public class Handler extends Thread {
                             out.flush();
                         }
                     } catch (NumberFormatException e) {
-                        out.println(new RESPError("Invalid number format"));
+                        out.print(new RESPError("Invalid number format"));
+                    } catch (RESPError e) {
+                        out.print(e);
                     }
                 }
             }

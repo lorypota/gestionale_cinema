@@ -19,7 +19,7 @@ public class SetCommand extends Command {
 
     @Override
     public String getCommandSyntax() {
-        return "<key:String> <value:String|Number>";
+        return "<key:string> <value:string|number>";
     }
 
     @Override
