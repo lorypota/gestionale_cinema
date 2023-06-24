@@ -1,6 +1,6 @@
 package it.unimib.finalproject.server.utils.dbclient.resp.types;
 
-public class RESPError extends Throwable implements RESPType{
+public class RESPError extends Throwable implements RESPType {
     protected String error;
 
     public RESPError(String error) {

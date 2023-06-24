@@ -14,12 +14,11 @@ public class RESPString implements RESPType {
         return this.string;
     }
 
-    public String getRaw() {
-        return this.string;
-    }
-
     @Override
     public String toString() {
+        if (this.string == null) {
+            return "$-1\r\n";
+        }
         return String.format("+%s\r\n", this.string);
     }
 }

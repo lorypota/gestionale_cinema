@@ -16,7 +16,7 @@ public class RESPArray implements List<RESPType>, RESPType {
     public RESPArray(RESPType type) {
         this(new RESPType[] { type });
     }
-    
+
     public RESPArray(String string) {
         this((RESPType) new RESPBulkString(string));
     }
