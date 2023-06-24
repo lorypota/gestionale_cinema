@@ -5,13 +5,13 @@ import it.unimib.finalproject.server.exceptions.ServerErrorResponseExcpetion;
 import it.unimib.finalproject.server.model.Booking;
 import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.utils.CustomMapper;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class BookingService {
+    @Inject
     BookingRepository bookingRepository;
-    
-    public BookingService(){
-        bookingRepository = new BookingRepository();
-    }
 
     public int createBooking(String body) throws ServerErrorResponseExcpetion, BadRequestResponseException {
         //mapping the json body to a booking object
