@@ -1,10 +1,13 @@
 package it.unimib.finalproject.server.service;
 
+import java.io.IOException;
+
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseExcpetion;
 import it.unimib.finalproject.server.model.Booking;
 import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.utils.CustomMapper;
+import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -22,6 +25,10 @@ public class BookingService {
         //returns the id of the newly created booking.
         int id = bookingRepository.createBooking(booking);
         return id;
+    }
+
+    public Booking[] getBookings() throws NumberFormatException, IOException, RESPError {
+        return this.bookingRepository.getBookings();
     }
     
 }

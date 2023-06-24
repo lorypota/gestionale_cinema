@@ -9,9 +9,11 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
 import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.service.BookingService;
-import it.unimib.finalproject.server.utils.DbConnector;
+import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import jakarta.inject.Singleton;
 
 /**
@@ -44,6 +46,7 @@ public class Main {
                         }
                         bind(BookingRepository.class).to(BookingRepository.class).in(Singleton.class);
                         bind(BookingService.class).to(BookingService.class).in(Singleton.class);
+                        bind(JsonMapper.class).to(JsonMapper.class).in(Singleton.class);
                     }
                 })
                 .packages(Main.class.getPackageName());

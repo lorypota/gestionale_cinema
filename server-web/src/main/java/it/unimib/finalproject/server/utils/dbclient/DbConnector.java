@@ -1,4 +1,4 @@
-package it.unimib.finalproject.server.utils;
+package it.unimib.finalproject.server.utils.dbclient;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.glassfish.hk2.api.PerLookup;
 
+import it.unimib.finalproject.server.utils.dbclient.resp.EscapeUtils;
 import it.unimib.finalproject.server.utils.dbclient.resp.RESPReader;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPArray;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPBulkString;
@@ -153,7 +154,7 @@ public class DbConnector implements Closeable {
      */
     public Optional<String> set(String key, String value) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
-                new RESPBulkString("SET"), new RESPBulkString(key), new RESPBulkString(value)
+                new RESPBulkString("SET"), new RESPBulkString(EscapeUtils.escape(value)), new RESPBulkString(EscapeUtils.escape(value))
         }));
         this.writer.flush();
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import it.unimib.finalproject.server.config.DatabaseConfigs;
 import it.unimib.finalproject.server.model.Movie;
-import it.unimib.finalproject.server.utils.DbConnector;
+import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 
 public class MovieRepository {
