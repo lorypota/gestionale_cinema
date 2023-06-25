@@ -27,6 +27,7 @@ import it.unimib.finalproject.database.command.util.CommandCommand;
 import it.unimib.finalproject.database.command.util.HashesCommand;
 import it.unimib.finalproject.database.command.util.PingCommand;
 import it.unimib.finalproject.database.command.util.StringsCommand;
+import it.unimib.finalproject.database.resp.EscapeUtils;
 
 /**
  * Classe principale in cui parte il database.
@@ -119,28 +120,28 @@ public class Main {
             var movieId = movie.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
             if (!movie.endsWith("}"))
                 movie += "}";
-            movies.put(movieId, movie);
+            movies.put(movieId, EscapeUtils.escape(movie));
         }
 
         for (var hall : hallsArray) {
             var hallId = hall.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
             if (!hall.endsWith("}"))
                 hall += "}";
-            halls.put(hallId, hall);
+            halls.put(hallId, EscapeUtils.escape(hall));
         }
 
         for (var projection : projectionsArray) {
             var projectionId = projection.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
             if (!projection.endsWith("}"))
                 projection += "}";
-            projections.put(projectionId, projection);
+            projections.put(projectionId, EscapeUtils.escape(projection));
         }
 
         for (var booking : bookingsArray) {
             var bookingId = booking.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
             if (!booking.endsWith("}"))
                 booking += "}";
-            bookings.put(bookingId, booking);
+            bookings.put(bookingId, EscapeUtils.escape(booking));
         }
 
         store.put("movies", movies);
@@ -152,8 +153,6 @@ public class Main {
         store.put("halls_id", (Integer) halls.size());
         store.put("projections_id", (Integer) projections.size());
         store.put("bookings_id", (Integer) bookings.size());
-
-        store.put("test", "test\"\r\n\" ciao");
     }
 
     private static String readJsonFile(InputStream stream) throws IOException {

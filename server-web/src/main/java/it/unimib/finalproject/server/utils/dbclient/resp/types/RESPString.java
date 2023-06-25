@@ -1,5 +1,7 @@
 package it.unimib.finalproject.server.utils.dbclient.resp.types;
 
+import it.unimib.finalproject.server.utils.dbclient.resp.EscapeUtils;
+
 public class RESPString implements RESPType {
 
     public static final RESPString OK = new RESPString("OK");
@@ -8,7 +10,7 @@ public class RESPString implements RESPType {
     protected String string;
 
     public RESPString(String string) {
-        this.string = string;
+        this.string = EscapeUtils.unescape(string);
     }
 
     public String getString() {
@@ -20,6 +22,6 @@ public class RESPString implements RESPType {
         if (this.string == null) {
             return "$-1\r\n";
         }
-        return String.format("+%s\r\n", this.string);
+        return String.format("+%s\r\n", EscapeUtils.escape(this.string));
     }
 }

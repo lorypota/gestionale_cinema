@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import org.glassfish.hk2.api.PerLookup;
 
-import it.unimib.finalproject.server.utils.dbclient.resp.EscapeUtils;
 import it.unimib.finalproject.server.utils.dbclient.resp.RESPReader;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPArray;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPBulkString;
@@ -20,6 +19,9 @@ import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPNumber;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPString;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPType;
 
+/**
+ * @author DamianoPellegrini <d.pellegrini10@campus.unimib.it>
+ */
 @PerLookup
 public class DbConnector implements Closeable {
 
@@ -48,12 +50,13 @@ public class DbConnector implements Closeable {
      * @throws RESPError
      */
     public RESPArray command(Optional<String> command) throws NumberFormatException, IOException, RESPError {
-        var cmdToSend = new RESPArray(new RESPType[] {
-                new RESPString("COMMAND"),
-        });
         if (command.isPresent())
-            cmdToSend.add(new RESPString(command.get()));
-        this.writer.print(cmdToSend);
+            this.writer.print(new RESPArray(new RESPType[] {
+                    new RESPString("COMMAND"),
+                    new RESPString(command.get())
+            }));
+        else
+            this.writer.print(new RESPString("COMMAND"));
         this.writer.flush();
 
         return (RESPArray) this.reader.readRESP();
@@ -68,7 +71,7 @@ public class DbConnector implements Closeable {
      * @throws RESPError
      */
     public String ping() throws NumberFormatException, IOException, RESPError {
-        this.writer.print(new RESPArray(new RESPString("PING")));
+        this.writer.print(new RESPString("PING"));
         this.writer.flush();
 
         return ((RESPString) this.reader.readRESP()).getString();
@@ -83,7 +86,7 @@ public class DbConnector implements Closeable {
      * @throws RESPError
      */
     public String[] hashes() throws NumberFormatException, IOException, RESPError {
-        this.writer.print(new RESPArray(new RESPString("HASHES")));
+        this.writer.print(new RESPString("HASHES"));
         this.writer.flush();
 
         return ((RESPArray) this.reader.readRESP()).stream().map(r -> ((RESPString) r).getString())
@@ -99,7 +102,7 @@ public class DbConnector implements Closeable {
      * @throws RESPError
      */
     public String[] strings() throws NumberFormatException, IOException, RESPError {
-        this.writer.print(new RESPArray(new RESPString("STRINGS")));
+        this.writer.print(new RESPString("STRINGS"));
         this.writer.flush();
 
         return ((RESPArray) this.reader.readRESP()).stream().map(r -> ((RESPString) r).getString())
@@ -111,7 +114,8 @@ public class DbConnector implements Closeable {
      * 
      * @param key Key to decrement
      * @return The value of key after the decrement
-     * @throws RESPError If the key does not exist or contains a value different than a number
+     * @throws RESPError             If the key does not exist or contains a value
+     *                               different than a number
      * @throws NumberFormatException
      * @throws IOException
      */
@@ -129,7 +133,8 @@ public class DbConnector implements Closeable {
      * 
      * @param key Key to increment
      * @return The value of key after the increment
-     * @throws RESPError If the key does not exist or contains a value different than a number
+     * @throws RESPError             If the key does not exist or contains a value
+     *                               different than a number
      * @throws NumberFormatException
      * @throws IOException
      */
@@ -145,16 +150,19 @@ public class DbConnector implements Closeable {
     /**
      * Sets a String key=value pair.
      * 
-     * @param key Key to set
+     * @param key   Key to set
      * @param value Value to set
-     * @return OK if the key was set, null if the key already exists and is not a string or integer value and the previous value of key as a String if it was overwritten
+     * @return OK if the key was set, null if the key already exists and is not a
+     *         string or integer value and the previous value of key as a String if
+     *         it was overwritten
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
      */
     public Optional<String> set(String key, String value) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
-                new RESPBulkString("SET"), new RESPBulkString(EscapeUtils.escape(value)), new RESPBulkString(EscapeUtils.escape(value))
+                new RESPBulkString("SET"), new RESPBulkString(key),
+                new RESPBulkString(value)
         }));
         this.writer.flush();
 
@@ -164,9 +172,11 @@ public class DbConnector implements Closeable {
     /**
      * Sets a Integer key=value pair.
      * 
-     * @param key Key to set
+     * @param key   Key to set
      * @param value Value to set
-     * @return OK if the key was set, null if the key already exists and is not a string or integer value and the previous value of key as a String if it was overwritten
+     * @return OK if the key was set, null if the key already exists and is not a
+     *         string or integer value, the previous value of key as a String if
+     *         it was overwritten
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -180,22 +190,22 @@ public class DbConnector implements Closeable {
         return Optional.ofNullable(((RESPString) this.reader.readRESP()).getString());
     }
 
-    public String getString(String key) throws NumberFormatException, IOException, RESPError {
+    public Optional<String> getString(String key) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
                 new RESPBulkString("GET"), new RESPBulkString(key)
         }));
         this.writer.flush();
 
-        return ((RESPString) this.reader.readRESP()).getString();
+        return Optional.ofNullable(((RESPString) this.reader.readRESP()).getString());
     }
 
-    public Integer getInteger(String key) throws NumberFormatException, IOException, RESPError {
+    public Optional<Integer> getInteger(String key) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
                 new RESPBulkString("GET"), new RESPBulkString(key)
         }));
         this.writer.flush();
 
-        return ((RESPNumber) this.reader.readRESP()).getNumber();
+        return Optional.ofNullable(((RESPNumber) this.reader.readRESP()).getNumber());
     }
 
     /**
@@ -205,20 +215,15 @@ public class DbConnector implements Closeable {
      * @return 1 if the key was deleted, 0 if the key did not exist
      * @throws NumberFormatException
      * @throws IOException
+     * @throws RESPError
      */
-    public Integer del(String key) throws NumberFormatException, IOException {
+    public Integer del(String key) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
                 new RESPBulkString("DEL"), new RESPBulkString(key)
         }));
         this.writer.flush();
 
-
-        try {
-            return ((RESPNumber) this.reader.readRESP()).getNumber();
-        } catch (RESPError e) {
-            // Unreachable
-            return 0;
-        }
+        return ((RESPNumber) this.reader.readRESP()).getNumber();
     }
 
     /**
@@ -228,7 +233,8 @@ public class DbConnector implements Closeable {
      * @return The lenght of the string stored at key, 0 if the key does not exist
      * @throws NumberFormatException
      * @throws IOException
-     * @throws RESPError If the key contains a value different than a string
+     * @throws RESPError             If the key contains a value different than a
+     *                               string
      */
     public Integer strlen(String key) throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
@@ -240,9 +246,11 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @param field
-     * @return
+     * Deletes a field from a hash.
+     * 
+     * @param key   Key to the hash
+     * @param field Field to delete
+     * @return 1 if the field was deleted, 0 otherwise
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -257,9 +265,11 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @param field
-     * @return
+     * Checks if a field exists in a hash.
+     * 
+     * @param key   Key to the hash
+     * @param field Field to check
+     * @return 1 if the field exists, 0 otherwise
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -274,8 +284,10 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @return
+     * Returns key-value pairs in a hash.
+     * 
+     * @param key Key to the hash
+     * @return An array of key-value pairs
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -290,9 +302,11 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @param field
-     * @return
+     * Returns the value of a field in a hash.
+     * 
+     * @param key   Key to the hash
+     * @param field Field to get
+     * @return The value of the field, null if the field does not exist
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -307,14 +321,17 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @param field
-     * @return
+     * Returns the value of a field in a hash.
+     * 
+     * @param key   Key to the hash
+     * @param field Field to get
+     * @return The value of the field, null if the field does not exist
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
      */
-    public Optional<Integer> hgetInteger(String key, String field) throws NumberFormatException, IOException, RESPError {
+    public Optional<Integer> hgetInteger(String key, String field)
+            throws NumberFormatException, IOException, RESPError {
         this.writer.print(new RESPArray(new RESPType[] {
                 new RESPBulkString("HGET"), new RESPBulkString(key), new RESPBulkString(field)
         }));
@@ -324,8 +341,10 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @return
+     * Returns the fields in a hash.
+     * 
+     * @param key Key to the hash
+     * @return An array of fields
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -341,8 +360,10 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @return
+     * Returns the number of fields in a hash.
+     * 
+     * @param key Key to the hash
+     * @return The number of fields in the hash, 0 if the key does not exist
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -357,10 +378,12 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @param field
-     * @param value
-     * @return
+     * Sets the value of a field in a hash.
+     * 
+     * @param key   Key to the hash
+     * @param field Field to set
+     * @param value Value to set
+     * @return 1 if the field was created or updated, 0 otherwise
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -376,10 +399,12 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @param field
-     * @param value
-     * @return
+     * Sets the value of a field in a hash.
+     * 
+     * @param key   Key to the hash
+     * @param field Field to set
+     * @param value Value to set
+     * @return 1 if the field was created or updated, 0 otherwise
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -394,9 +419,11 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @param field
-     * @return
+     * Returns the length of the value of a field in a hash.
+     * 
+     * @param key   Key to the hash
+     * @param field Field to get
+     * @return The length of the value of the field, 0 if the field does not exist
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError
@@ -411,8 +438,10 @@ public class DbConnector implements Closeable {
     }
 
     /**
-     * @param key
-     * @return
+     * Returns the values of all fields in a hash.
+     * 
+     * @param key Key to the hash
+     * @return An array of values
      * @throws NumberFormatException
      * @throws IOException
      * @throws RESPError

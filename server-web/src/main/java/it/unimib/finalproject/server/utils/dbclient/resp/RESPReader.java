@@ -34,7 +34,7 @@ public class RESPReader implements Closeable {
             case '+':
                 return new RESPString(input.substring(1));
             case '-':
-                return new RESPError(input.substring(1));
+                throw new RESPError(input.substring(1));
             case ':':
                 return new RESPNumber(Integer.parseInt(input.substring(1)));
             case '$':

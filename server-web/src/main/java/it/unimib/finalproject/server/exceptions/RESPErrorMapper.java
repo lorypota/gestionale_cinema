@@ -1,6 +1,7 @@
 package it.unimib.finalproject.server.exceptions;
 
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
@@ -13,6 +14,6 @@ import jakarta.ws.rs.ext.Provider;
 @Provider
 public class RESPErrorMapper implements ExceptionMapper<RESPError> {
   public Response toResponse(RESPError ex) {
-    return Response.status(500).entity(ex).type("application/json").build();
+    return Response.serverError().entity(ex).type(MediaType.APPLICATION_JSON).build();
   }
 }
