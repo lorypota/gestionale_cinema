@@ -1,0 +1,142 @@
+[
+  {
+    "id": 0,
+    "name": "Il Padrino",
+    "description": "La storia epica di una famiglia mafiosa",
+    "duration": "2h 55m",
+    "image": "https://pad.mymovies.it/filmclub/2002/08/056/locandina.jpg"
+  },
+  {
+    "id": 1,
+    "name": "Pulp Fiction",
+    "description": "Un intricato intreccio di storie criminali",
+    "duration": "2h 34m",
+    "image": "https://pad.mymovies.it/filmclub/2006/08/102/locandinapg1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "La La Land",
+    "description": "Una storia d'amore ambientata nel mondo del cinema",
+    "duration": "2h 8m",
+    "image": "https://pad.mymovies.it/filmclub/2016/06/092/locandina.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Interstellar",
+    "description": "Un viaggio spaziale avventuroso e commovente",
+    "duration": "2h 49m",
+    "image": "https://pad.mymovies.it/filmclub/2014/01/001/locandina.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Il Signore degli Anelli: Il Ritorno del Re",
+    "description": "La battaglia finale per la salvezza della Terra di Mezzo",
+    "duration": "3h 21m",
+    "image": "https://pad.mymovies.it/filmclub/2004/01/014/locandina.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Inception",
+    "description": "Un thriller psicologico sul potere dei sogni",
+    "duration": "2h 28m",
+    "image": "https://pad.mymovies.it/filmclub/2009/03/027/locandina.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Forrest Gump",
+    "description": "La straordinaria vita di un uomo semplice",
+    "duration": "2h 22m",
+    "image": "https://pad.mymovies.it/filmclub/2006/08/130/locandina.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Fight Club",
+    "description": "La ribellione contro la società consumistica",
+    "duration": "2h 19m",
+    "image": "https://pad.mymovies.it/filmclub/2001/11/012/locandina.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Il Gladiatore",
+    "description": "La storia di un generale romano che combatte per la sua libertà",
+    "duration": "2h 51m",
+    "image": "https://pad.mymovies.it/filmclub/2001/01/022/locandina.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Il Cigno Nero",
+    "description": "La lotta di una ballerina per la perfezione",
+    "duration": "1h 48m",
+    "image": "https://pad.mymovies.it/filmclub/2009/06/163/locandina.jpg"
+  },
+  {
+    "id": 10,
+    "name": "La Vita è Bella",
+    "description": "Una commedia drammatica ambientata durante l'Olocausto",
+    "duration": "1h 56m",
+    "image": "https://pad.mymovies.it/filmclub/2001/10/022/locandina.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Schindler's List",
+    "description": "La storia vera di un uomo che salva ebrei durante l'Olocausto",
+    "duration": "3h 15m",
+    "image": "https://pad.mymovies.it/filmclub/2006/02/315/locandina.jpg"
+  },
+  {
+    "id": 12,
+    "name": "The Shawshank Redemption",
+    "description": "La speranza in un contesto carcerario",
+    "duration": "2h 22m",
+    "image": "https://pad.mymovies.it/filmclub/2002/08/151/locandina.jpg"
+  },
+  {
+    "id": 13,
+    "name": "The Godfather: Part II",
+    "description": "La storia della famiglia Corleone e della loro ascesa nel crimine",
+    "duration": "3h 22m",
+    "image": "https://pad.mymovies.it/filmclub/2006/08/048/locandina.jpg"
+  },
+  {
+    "id": 14,
+    "name": "The Dark Knight",
+    "description": "Un'avventura oscura del supereroe Batman",
+    "duration": "2h 32m",
+    "image": "https://pad.mymovies.it/filmclub/2007/02/131/locandina.jpg"
+  },
+  {
+    "id": 15,
+    "name": "The Avengers",
+    "description": "L'unione dei supereroi Marvel per salvare il mondo",
+    "duration": "2h 23m",
+    "image": "https://pad.mymovies.it/filmclub/2009/03/107/locandina.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Titanic",
+    "description": "Una storia d'amore a bordo di una nave destinata a sprofondare",
+    "duration": "3h 14m",
+    "image": "https://pad.mymovies.it/filmclub/2004/06/506/locandinapg9.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Eternal Sunshine of the Spotless Mind",
+    "description": "La rimozione selettiva dei ricordi in una relazione complicata",
+    "duration": "1h 48m",
+    "image": "https://pad.mymovies.it/filmclub/2004/10/012/locandina.jpg"
+  },
+  {
+    "id": 18,
+    "name": "The Matrix",
+    "description": "Un'avventura di realtà virtuale e ribellione",
+    "duration": "2h 16m",
+    "image": "https://pad.mymovies.it/filmclub/2001/11/033/locandina.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Seven",
+    "description": "Un thriller psicologico sulla caccia a un serial killer",
+    "duration": "2h 7m",
+    "image": "https://pad.mymovies.it/filmclub/2006/08/218/locandina.jpg"
+  }
+]

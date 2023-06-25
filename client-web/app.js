@@ -3,39 +3,78 @@ const API_URI = "http://localhost:8080";
 //when the document is ready
 $(document).ready(async () => {
   //fetch projections
-  let projections = await getAllProjections();
+  //let projections = await getAllProjections();
+
+  $('#seating-legend').hide();
+
+  //to delete
+  let projections = await (await fetch('./mocks testing/projections.json')).json();
+  let movies = await(await fetch('./mocks testing/movies.json')).json();
 
   //show projections
-  const projContainer = $('projections-container');
-  projections.forEach(proj => {
-    const movie = getMovieById(proj.movie_id);
-    const projLabel = $('button').addClass('projLabel');
-    const title = $('div').addClass('title').text(movie.name);
-    const date = $('div').addClass('date').text(proj.date);
-    const timetable = $('div').addClass('timetable').text(proj.timetable);
-    const duration = $('div').addClass('duration').text(movie.duration);
-    projLabel.appendChild(title, date, timetable, duration);
-    projContainer.appendChild(projLabel);
+  projections.filter((_, index) => index < 5 ).forEach(proj => {
+    //const movie = getMovieById(proj.movie_id);
+    const movie = movies.find(m => m.id === proj.movie_id);
+    const projLabel = $('<button>').addClass('projLabel');
+    const title = $('<div>').addClass('projTitle').text(movie.name);
+    const dateTimetable = $('<div>').addClass('projDateTime');
+    dateTimetable.append($('<div>').addClass('projDate').text(proj.date));
+    dateTimetable.append($('<div>').addClass('projTimetable').text(proj.timetable));
+    const duration = $('<div>').addClass('projDuration').text("Durata: " + movie.duration);
+    projLabel.append(title, dateTimetable, duration);
+    projLabel.css("background-image", `url('${movie.image}')`);
+    projLabel.css("background-size", "cover");
+    projLabel.click( async () => await showSeatsProj(proj.id));
+    $('#projections-container').append(projLabel);
   });
 })
 
-async function showSeats (columns, rows) {
+async function showSeatsProj (projId){
+  let seats = await(await fetch('./mocks testing/seats.json')).json();
+  let seat = seats.find(s => s.proj_id === projId);
+  let bookings = await(await fetch('./mocks testing/bookings.json')).json();
+
+  let occupiedSeats = bookings.filter(b => b.proj_id === projId);
+  console.log(projId)
+  await showSeats(seat.column, seat.row, occupiedSeats);
+}
+
+async function showSeats (columns, rows, occupiedSeats) {
+
+  $('#seating-legend').show();
   
   const container = $('#seating-container');
+  container.empty();
 
   const columnLabels = [...Array(columns).keys()].map(i => String.fromCharCode(i + 65));
   const rowLabels = [...Array(rows).keys()].map(i => i + 1);
 
   rowLabels.forEach(rowLabel => {
       columnLabels.forEach(columnLabel => {
-          const seatButton = $('button').addClass('seat').text(columnLabel + rowLabel);
-          seatButton.on('click', function() {
+          var occupied = false;
+          console.log("label:" + rowLabel);
+          console.log("label: " + columnLabel);
+          occupiedSeats.forEach(occupiedSeat => {
+            console.log(String.fromCharCode(occupiedSeat.column + 65) + "  " + (occupiedSeat.row + 1))
+            if(String.fromCharCode(occupiedSeat.column + 65) === columnLabel && occupiedSeat.row + 1 === rowLabel){
+              occupied = true;
+            }
+          })
+          const seatButton = $('<button>').addClass('seat').text(columnLabel + rowLabel);
+          if(occupied) {
+            seatButton.addClass('occupied');
+          } else {
+            seatButton.click( function(event) {
+              event.preventDefault();
               $(this).toggleClass('selected');
-          });
-          container.appendChild(seatButton);
+            });
+          }
+          container.append(seatButton);
       });
-      container.appendChild('<br>');
+      container.append('<br>');
   });
+
+
 }
 
 
@@ -47,7 +86,7 @@ async function getAllMovies() {
   return res.json();
 }
 
-function getMovieById(id) {
+async function getMovieById(id) {
   res = await fetch(`${API_URL}/movies/${id}`);
   return res.json();
 }

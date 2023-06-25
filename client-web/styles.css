@@ -1,23 +1,26 @@
+body {
+  font-family: Arial;
+}
+
 .container {
   display: flex;
 }
 
-.half {
-  flex: auto;
-  flex-wrap: 1;
-  padding: 10px;
+.seats-half {
+  margin: 2vh;
 }
 
-.hidden {
-  display: none;
+.legend-half{
+  margin: 2vh;
+  flex-grow: 1;
 }
 
 /*#region seat*/
 .seat {
-  height: 50px;
-  width: 50px;
-  margin: 5px;
-  padding: 10px;
+  height: 7vh;
+  width: 7vh;
+  margin: 1vh;
+  padding: 2vh;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -26,31 +29,68 @@
 
 .seat.occupied {
   background-color: red;
+  pointer-events: none;
 }
 
 .seat.selected {
   background-color: #28a745;
 }
+
+.not-clickable {
+  pointer-events: none;
+}
 /*#endregion */
 
 /*#region projLabel*/
+.projContainer{
+  display: flex;
+  flex-direction: row;
+  height: 50vh;
+}
+
 .projLabel{
-
+  padding: 10px;
+  margin: 0 10px 0 10px;
+  border-radius: 15px;
+  width: 20%;
+  color: #f7e6e6;
+  text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
+             1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 
-.projLabel.title{
-
+.projLabel:hover{
+  cursor: pointer;
 }
 
-.projLabel.date {
-
+.projTitle{
+  flex: .0;
+  font-size: 32px;
+  align-self: center;
 }
 
-.projLabel.timetable {
-
+.projDateTime {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.projLabel.duration {
+.projDate {
+  display: flex;
+  font-size: 20px;
+}
 
+.projTimetable {
+  display: flex;
+  font-size: 20px;
+}
+
+.projDuration {
+  align-self: flex-end;
+  font-size: 20px;
 }
 /*#endregion */

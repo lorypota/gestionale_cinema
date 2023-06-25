@@ -10,7 +10,8 @@ Movie model
     "id": 0,
     "name": "Io e il mio kouhai",
     "description": "Un film molto bello zio",
-    "duration" : "1h 30m"
+    "duration": "1h 30m",
+    "image": "https://pad.mymovies.it/filmclub/2006/08/218/locandina.jpg"
 }
 ```
 

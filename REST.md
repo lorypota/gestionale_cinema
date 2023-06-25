@@ -17,6 +17,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `name` (una stringa)
 * `description` (una stringa)
 * `duration` (una stringa)
+* `image` (una stringa)
 
 **Codici di stato restituiti**:
 * 200 OK
@@ -31,6 +32,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `name` (una stringa)
 * `description` (una stringa)
 * `duration` (una stringa)
+* `image` (una stringa)
 
 **Risposta**: In caso di successo, il body è vuoto.
 
@@ -53,6 +55,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `name` (una stringa)
 * `description` (una stringa)
 * `duration` (una stringa)
+* `image` (una stringa)
 
 **Codici di stato restituiti**:
 * 200 OK
@@ -68,6 +71,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `name` (una stringa)
 * `description` (una stringa)
 * `duration` (una stringa)
+* `image` (una stringa)
 
 **Risposta**: In caso di successo, il body è vuoto.
 

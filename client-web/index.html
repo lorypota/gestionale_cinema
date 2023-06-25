@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-
+  
   <head>
     <title>Cinema</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="app.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   </head>
-
+  
   <body>
     <header>
       <h1>Cinema</h1>
@@ -15,26 +15,26 @@
 
     <section id="projections-section">
         <h2>Prossime proiezioni</h2>
-        <div id="projections-container">
+        <div id="projections-container" class="projContainer">
             <!-- mostro prossime proiezioni -->
         </div>
     </section>
 
     <section id="booking-section">
-        <h2>Prenota i tuoi posti</h2>
+      <h2>Prenota i tuoi posti</h2>
         <form id="booking-form">
             <label for="projection-id-input">Seleziona proiezione:</label>
-            <input id="projection-id-input" onselect="showSeats()" />
+            <input id="projection-id-input" />
 
             <section id="seating-section" class="container">
-              <div id="seating-container" class="half">
+              <div id="seating-container" class="seats-half">
                   <!-- mostro elenco posti -->
               </div>
               
-              <div id="legend" class="half hidden">
-                <button class="seat occupied"></button>Occupied seat<br>
-                <button class="seat"></button>Free seat<br>
-                <button class="seat selected"></button>Selected seat
+              <div id="seating-legend" class="legend-half">
+                <button class="seat occupied not-clickable"></button>Occupied seat<br>
+                <button class="seat not-clickable"></button>Free seat<br>
+                <button class="seat selected not-clickable"></button>Selected seat
               </div>
             </section>
 
