@@ -27,7 +27,7 @@ public class CommandRegistry implements List<Command> {
     public Command get(String expectedCommand) throws RESPError {
 
         if (expectedCommand == null) {
-            throw new RESPError("Invalid command");
+            throw new RESPError(String.format("Invalid command: %s", expectedCommand));
         }
 
         for (Command command : commands) {
@@ -36,7 +36,7 @@ public class CommandRegistry implements List<Command> {
             }
         }
 
-        throw new RESPError("Invalid command");
+        throw new RESPError(String.format("Invalid command: %s", expectedCommand));
     }
 
     @Override

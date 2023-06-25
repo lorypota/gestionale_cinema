@@ -1,6 +1,9 @@
 package it.unimib.finalproject.database;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +27,7 @@ import it.unimib.finalproject.database.command.util.CommandCommand;
 import it.unimib.finalproject.database.command.util.HashesCommand;
 import it.unimib.finalproject.database.command.util.PingCommand;
 import it.unimib.finalproject.database.command.util.StringsCommand;
+import it.unimib.finalproject.database.resp.EscapeUtils;
 
 /**
  * Classe principale in cui parte il database.
@@ -86,6 +90,81 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+        loadMockData();
         startServer();
+    }
+
+    private static void loadMockData() throws IOException {
+        var movies = new ConcurrentHashMap<String, Object>();
+        var halls = new ConcurrentHashMap<String, Object>();
+        var projections = new ConcurrentHashMap<String, Object>();
+        var bookings = new ConcurrentHashMap<String, Object>();
+
+        var cl = Thread.currentThread().getContextClassLoader();
+        var moviesStream = cl.getResourceAsStream("movies.json");
+        var hallsStream = cl.getResourceAsStream("halls.json");
+        var projectionsStream = cl.getResourceAsStream("projections.json");
+        var bookingsStream = cl.getResourceAsStream("bookings.json");
+
+        var moviesJson = Main.readJsonFile(moviesStream);
+        var hallsJson = Main.readJsonFile(hallsStream);
+        var projectionsJson = Main.readJsonFile(projectionsStream);
+        var bookingsJson = Main.readJsonFile(bookingsStream);
+
+        var moviesArray = moviesJson.substring(1, moviesJson.length() - 1).split("},");
+        var hallsArray = hallsJson.substring(1, hallsJson.length() - 1).split("},");
+        var projectionsArray = projectionsJson.substring(1, projectionsJson.length() - 1).split("},");
+        var bookingsArray = bookingsJson.substring(1, bookingsJson.length() - 1).split("},");
+
+        for (var movie : moviesArray) {
+            var movieId = movie.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
+            if (!movie.endsWith("}"))
+                movie += "}";
+            movies.put(movieId, EscapeUtils.escape(movie));
+        }
+
+        for (var hall : hallsArray) {
+            var hallId = hall.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
+            if (!hall.endsWith("}"))
+                hall += "}";
+            halls.put(hallId, EscapeUtils.escape(hall));
+        }
+
+        for (var projection : projectionsArray) {
+            var projectionId = projection.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
+            if (!projection.endsWith("}"))
+                projection += "}";
+            projections.put(projectionId, EscapeUtils.escape(projection));
+        }
+
+        for (var booking : bookingsArray) {
+            var bookingId = booking.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
+            if (!booking.endsWith("}"))
+                booking += "}";
+            bookings.put(bookingId, EscapeUtils.escape(booking));
+        }
+
+        store.put("movies", movies);
+        store.put("halls", halls);
+        store.put("projections", projections);
+        store.put("bookings", bookings);
+
+        store.put("movies_id", (Integer) movies.size());
+        store.put("halls_id", (Integer) halls.size());
+        store.put("projections_id", (Integer) projections.size());
+        store.put("bookings_id", (Integer) bookings.size());
+    }
+
+    private static String readJsonFile(InputStream stream) throws IOException {
+        var sb = new StringBuilder();
+        var reader = new BufferedReader(new InputStreamReader(stream));
+
+        var input = "";
+        while ((input = reader.readLine()) != null) {
+            sb.append(input);
+        }
+
+        reader.close();
+        return sb.toString();
     }
 }

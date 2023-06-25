@@ -3,6 +3,7 @@ package it.unimib.finalproject.database.resp.types;
 public class RESPString implements RESPType {
 
     public static final RESPString OK = new RESPString("OK");
+    public static final RESPString NULL = new RESPString(null);
 
     protected String string;
 
@@ -14,12 +15,11 @@ public class RESPString implements RESPType {
         return this.string;
     }
 
-    public String getRaw() {
-        return this.string;
-    }
-
     @Override
     public String toString() {
+        if (this.string == null) {
+            return "$-1\r\n";
+        }
         return String.format("+%s\r\n", this.string);
     }
 }

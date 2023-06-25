@@ -45,6 +45,7 @@ public class HSetCommand extends Command {
             return RESPNumber.ZERO;
         }
 
+        @SuppressWarnings("unchecked")
         var hashValue = (AbstractMap<String, Object>) hash;
 
         // If the containing value is not a string or a number, returns 0

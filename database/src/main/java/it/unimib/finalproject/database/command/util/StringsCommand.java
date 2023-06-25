@@ -24,7 +24,7 @@ public class StringsCommand extends Command {
 
         return store.entrySet()
                 .stream()
-                .filter(e -> e.getValue() instanceof String)
+                .filter(e -> e.getValue() instanceof String || e.getValue() instanceof Integer)
                 .map(e -> e.getKey())
                 .map(RESPBulkString::new)
                 .collect(Collectors.toCollection(RESPArray::new));
