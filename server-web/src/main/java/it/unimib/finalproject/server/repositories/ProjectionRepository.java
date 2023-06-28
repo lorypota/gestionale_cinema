@@ -2,10 +2,15 @@ package it.unimib.finalproject.server.repositories;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
+import it.unimib.finalproject.server.model.Movie;
 import it.unimib.finalproject.server.model.Projection;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
@@ -20,8 +25,15 @@ public class ProjectionRepository {
     @Inject
     JsonMapper mapper;
 
-    public ArrayList<Projection> getProjectionsByMovie(int movieId) {
-        return null;
+    public List<Projection> getProjectionsByMovie(int movieId) throws NumberFormatException, IOException, RESPError {
+        List<Projection> projections = getProjections();
+        List<Projection> projectionOfMovie = new ArrayList<>();
+
+        for(Projection projection: projections){
+            if(projection.getMovie_id() == movieId)
+                projectionOfMovie.add(projection);
+        }
+        return projectionOfMovie;
     }
 
     public Projection getProjectionById(int proj_id) throws NumberFormatException, IOException, RESPError {
@@ -32,6 +44,19 @@ public class ProjectionRepository {
         
         Projection projection = mapper.readValue(resp.get(), Projection.class);
         return projection;
+    }
+
+    public List<Projection> getProjections() throws NumberFormatException, IOException, RESPError{
+        var projectionsString = this.db.hvals("projections");
+
+        return Stream.of(projectionsString).map(s -> {
+            try {
+                return mapper.readValue(s, Projection.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }).collect(Collectors.toList());
     }
     
 }
