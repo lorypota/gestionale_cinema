@@ -88,4 +88,13 @@ public class BookingService {
                         
         return true;
     }
+
+    public Booking updateBooking(String body) {
+        //TODO: check if the booking exists
+
+        //TODO: update the booking
+
+        //TODO: return the booking
+        return null;
+    }
 }

@@ -12,8 +12,10 @@ import it.unimib.finalproject.server.service.BookingService;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -56,5 +58,18 @@ public class BookingController {
         } catch (BadRequestResponseException | NumberFormatException | IOException | RESPError | ObjectNotCreatedException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateBooking(String body){
+        Booking updatedBooking = bookingService.updateBooking(body);
+        return null;
+    }
+
+    @DELETE
+    @Path("/{bookingId}")
+    public Response deleteBooking(@PathParam("bookingId") int bookingId){
+        return null;
     }
 }

@@ -29,7 +29,7 @@ public class MovieController {
             Response.serverError().build();
         }
 
-        if(movieList == null){
+        if(movieList == null || movieList.isEmpty()){
             Response.noContent().build();
         }
          

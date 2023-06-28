@@ -30,7 +30,7 @@ public class ProjectionController {
             return Response.serverError().build();
         }
         
-        if(projections == null){
+        if(projections == null || projections.isEmpty()){
             return Response.noContent().build();
         }
          
