@@ -7,14 +7,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.model.Booking;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPArray;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -47,12 +45,9 @@ public class BookingRepository {
         return Stream.of(bookingsStrings).map(s -> {
             try {
                 return mapper.readValue(s, Booking.class);
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+            }  catch (JsonProcessingException e) {
+                return null;
             }
-            return null;
         }).collect(Collectors.toList());
     }
 

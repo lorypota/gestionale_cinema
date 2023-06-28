@@ -18,7 +18,7 @@ public class MovieService {
         return movieRepository.getMovies();
     }
 
-    public Movie getMovieById(int movieId){
+    public Movie getMovieById(int movieId) throws NumberFormatException, IOException, RESPError{
         return movieRepository.getMovieById(movieId);
     }
 }

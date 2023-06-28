@@ -39,11 +39,11 @@ public class MovieController {
     @Path("/{movieId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMovieById(@QueryParam("movieId") int movieId) {
+    public Response getMovieById(@PathParam("movieId") int movieId) {
         Movie movie = null;
         try {
             movie = movieService.getMovieById(movieId);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | IOException | RESPError e) {
             Response.serverError().build();
         }
 
