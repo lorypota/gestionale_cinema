@@ -19,7 +19,7 @@ public class CustomMapper {
             booking = mapper.readValue(body, Booking.class);
 
             if (booking.name == null || booking.surname == null ||
-                    booking.email == null)
+                    booking.email == null || booking.seats == null)
                 throw new BadRequestResponseException("body is not formatted correctly");
 
         } catch (JsonParseException | JsonMappingException e) {

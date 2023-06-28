@@ -2,10 +2,16 @@ package it.unimib.finalproject.server.service;
 
 import java.util.ArrayList;
 
-import it.unimib.finalproject.server.repositories.ProjectionRepository;
-import it.unimib.finalproject.server.model.Projection;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
+import it.unimib.finalproject.server.repositories.ProjectionRepository;
+import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import it.unimib.finalproject.server.model.Projection;
+@Singleton
 public class ProjectionService {
+
     private final ProjectionRepository projectionRepository;
     
     public ProjectionService(){

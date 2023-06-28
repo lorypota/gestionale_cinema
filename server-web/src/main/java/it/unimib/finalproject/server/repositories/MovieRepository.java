@@ -1,31 +1,41 @@
 package it.unimib.finalproject.server.repositories;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import it.unimib.finalproject.server.config.DatabaseConfigs;
-import it.unimib.finalproject.server.model.Movie;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.model.Movie;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import jakarta.inject.Singleton;
+import jakarta.inject.Inject;
+
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 
+@Singleton
 public class MovieRepository {
-    private static ArrayList<Movie> movies = new ArrayList<Movie>() {{
-        add(new Movie("Io sono leggenda", "descrizione di prova"));
-        add(new Movie("Megamind", "prova di descrizione"));
-    }};
+    @Inject
+    DbConnector db;
 
-    public ArrayList<Movie> getMovies(){
-        try {
-            DbConnector dbConnector = new DbConnector(DatabaseConfigs.DATABASE_HOST, 3030);
-            System.out.println("ping: ");
-            System.out.println(dbConnector.incr("ciao"));
-            dbConnector.close();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        } catch (RESPError e) {
-            e.printStackTrace();
-        }
+    @Inject
+    JsonMapper mapper;
 
-        return movies;
+    public List<Movie> getMovies() throws NumberFormatException, IOException, RESPError{
+        var moviesString = this.db.hvals("bookings");
+
+        return Stream.of(moviesString).map(s -> {
+            try {
+                return mapper.readValue(s, Movie.class);
+            } catch (JsonProcessingException e) {
+                return null;
+            }
+        }).collect(Collectors.toList());
+    }
+
+    public Movie getMovieById(int movieId) {
+        return null;
     }
 }
