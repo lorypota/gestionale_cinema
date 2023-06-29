@@ -31,15 +31,12 @@ public class BookingRepository {
     JsonMapper mapper;
 
     public int createBooking(Booking booking){
-        String jsonBooking;
-        try {
-            jsonBooking = mapper.writeValueAsString(booking);
-        } catch (JsonProcessingException e) {
-            throw new BadRequestResponseException();
-        }
-
         try {
             int id = db.incr("bookings_id");
+            
+            booking.setId(id);
+            String jsonBooking = mapper.writeValueAsString(booking);
+
             int created = db.hset("bookings", "" + id, jsonBooking);
 
             if(created == DatabaseStatus.OBJECT_NOT_CREATED)
@@ -48,7 +45,7 @@ public class BookingRepository {
             return id;
         } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
-        }
+        } 
     }
 
     public List<Booking> getBookings(){
@@ -95,6 +92,7 @@ public class BookingRepository {
         int created;
         
         try {
+            Booking booking = mapper.read(body);
             body =  body.replace("\n", "");
             created = db.hset("bookings", ""+bookingId, body);
         } catch (NumberFormatException | IOException | RESPError e) {
