@@ -1,6 +1,7 @@
 package it.unimib.finalproject.server.model.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Projection{
@@ -49,4 +50,8 @@ public class Projection{
     public void setTimetable(String timetable) {
         this.timetable = LocalTime.parse(timetable);
     }  
+
+    public LocalDateTime buildProjectionDateTime(){
+        return LocalDateTime.of(date, timetable);
+    }
 }

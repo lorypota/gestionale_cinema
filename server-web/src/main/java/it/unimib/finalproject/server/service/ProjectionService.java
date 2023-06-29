@@ -1,5 +1,9 @@
 package it.unimib.finalproject.server.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.finalproject.server.repositories.ProjectionRepository;
@@ -19,10 +23,17 @@ public class ProjectionService {
 
     public List<Projection> getProjections() {
         List<Projection> projections = projectionRepository.getProjections();
+        List<Projection> newProjections = new ArrayList<>();
 
-        //TODO: add logic to discard already projected movies
+        //logic to discard already projected movies
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        for(Projection projection: projections){
+            LocalDateTime projectionDateTime = projection.buildProjectionDateTime();
+            if(projectionDateTime.isAfter(currentDateTime))
+                newProjections.add(projection);
+        }
 
-        return projections;
+        return newProjections;
     }
 
     public Projection getProjectionById(int projectionId){
