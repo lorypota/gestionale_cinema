@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseExcpetion;
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.Booking;
 
 public class CustomMapper {
 
-    public Booking mapBooking(String body) throws ServerErrorResponseExcpetion, BadRequestResponseException {
+    public Booking mapBooking(String body) throws ServerErrorResponseException, BadRequestResponseException {
         Booking booking;
         try {
             var mapper = new ObjectMapper();
@@ -27,7 +27,7 @@ public class CustomMapper {
             throw new BadRequestResponseException("body is not formatted correctly");
         } catch (IOException e) {
             System.out.println(e);
-            throw new ServerErrorResponseExcpetion("server error");
+            throw new ServerErrorResponseException("server error");
         }
 
         return booking;

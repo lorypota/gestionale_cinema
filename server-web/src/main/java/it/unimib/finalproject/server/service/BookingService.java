@@ -3,24 +3,20 @@ package it.unimib.finalproject.server.service;
 import java.io.IOException;
 import java.util.List;
 
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseExcpetion;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
-
-import it.unimib.finalproject.server.model.Projection;
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.Booking;
 import it.unimib.finalproject.server.model.Hall;
+import it.unimib.finalproject.server.model.Projection;
 import it.unimib.finalproject.server.model.Seat;
-
 import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.repositories.HallRepository;
 import it.unimib.finalproject.server.repositories.ProjectionRepository;
-
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.utils.CustomMapper;
-
-import jakarta.inject.Singleton;
+import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class BookingService {
@@ -33,7 +29,7 @@ public class BookingService {
     @Inject
     HallRepository hallRepository;
 
-    public int createBooking(String body) throws ServerErrorResponseExcpetion, BadRequestResponseException, 
+    public int createBooking(String body) throws ServerErrorResponseException, BadRequestResponseException, 
     NumberFormatException, IOException, ObjectNotCreatedException, RESPError {
         //mapping the json body to a booking object
         CustomMapper objectMapper = new CustomMapper();

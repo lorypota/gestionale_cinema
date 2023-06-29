@@ -25,10 +25,7 @@ import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPType;
 @PerLookup
 public class DbConnector implements Closeable {
 
-    // TODO: Error handling, multiple type handling
-    // TODO: Gestire RESPNull tramite Optional
     // TODO: Gestire multi type
-    // TODO: Documenta i metodi
     private Socket client;
     private RESPReader reader;
     private PrintWriter writer;
