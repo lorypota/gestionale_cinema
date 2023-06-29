@@ -1,24 +1,26 @@
 package it.unimib.finalproject.server.repositories;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-import it.unimib.finalproject.server.config.DatabaseStatus;
+
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.model.domain.Booking;
-import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
-import jakarta.inject.Inject;
+import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.config.DatabaseStatus;
+import it.unimib.finalproject.server.model.domain.Booking;
+
 import jakarta.inject.Singleton;
+import jakarta.inject.Inject;
 
 @Singleton
 public class BookingRepository {
@@ -81,9 +83,24 @@ public class BookingRepository {
         try {
             booking = mapper.readValue(resp.get(), Booking.class);
         } catch (JsonProcessingException e) {
+            System.out.println(resp.get());
+            e.printStackTrace();
             throw new ServerErrorResponseException("server couldn't parse the booking");
         }
         booking.setId(bookingId);
         return booking;
+    }
+
+    public int updateBooking(int bookingId, String body) {
+        int created;
+        
+        try {
+            body =  body.replace("\n", "");
+            created = db.hset("bookings", ""+bookingId, body);
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException("error during update of booking");
+        }
+
+        return created;
     }
 }

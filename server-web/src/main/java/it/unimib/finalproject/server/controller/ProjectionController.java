@@ -1,17 +1,15 @@
 package it.unimib.finalproject.server.controller;
 
-import jakarta.ws.rs.core.*;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.*;
 
-import java.io.IOException;
 import java.util.List;
 
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
-import it.unimib.finalproject.server.model.domain.Projection;
-import it.unimib.finalproject.server.model.domain.Seat;
 import it.unimib.finalproject.server.service.ProjectionService;
+import it.unimib.finalproject.server.model.domain.Projection;
 import it.unimib.finalproject.server.service.SeatsService;
+import it.unimib.finalproject.server.model.domain.Seat;
 
 @Path("projections")
 public class ProjectionController {

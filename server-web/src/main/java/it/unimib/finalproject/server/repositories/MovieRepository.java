@@ -1,17 +1,18 @@
 package it.unimib.finalproject.server.repositories;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.List;
 
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.model.domain.Booking;
-import it.unimib.finalproject.server.model.domain.Movie;
+
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.model.domain.Movie;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;

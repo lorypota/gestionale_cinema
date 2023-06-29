@@ -3,17 +3,16 @@ package it.unimib.finalproject.server.controller;
 import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
-import it.unimib.finalproject.server.model.domain.Hall;
-import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.service.HallService;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import it.unimib.finalproject.server.model.domain.Hall;
+
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.GET;
 @Path("halls")
 public class HallController {
     @Inject

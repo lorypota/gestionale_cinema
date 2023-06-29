@@ -12,7 +12,7 @@ import it.unimib.finalproject.server.model.domain.Booking;
 
 public class CustomMapper {
 
-    public Booking mapBooking(String body) throws ServerErrorResponseException, BadRequestResponseException {
+    public Booking mapBooking(String body) {
         Booking booking;
         try {
             var mapper = new ObjectMapper();

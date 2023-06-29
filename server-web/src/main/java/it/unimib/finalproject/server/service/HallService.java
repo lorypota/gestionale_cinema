@@ -2,10 +2,12 @@ package it.unimib.finalproject.server.service;
 
 import java.util.List;
 
-import it.unimib.finalproject.server.model.domain.Hall;
 import it.unimib.finalproject.server.repositories.HallRepository;
-import jakarta.inject.Inject;
+import it.unimib.finalproject.server.model.domain.Hall;
+
 import jakarta.inject.Singleton;
+import jakarta.inject.Inject;
+
 
 @Singleton
 public class HallService {

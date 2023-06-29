@@ -1,11 +1,9 @@
 package it.unimib.finalproject.server.controller;
 
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
-import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.service.MovieService;
+import it.unimib.finalproject.server.model.domain.Movie;
 
-import java.io.IOException;
 import java.util.List;
 
 import jakarta.inject.Inject;

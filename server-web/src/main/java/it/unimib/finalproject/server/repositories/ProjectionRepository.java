@@ -1,22 +1,22 @@
 package it.unimib.finalproject.server.repositories;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
-import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.model.domain.Movie;
-import it.unimib.finalproject.server.model.domain.Projection;
-import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
+import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.model.domain.Projection;
+
 import jakarta.inject.Singleton;
 import jakarta.inject.Inject;
 

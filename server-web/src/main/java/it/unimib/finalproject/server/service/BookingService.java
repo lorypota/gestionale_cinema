@@ -1,23 +1,23 @@
 package it.unimib.finalproject.server.service;
 
-import java.io.IOException;
 import java.util.List;
 
-import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.DuplicatedObjectResponseError;
+import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.model.domain.Booking;
-import it.unimib.finalproject.server.model.domain.Hall;
-import it.unimib.finalproject.server.model.domain.Projection;
-import it.unimib.finalproject.server.model.domain.Seat;
+import it.unimib.finalproject.server.config.DatabaseStatus;
+import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.repositories.BookingRepository;
+
 import it.unimib.finalproject.server.repositories.HallRepository;
-import it.unimib.finalproject.server.repositories.ProjectionRepository;
+import it.unimib.finalproject.server.model.domain.Projection;
+import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.utils.CustomMapper;
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
-import jakarta.inject.Inject;
+import it.unimib.finalproject.server.model.domain.Hall;
+import it.unimib.finalproject.server.model.domain.Seat;
+
 import jakarta.inject.Singleton;
+import jakarta.inject.Inject;
 
 @Singleton
 public class BookingService {
@@ -33,24 +33,23 @@ public class BookingService {
     @Inject
     HallRepository hallRepository;
 
-    public int createBooking(String body){
+    public Booking createBooking(String body){
         //mapping the json body to a booking object
         CustomMapper objectMapper = new CustomMapper();
         Booking booking = objectMapper.mapBooking(body);
 
-        //checks if the row and the column of the seats are valid:
-        //row and column are valid when they are smaller than the hall's row and column
-        if(!areSeatsValid(booking.getSeats(), booking.getProj_id()))
-            throw new BadRequestResponseException("seats are not valid.");
-        
-            //checks if the seats are still available
-        if(!areSeatsAvailable(booking.getProj_id(), booking.getSeats()))
-            throw new DuplicatedObjectResponseError("seats are no longer available.");
+        //sets the id to -1 to avoid not checking the booking with id 0
+        booking.setId(-1);
+
+        //checks if the seats are still available/not wrong
+        validateSeats(booking);
 
         //sends the request to create the booking in the database
         //returns the id of the newly created booking.
         int id = bookingRepository.createBooking(booking);
-        return id;
+        booking.setId(id);
+
+        return booking;
     }
 
     public List<Booking> getBookings(){
@@ -64,6 +63,24 @@ public class BookingService {
         return booking;
     }
 
+    public int updateBooking(int bookingId, String body) {
+        if(exists(bookingId)){
+            //mapping the json body to a booking object
+            CustomMapper objectMapper = new CustomMapper();
+            Booking booking = objectMapper.mapBooking(body);
+
+            //checks if the seats are still available/not wrong
+            validateSeats(booking);
+
+            int created =  bookingRepository.updateBooking(bookingId, body);
+            System.out.println("created1:" + created);
+            if(created == DatabaseStatus.OBJECT_CREATED)
+                return created;
+        }
+
+        return -1;  
+    }
+
     private boolean areSeatsValid(List<Seat> seats, int proj_id){
         Projection projection = projectionService.getProjectionById(proj_id);
         
@@ -72,14 +89,14 @@ public class BookingService {
 
         //checks if the seats are valid by confronting the hall's size with the seats' position
         for(Seat seat: seats){
-            if(seat.getColumn() > hall.getColumns() || seat.getRow() > hall.getRows())
+            if(seat.getColumn() > hall.getColumns() || seat.getRow() > hall.getRows() || seat.getRow() < 1 || seat.getColumn() < 1)
                 return false;
         }
         return true;
     }
     
-    private boolean areSeatsAvailable(int proj_id, List<Seat> seats){
-        List<Seat> bookedSeats = seatsService.getProjectionSeats(proj_id);
+    private boolean areSeatsAvailable(int proj_id, List<Seat> seats, int bookingId){
+        List<Seat> bookedSeats = seatsService.getProjectionSeats(proj_id, bookingId);
   
         for(Seat seat: bookedSeats)
             for(Seat mySeats: seats)
@@ -88,12 +105,24 @@ public class BookingService {
         return true;
     }
 
-    public Booking updateBooking(String body) {
-        //TODO: check if the booking exists
+    public boolean exists(int myBooking) {
+        List<Booking> bookings = bookingRepository.getBookings();
+        for(Booking booking: bookings){
+            System.out.println("bb" + booking.getId());
+            if(booking.getId() == myBooking) return true;
+        }
 
-        //TODO: update the booking
+        return false;
+    }
 
-        //TODO: return the booking
-        return null;
+    private void validateSeats(Booking booking){
+        //checks if the row and the column of the seats are valid:
+        //row and column are valid when they are smaller than the hall's row and column
+        if(!areSeatsValid(booking.getSeats(), booking.getProj_id()))
+            throw new BadRequestResponseException("seats are not valid.");
+        
+        //checks if the seats are still available
+        if(!areSeatsAvailable(booking.getProj_id(), booking.getSeats(), booking.getId()))
+            throw new DuplicatedObjectResponseError("seats are no longer available.");
     }
 }

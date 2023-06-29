@@ -1,31 +1,29 @@
 package it.unimib.finalproject.server.controller;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.net.URI;
 
-import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
+import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.NoContentResponseException;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
-import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.model.domain.Booking;
+
 import it.unimib.finalproject.server.service.BookingService;
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.WebApplicationException;
+import it.unimib.finalproject.server.model.domain.Booking;
+
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
+import jakarta.ws.rs.core.Response.Status;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.GET;
 @Path("bookings")
 public class BookingController {
     @Inject
@@ -64,26 +62,36 @@ public class BookingController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createBooking(String body) {
         try {
-            int id = bookingService.createBooking(body);
-            var uri = new URI("/contacts/" + id);
+            Booking booking = bookingService.createBooking(body);
+            var uri = new URI("/bookings/" + booking.getId());
 
-            return Response.created(uri).build();
+            return Response.status(Status.CREATED).entity(booking).location(uri).build();
         } catch (URISyntaxException e) {
             throw new ServerErrorResponseException();
         }
     }
 
-    /* 
     @PUT
+    @Path("/{bookingId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateBooking(String body){
-        Booking updatedBooking = bookingService.updateBooking(body);
-        return null;
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateBooking(String body, @PathParam("bookingId") int bookingId){
+        System.out.println(body + "\n\n\n\n");
+        int updatedBooking = bookingService.updateBooking(bookingId, body);
+        
+        System.out.println("updatedBooking: " + updatedBooking);
+        if (updatedBooking == DatabaseStatus.OBJECT_CREATED) {
+            //Object updated successfully
+            return Response.noContent().build(); // 204 No Content
+        } else {
+            //Object not found
+            throw new NotFoundResponseException();
+        }
     }
 
     @DELETE
     @Path("/{bookingId}")
     public Response deleteBooking(@PathParam("bookingId") int bookingId){
         return null;
-    }*/
+    }
 }
