@@ -3,9 +3,9 @@ package it.unimib.finalproject.server.service;
 import java.io.IOException;
 import java.util.List;
 
+import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.repositories.MovieRepository;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
-import it.unimib.finalproject.server.model.Movie;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 

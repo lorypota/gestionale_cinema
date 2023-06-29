@@ -5,14 +5,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
+import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
+import it.unimib.finalproject.server.model.domain.Projection;
+import it.unimib.finalproject.server.model.domain.Seat;
 import it.unimib.finalproject.server.service.ProjectionService;
 import it.unimib.finalproject.server.service.SeatsService;
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
-import it.unimib.finalproject.server.model.Projection;
-import it.unimib.finalproject.server.model.Seat;
 
 @Path("projections")
 public class ProjectionController {

@@ -1,14 +1,14 @@
 package it.unimib.finalproject.server.controller;
 
-import it.unimib.finalproject.server.service.MovieService;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
-import it.unimib.finalproject.server.model.Movie;
+import it.unimib.finalproject.server.model.domain.Movie;
+import it.unimib.finalproject.server.service.MovieService;
 
 import java.io.IOException;
 import java.util.List;
 
-import jakarta.ws.rs.core.*;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.*;
 
 @Path("movies")
@@ -16,9 +16,6 @@ public class MovieController {
     @Inject
     MovieService movieService;
 
-    /**
-     * Implementazione di GET "/movies".
-     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMovies() {

@@ -1,4 +1,4 @@
-package it.unimib.finalproject.server.model;
+package it.unimib.finalproject.server.model.domain;
 
 public class Seat {
     private int row;

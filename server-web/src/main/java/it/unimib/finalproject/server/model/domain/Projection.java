@@ -1,4 +1,4 @@
-package it.unimib.finalproject.server.model;
+package it.unimib.finalproject.server.model.domain;
 
 import java.time.LocalDateTime;
 

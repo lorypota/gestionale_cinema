@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
-import it.unimib.finalproject.server.model.Movie;
-import it.unimib.finalproject.server.model.Projection;
+import it.unimib.finalproject.server.model.domain.Movie;
+import it.unimib.finalproject.server.model.domain.Projection;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Singleton;

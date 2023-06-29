@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
-import it.unimib.finalproject.server.model.Booking;
+import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;
