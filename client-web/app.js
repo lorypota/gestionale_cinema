@@ -16,7 +16,7 @@ $(document).ready(async () => {
   movies = await getAllMovies();
 
   //show projections
-  projections.filter((_, index) => index < 5 ).forEach(async proj => {
+  projections.forEach(async proj => {
     const movie = movies.find(m => m.id === proj.movie_id);
 
     const projLabel = $('<button>').addClass('projLabel');
@@ -124,7 +124,10 @@ $(document).ready(async () => {
       case 500: alert("Booking failed due to server error!"); break;
     }
 
-    location.reload();
+    console.log(response.body);
+    console.log(response.json());
+
+    /* location.reload(); */
   });
 
 });
