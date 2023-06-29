@@ -14,41 +14,44 @@
     </header>
 
     <section id="projections-section">
-        <h2>Prossime proiezioni</h2>
-        <div id="projections-container" class="projContainer">
-            <!-- mostro prossime proiezioni -->
-        </div>
+      <h2>Prossime proiezioni</h2>
+      <div id="projections-container" class="projContainer">
+        <!-- mostro prossime proiezioni -->
+      </div>
     </section>
 
     <section id="booking-section">
       <h2>Prenota i tuoi posti</h2>
-        <form id="booking-form">
-            <label for="projection-id-input">Seleziona proiezione:</label>
-            <input id="projection-id-input" />
+      <form id="booking-form">
+        <select id="projections-selection" onchange="showUser(this.value)">
+          <option value="">Seleziona una proiezione:</option>
+          
+        </select>
 
-            <section id="seating-section" class="container">
-              <div id="seating-container" class="seats-half">
-                  <!-- mostro elenco posti -->
-              </div>
-              
-              <div id="seating-legend" class="legend-half">
-                <button class="seat occupied not-clickable"></button>Occupied seat<br>
-                <button class="seat not-clickable"></button>Free seat<br>
-                <button class="seat selected not-clickable"></button>Selected seat
-              </div>
-            </section>
+        <section id="seating-section" class="container">
+          <div id="seating-container" class="seats-half">
+              <!-- mostro elenco posti -->
+          </div>
+          
+          <div id="seating-legend" class="legend-half">
+            <button class="seat occupied not-clickable"></button>Occupied seat<br>
+            <button class="seat not-clickable"></button>Free seat<br>
+            <button class="seat selected not-clickable"></button>Selected seat
+          </div>
+        </section>
 
-            <button type="submit">Prenota</button>
-        </form>
+       <button type="submit">Prenota</button>
+      </form>
     </section>
 
     <section id="booking-management-section">
-        <h2>Gestisci la tua prenotazione</h2>
-        <form id="booking-management-form">
-            <label for="booking-id-input">ID Prenotazione:</label>
-            <input id="booking-id-input" type="number" required />
-            <button type="submit">Rimuovi prenotazione</button>
-        </form>
+      <h2>Gestisci la tua prenotazione</h2>
+      <form id="booking-management-form">
+        <select name="users" onchange="showUser(this.value)">
+          <option value="">Seleziona una prenotazione:</option>
+        </select>
+        <button type="submit">Rimuovi prenotazione</button>
+      </form>
     </section>
   </body>
 

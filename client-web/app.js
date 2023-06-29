@@ -27,7 +27,28 @@ $(document).ready(async () => {
     projLabel.click( async () => await showSeatsProj(proj.id));
     $('#projections-container').append(projLabel);
   });
+
+  //load projections into drop-down
+  loadProjections(projections, movies);
+
+  //load bookings into drop-down
+  loadBookings();
 })
+
+async function loadBookings(){
+  let bookings = await(await fetch('./mocks testing/bookings.json')).json();
+  
+}
+
+async function loadProjections(projections, movies){
+  projections.forEach(proj => {
+    const movie = movies.find(m => m.id === proj.movie_id);
+    
+    var newOption = document.createElement('option');
+    newOption.innerText = movie.name;
+    $('#projections-selection').append(newOption);
+  });
+}
 
 async function showSeatsProj (projId){
   let seats = await(await fetch('./mocks testing/seats.json')).json();
