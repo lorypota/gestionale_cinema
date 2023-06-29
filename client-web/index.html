@@ -23,12 +23,11 @@
     <section id="booking-section">
       <h2>Prenota i tuoi posti</h2>
       <form id="booking-form">
-        <select id="projections-selection" onchange="showUser(this.value)">
-          <option value="">Seleziona una proiezione:</option>
-          
+        <select id="projections-selection">
+          <option value="-1">Seleziona una proiezione:</option>
         </select>
 
-        <section id="seating-section" class="container">
+        <section id="seating-section" class="container inset">
           <div id="seating-container" class="seats-half">
               <!-- mostro elenco posti -->
           </div>
@@ -40,17 +39,14 @@
           </div>
         </section>
 
-       <button type="submit">Prenota</button>
+       <button type="submit-booking" id="submit-booking">Prenota</button>
       </form>
     </section>
 
     <section id="booking-management-section">
       <h2>Gestisci la tua prenotazione</h2>
       <form id="booking-management-form">
-        <select name="users" onchange="showUser(this.value)">
-          <option value="">Seleziona una prenotazione:</option>
-        </select>
-        <button type="submit">Rimuovi prenotazione</button>
+        <input type="number" id="booking-management-form" placeholder="Inserisci il numero di prenotazione">
       </form>
     </section>
   </body>

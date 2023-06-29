@@ -5,7 +5,8 @@ $(document).ready(async () => {
   //fetch projections
   //let projections = await getAllProjections();
 
-  $('#seating-legend').hide();
+  $('#seating-section').hide();
+  $('#submit-booking').hide();
 
   //to delete
   let projections = await (await fetch('./mocks testing/projections.json')).json();
@@ -33,6 +34,17 @@ $(document).ready(async () => {
 
   //load bookings into drop-down
   loadBookings();
+
+  
+  $('#projections-selection').change(async function() {
+    const selectedProjection = Number($(this).val());
+    if(selectedProjection === -1){
+      $('#seating-section').hide();
+      $('#submit-booking').hide();
+    } else {
+      await showSeatsProj(selectedProjection);
+    }
+  });
 })
 
 async function loadBookings(){
@@ -46,23 +58,26 @@ async function loadProjections(projections, movies){
     
     var newOption = document.createElement('option');
     newOption.innerText = movie.name;
+    newOption.value = proj.id;
     $('#projections-selection').append(newOption);
   });
 }
 
 async function showSeatsProj (projId){
+  let projections = await(await fetch('./mocks testing/projections.json')).json();
+  let projection = projections.find(p => p.id === projId);
   let seats = await(await fetch('./mocks testing/seats.json')).json();
-  let seat = seats.find(s => s.proj_id === projId);
-  let bookings = await(await fetch('./mocks testing/bookings.json')).json();
-
-  let occupiedSeats = bookings.filter(b => b.proj_id === projId);
-  console.log(projId)
-  await showSeats(seat.column, seat.row, occupiedSeats);
+  let halls = await(await fetch('./mocks testing/halls.json')).json();
+  console.log(projection)
+  let hall = halls.find(h => h.id === projection.hall_id);
+  let occupiedSeats = seats.filter(s => s.proj_id === projId);
+  await showSeats(hall.columns, hall.rows, occupiedSeats);
 }
 
 async function showSeats (columns, rows, occupiedSeats) {
 
-  $('#seating-legend').show();
+  $('#seating-section').show();
+  $('#submit-booking').show();
   
   const container = $('#seating-container');
   container.empty();
@@ -73,10 +88,7 @@ async function showSeats (columns, rows, occupiedSeats) {
   rowLabels.forEach(rowLabel => {
       columnLabels.forEach(columnLabel => {
           var occupied = false;
-          console.log("label:" + rowLabel);
-          console.log("label: " + columnLabel);
           occupiedSeats.forEach(occupiedSeat => {
-            console.log(String.fromCharCode(occupiedSeat.column + 65) + "  " + (occupiedSeat.row + 1))
             if(String.fromCharCode(occupiedSeat.column + 65) === columnLabel && occupiedSeat.row + 1 === rowLabel){
               occupied = true;
             }
