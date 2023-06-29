@@ -67,7 +67,7 @@ body {
 
 .projTitle{
   flex: .0;
-  font-size: 32px;
+  font-size: 5vh;
   align-self: center;
 }
 
@@ -77,20 +77,19 @@ body {
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  font-size: 3vh;
 }
 
 .projDate {
   display: flex;
-  font-size: 20px;
 }
 
 .projTimetable {
   display: flex;
-  font-size: 20px;
 }
 
 .projDuration {
   align-self: flex-end;
-  font-size: 20px;
+  font-size: 3vh;
 }
 /*#endregion */
