@@ -45,6 +45,10 @@ button {
   cursor: pointer;
 }
 
+button:disabled{
+  cursor: auto;
+}
+
 .container {
   display: flex;
 }
@@ -103,7 +107,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  min-width: 250px;
+  min-width: 400px;
 }
 
 .projLabel:hover{
@@ -138,6 +142,58 @@ button {
   font-size: 3vh;
 }
 /*#endregion */
+
+/*#region modal*/
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+@keyframes animatetop {
+  from {top: -300px; opacity: 0} 
+  to {top: 0; opacity: 1}
+}
+
+.close {
+  color: black;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: grey;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#submit-booking:hover,
+#submit-booking:focus {
+  cursor: pointer;
+}
+
+/*#endregion*/
 
 #projections-selection{
   width: 250px;
