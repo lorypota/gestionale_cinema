@@ -76,10 +76,8 @@ public class BookingController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateBooking(String body, @PathParam("bookingId") int bookingId){
-        System.out.println(body + "\n\n\n\n");
         int updatedBooking = bookingService.updateBooking(bookingId, body);
         
-        System.out.println("updatedBooking: " + updatedBooking);
         if (updatedBooking == DatabaseStatus.OBJECT_CREATED) {
             //Object updated successfully
             return Response.noContent().build(); // 204 No Content
@@ -91,7 +89,17 @@ public class BookingController {
 
     @DELETE
     @Path("/{bookingId}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteBooking(@PathParam("bookingId") int bookingId){
-        return null;
+        int deleted = bookingService.deleteBooking(bookingId);
+
+        if(deleted == DatabaseStatus.OBJECT_DELETED){
+            //Object deleted, server processed the request successfully
+            return Response.noContent().build(); // 204 No Content
+        }else{
+            //Object to delete not found
+            throw new NotFoundResponseException();
+        }
+        
     }
 }
