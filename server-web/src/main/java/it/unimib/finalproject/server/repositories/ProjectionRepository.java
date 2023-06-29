@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
+import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.model.domain.Projection;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
@@ -25,7 +27,7 @@ public class ProjectionRepository {
     @Inject
     JsonMapper mapper;
 
-    public List<Projection> getProjectionsByMovie(int movieId) throws NumberFormatException, IOException, RESPError {
+    public List<Projection> getProjectionsByMovie(int movieId){
         List<Projection> projections = getProjections();
         List<Projection> projectionOfMovie = new ArrayList<>();
 
@@ -36,27 +38,39 @@ public class ProjectionRepository {
         return projectionOfMovie;
     }
 
-    public Projection getProjectionById(int proj_id) throws NumberFormatException, IOException, RESPError {
-        Optional<String> resp = db.hgetString("projections", ""+proj_id);
+    public Projection getProjectionById(int proj_id){
+        Optional<String> resp;
+        try {
+            resp = db.hgetString("projections", ""+proj_id);
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        }
 
         if(!resp.isPresent() || resp.get().isEmpty())  
             return null;
         
-        Projection projection = mapper.readValue(resp.get(), Projection.class);
+        Projection projection;
+        try {
+            projection = mapper.readValue(resp.get(), Projection.class);
+        } catch (JsonProcessingException e) {
+            throw new BadRequestResponseException();
+        }
         return projection;
     }
 
-    public List<Projection> getProjections() throws NumberFormatException, IOException, RESPError{
-        var projectionsString = this.db.hvals("projections");
-
-        return Stream.of(projectionsString).map(s -> {
-            try {
-                return mapper.readValue(s, Projection.class);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }).collect(Collectors.toList());
+    public List<Projection> getProjections(){
+        try {
+            var projectionsString = this.db.hvals("projections");
+            return Stream.of(projectionsString).map(s -> {
+                try {
+                    return mapper.readValue(s, Projection.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }).collect(Collectors.toList());
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        }
     }
-    
 }

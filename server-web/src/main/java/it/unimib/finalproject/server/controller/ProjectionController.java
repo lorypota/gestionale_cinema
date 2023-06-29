@@ -26,14 +26,8 @@ public class ProjectionController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProjectionByMovieId(@PathParam("movieId") int movieId) {
         List<Projection> projections = null;
-        
-        try {
-            projections = projectionService.getProjectionsByMovie(movieId);
-        } catch (NumberFormatException | IOException | RESPError e) {
-            e.printStackTrace();
-            return Response.serverError().build();
-        }
-        
+        projections = projectionService.getProjectionsByMovie(movieId);
+
         if(projections == null || projections.isEmpty()){
             return Response.noContent().build();
         }
@@ -46,13 +40,7 @@ public class ProjectionController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProjections() {
         List<Projection> projections = null;
-        
-        try {
-            projections = projectionService.getProjections();
-        } catch (NumberFormatException | IOException | RESPError e) {
-            e.printStackTrace();
-            return Response.serverError().build();
-        }
+        projections = projectionService.getProjections();
         
         if(projections == null || projections.isEmpty()){
             return Response.noContent().build();
@@ -66,13 +54,7 @@ public class ProjectionController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProjectionBookedSeats(@PathParam("projectionId") int projectionId) {
         List<Seat> seats = null;
-        
-        try {
-            seats = seatService.getProjectionSeats(projectionId);
-        } catch (NumberFormatException | IOException | RESPError e) {
-            e.printStackTrace();
-            return Response.serverError().build();
-        }
+        seats = seatService.getProjectionSeats(projectionId);
         
         if(seats == null || seats.isEmpty()){
             return Response.noContent().build();

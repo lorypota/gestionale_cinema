@@ -5,7 +5,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
 public class ObjectNotCreatedException extends WebApplicationException {
-     public ObjectNotCreatedException(){
+    public ObjectNotCreatedException(){
         super(Response.status(Status.BAD_REQUEST).build());
     }
     public ObjectNotCreatedException(String message){

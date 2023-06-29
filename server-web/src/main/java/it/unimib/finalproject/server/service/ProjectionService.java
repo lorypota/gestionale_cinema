@@ -16,11 +16,11 @@ public class ProjectionService {
     @Inject
     ProjectionRepository projectionRepository;
     
-    public List<Projection> getProjectionsByMovie(int movieId) throws NumberFormatException, IOException, RESPError{
+    public List<Projection> getProjectionsByMovie(int movieId){
         return projectionRepository.getProjectionsByMovie(movieId);
     }
 
-    public List<Projection> getProjections() throws NumberFormatException, IOException, RESPError {
+    public List<Projection> getProjections() {
         List<Projection> projections = projectionRepository.getProjections();
 
         //TODO: add logic to discard already projected movies
@@ -28,7 +28,7 @@ public class ProjectionService {
         return projections;
     }
 
-    public Projection getProjectionById(int projectionId) throws NumberFormatException, IOException, RESPError{
+    public Projection getProjectionById(int projectionId){
         return projectionRepository.getProjectionById(projectionId);
     }
 }

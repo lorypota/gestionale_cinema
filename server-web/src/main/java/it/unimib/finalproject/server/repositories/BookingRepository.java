@@ -10,7 +10,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import it.unimib.finalproject.server.config.DatabaseStatus;
+import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
+import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
@@ -25,39 +28,61 @@ public class BookingRepository {
     @Inject
     JsonMapper mapper;
 
-    public int createBooking(Booking booking) throws NumberFormatException, IOException, 
-    RESPError, ObjectNotCreatedException {
-        String jsonBooking = mapper.writeValueAsString(booking);
+    public int createBooking(Booking booking){
+        String jsonBooking;
+        try {
+            jsonBooking = mapper.writeValueAsString(booking);
+        } catch (JsonProcessingException e) {
+            throw new BadRequestResponseException();
+        }
 
-        int id = db.incr("bookings_id");
-        int created = db.hset("bookings", "" + id, jsonBooking);
+        try {
+            int id = db.incr("bookings_id");
+            int created = db.hset("bookings", "" + id, jsonBooking);
 
-        if(created == DatabaseStatus.OBJECT_NOT_CREATED)
-            throw new ObjectNotCreatedException("Object not created");
+            if(created == DatabaseStatus.OBJECT_NOT_CREATED)
+                throw new ObjectNotCreatedException("Object not created");
 
-        return id;
+            return id;
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        }
     }
 
-    // TODO: Error handling
-    public List<Booking> getBookings() throws NumberFormatException, IOException, RESPError {
-        var bookingsStrings = this.db.hvals("bookings");
-
-        return Stream.of(bookingsStrings).map(s -> {
-            try {
-                return mapper.readValue(s, Booking.class);
-            }  catch (JsonProcessingException e) {
-                return null;
-            }
-        }).collect(Collectors.toList());
+    public List<Booking> getBookings(){
+        try {
+            var bookingsStrings = this.db.hvals("bookings");
+            return Stream.of(bookingsStrings).map(s -> {
+                try {
+                    return mapper.readValue(s, Booking.class);
+                }  catch (JsonProcessingException e) {
+                    throw new BadRequestResponseException("server couldn't parse bookings");
+                }
+            }).collect(Collectors.toList());
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        }
     }
 
-    public Booking getBookingById(int bookingId) throws NumberFormatException, IOException, RESPError {
-        Optional<String> resp = db.hgetString("bookings", ""+bookingId);
+    public Booking getBookingById(int bookingId){
+        Optional<String> resp;
+        try {
+            resp = db.hgetString("bookings", ""+bookingId);
+        } catch (NumberFormatException | IOException e) {
+            throw new ServerErrorResponseException();
+        } catch(RESPError e){
+            throw new NotFoundResponseException();
+        }
 
         if(!resp.isPresent() || resp.get().isEmpty())  
-            return null;
+            throw new NotFoundResponseException();
         
-        Booking booking = mapper.readValue(resp.get(), Booking.class);
+        Booking booking;
+        try {
+            booking = mapper.readValue(resp.get(), Booking.class);
+        } catch (JsonProcessingException e) {
+            throw new ServerErrorResponseException("server couldn't parse the booking");
+        }
         booking.setId(bookingId);
         return booking;
     }

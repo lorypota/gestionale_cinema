@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
+import it.unimib.finalproject.server.exceptions.DuplicatedObjectResponseError;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.domain.Booking;
@@ -32,8 +33,7 @@ public class BookingService {
     @Inject
     HallRepository hallRepository;
 
-    public int createBooking(String body) throws ServerErrorResponseException, BadRequestResponseException, 
-    NumberFormatException, IOException, ObjectNotCreatedException, RESPError {
+    public int createBooking(String body){
         //mapping the json body to a booking object
         CustomMapper objectMapper = new CustomMapper();
         Booking booking = objectMapper.mapBooking(body);
@@ -45,7 +45,7 @@ public class BookingService {
         
             //checks if the seats are still available
         if(!areSeatsAvailable(booking.getProj_id(), booking.getSeats()))
-            throw new BadRequestResponseException("seats are no longer available.");
+            throw new DuplicatedObjectResponseError("seats are no longer available.");
 
         //sends the request to create the booking in the database
         //returns the id of the newly created booking.
@@ -53,18 +53,18 @@ public class BookingService {
         return id;
     }
 
-    public List<Booking> getBookings() throws NumberFormatException, IOException, RESPError {
+    public List<Booking> getBookings(){
         var list = this.bookingRepository.getBookings();
         list.sort((a,b) -> a.getId() < b.getId() ? -1 : 1);
         return list;
     }
 
-    public Booking getBooking(int bookingId) throws NumberFormatException, IOException, RESPError {
+    public Booking getBooking(int bookingId){
         Booking booking = bookingRepository.getBookingById(bookingId);
         return booking;
     }
 
-    private boolean areSeatsValid(List<Seat> seats, int proj_id) throws NumberFormatException, IOException, RESPError {
+    private boolean areSeatsValid(List<Seat> seats, int proj_id){
         Projection projection = projectionService.getProjectionById(proj_id);
         
         int hallId = projection.getHall_id();
@@ -78,7 +78,7 @@ public class BookingService {
         return true;
     }
     
-    private boolean areSeatsAvailable(int proj_id, List<Seat> seats) throws NumberFormatException, IOException, RESPError{
+    private boolean areSeatsAvailable(int proj_id, List<Seat> seats){
         List<Seat> bookedSeats = seatsService.getProjectionSeats(proj_id);
   
         for(Seat seat: bookedSeats)
