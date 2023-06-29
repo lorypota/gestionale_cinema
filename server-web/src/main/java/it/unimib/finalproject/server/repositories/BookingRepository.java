@@ -92,8 +92,11 @@ public class BookingRepository {
         int created;
         
         try {
-            Booking booking = mapper.read(body);
-            body =  body.replace("\n", "");
+            //adds the id to the body
+            Booking booking = mapper.readValue(body, Booking.class);
+            booking.setId(bookingId);
+            body = mapper.writeValueAsString(booking);
+
             created = db.hset("bookings", ""+bookingId, body);
         } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException("error during update of booking");
