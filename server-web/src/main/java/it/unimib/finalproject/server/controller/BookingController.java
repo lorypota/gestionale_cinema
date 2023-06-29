@@ -3,6 +3,7 @@ package it.unimib.finalproject.server.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
@@ -45,8 +46,27 @@ public class BookingController {
         return Response.ok(booking).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllBookings(){
+        List<Booking> bookings = null;
+        try{
+            bookings = bookingService.getBookings();
+        }catch(NumberFormatException | IOException | RESPError e){
+            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        if(bookings == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        
+        if(bookings.isEmpty())
+            return Response.status(Response.Status.NO_CONTENT).build();
+
+        return Response.ok(bookings).build();
+    }
+
     @POST
-    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBooking(String body) {
         try {
@@ -60,7 +80,8 @@ public class BookingController {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
-
+    
+    /* 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateBooking(String body){
@@ -72,5 +93,5 @@ public class BookingController {
     @Path("/{bookingId}")
     public Response deleteBooking(@PathParam("bookingId") int bookingId){
         return null;
-    }
+    }*/
 }

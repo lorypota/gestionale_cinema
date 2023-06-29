@@ -3,6 +3,7 @@ package it.unimib.finalproject.server.model;
 public class Seat {
     private int row;
     private int column;
+    private int bookingId;
 
     public int getRow() {
         return row;

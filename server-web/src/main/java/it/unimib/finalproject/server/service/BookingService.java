@@ -25,10 +25,13 @@ import jakarta.inject.Inject;
 @Singleton
 public class BookingService {
     @Inject
-    BookingRepository bookingRepository;
+    ProjectionService projectionService;
 
     @Inject
-    ProjectionRepository projectionRepository;
+    SeatsService seatsService;
+
+    @Inject
+    BookingRepository bookingRepository;
 
     @Inject
     HallRepository hallRepository;
@@ -66,7 +69,7 @@ public class BookingService {
     }
 
     private boolean areSeatsValid(List<Seat> seats, int proj_id) throws NumberFormatException, IOException, RESPError {
-        Projection projection = projectionRepository.getProjectionById(proj_id);
+        Projection projection = projectionService.getProjectionById(proj_id);
         
         int hallId = projection.getHall_id();
         Hall hall = hallRepository.getHallById(hallId);
@@ -80,11 +83,11 @@ public class BookingService {
     }
     
     private boolean areSeatsAvailable(int proj_id, List<Seat> seats) throws NumberFormatException, IOException, RESPError{
-        List<Booking> bookings = bookingRepository.getBookings();
-        for(Booking booking: bookings)
-            for(Seat seat: booking.getSeats())
-                for(Seat mySeats: seats)
-                    if((booking.getProj_id() == proj_id) && seat.equals(mySeats)) return false;
+        List<Seat> bookedSeats = seatsService.getProjectionSeats(proj_id);
+  
+        for(Seat seat: bookedSeats)
+            for(Seat mySeats: seats)
+                if(seat.equals(mySeats)) return false;
                         
         return true;
     }
