@@ -36,6 +36,7 @@ public class BookingController {
             booking = bookingService.getBooking(bookingId);
         }catch(NumberFormatException | IOException | RESPError e){
             e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         if(booking == null)

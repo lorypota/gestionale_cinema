@@ -41,7 +41,7 @@ public class BookingService {
 
         //checks if the row and the column of the seats are valid:
         //row and column are valid when they are smaller than the hall's row and column
-        if(!areSeatsValid(booking.getSeats(), booking.proj_id))
+        if(!areSeatsValid(booking.getSeats(), booking.getProj_id()))
             throw new BadRequestResponseException("seats are not valid.");
         
             //checks if the seats are still available
@@ -56,7 +56,7 @@ public class BookingService {
 
     public List<Booking> getBookings() throws NumberFormatException, IOException, RESPError {
         var list = this.bookingRepository.getBookings();
-        list.sort((a,b) -> a.id < b.id ? -1 : 1);
+        list.sort((a,b) -> a.getId() < b.getId() ? -1 : 1);
         return list;
     }
 
