@@ -45,6 +45,7 @@ public class Projection{
     }
 
     public void setDate(String date) {
+        //TODO: add logic to convert date to DateTime
         this.date = date;
     }
 
@@ -53,6 +54,7 @@ public class Projection{
     }
 
     public void setTimetable(String timetable) {
+        //TODO: add logic to convert date to TimeTable
         this.timetable = timetable;
     }  
 }

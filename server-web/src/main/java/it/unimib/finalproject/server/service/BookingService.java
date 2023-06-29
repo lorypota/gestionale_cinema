@@ -3,37 +3,36 @@ package it.unimib.finalproject.server.service;
 import java.io.IOException;
 import java.util.List;
 
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseExcpetion;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
-
-import it.unimib.finalproject.server.model.Projection;
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.Booking;
 import it.unimib.finalproject.server.model.Hall;
+import it.unimib.finalproject.server.model.Projection;
 import it.unimib.finalproject.server.model.Seat;
-
 import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.repositories.HallRepository;
 import it.unimib.finalproject.server.repositories.ProjectionRepository;
-
-import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.utils.CustomMapper;
-
-import jakarta.inject.Singleton;
+import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class BookingService {
     @Inject
-    BookingRepository bookingRepository;
+    ProjectionService projectionService;
 
     @Inject
-    ProjectionRepository projectionRepository;
+    SeatsService seatsService;
+
+    @Inject
+    BookingRepository bookingRepository;
 
     @Inject
     HallRepository hallRepository;
 
-    public int createBooking(String body) throws ServerErrorResponseExcpetion, BadRequestResponseException, 
+    public int createBooking(String body) throws ServerErrorResponseException, BadRequestResponseException, 
     NumberFormatException, IOException, ObjectNotCreatedException, RESPError {
         //mapping the json body to a booking object
         CustomMapper objectMapper = new CustomMapper();
@@ -41,7 +40,7 @@ public class BookingService {
 
         //checks if the row and the column of the seats are valid:
         //row and column are valid when they are smaller than the hall's row and column
-        if(!areSeatsValid(booking.getSeats(), booking.proj_id))
+        if(!areSeatsValid(booking.getSeats(), booking.getProj_id()))
             throw new BadRequestResponseException("seats are not valid.");
         
             //checks if the seats are still available
@@ -56,7 +55,7 @@ public class BookingService {
 
     public List<Booking> getBookings() throws NumberFormatException, IOException, RESPError {
         var list = this.bookingRepository.getBookings();
-        list.sort((a,b) -> a.id < b.id ? -1 : 1);
+        list.sort((a,b) -> a.getId() < b.getId() ? -1 : 1);
         return list;
     }
 
@@ -66,7 +65,7 @@ public class BookingService {
     }
 
     private boolean areSeatsValid(List<Seat> seats, int proj_id) throws NumberFormatException, IOException, RESPError {
-        Projection projection = projectionRepository.getProjectionById(proj_id);
+        Projection projection = projectionService.getProjectionById(proj_id);
         
         int hallId = projection.getHall_id();
         Hall hall = hallRepository.getHallById(hallId);
@@ -80,11 +79,11 @@ public class BookingService {
     }
     
     private boolean areSeatsAvailable(int proj_id, List<Seat> seats) throws NumberFormatException, IOException, RESPError{
-        List<Booking> bookings = bookingRepository.getBookings();
-        for(Booking booking: bookings)
-            for(Seat seat: booking.getSeats())
-                for(Seat mySeats: seats)
-                    if((booking.getProj_id() == proj_id) && seat.equals(mySeats)) return false;
+        List<Seat> bookedSeats = seatsService.getProjectionSeats(proj_id);
+  
+        for(Seat seat: bookedSeats)
+            for(Seat mySeats: seats)
+                if(seat.equals(mySeats)) return false;
                         
         return true;
     }

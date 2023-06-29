@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect
 public class Booking {
-    public int id;
-    public int proj_id;
-    public String name;
-    public String surname;
-    public String email;
-    public List<Seat> seats;
+    private int id;
+    private int proj_id;
+    private String name;
+    private String surname;
+    private String email;
+    private List<Seat> seats;
 
     public List<Seat> getSeats() {
         return seats;

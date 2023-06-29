@@ -18,6 +18,7 @@ import it.unimib.finalproject.server.repositories.ProjectionRepository;
 import it.unimib.finalproject.server.service.BookingService;
 import it.unimib.finalproject.server.service.MovieService;
 import it.unimib.finalproject.server.service.ProjectionService;
+import it.unimib.finalproject.server.service.SeatsService;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import jakarta.inject.Singleton;
 
@@ -59,6 +60,7 @@ public class Main {
                         bind(MovieRepository.class).to(MovieRepository.class).in(Singleton.class);
                         bind(MovieService.class).to(MovieService.class).in(Singleton.class);
 
+                        bind(SeatsService.class).to(SeatsService.class).in(Singleton.class);
 
                         bind(JsonMapper.class).to(JsonMapper.class).in(Singleton.class);
                     }
