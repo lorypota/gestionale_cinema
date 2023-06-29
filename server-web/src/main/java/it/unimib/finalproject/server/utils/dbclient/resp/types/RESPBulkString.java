@@ -15,6 +15,7 @@ public class RESPBulkString extends RESPString {
         if (string == null) {
             return "$-1\r\n";
         }
-        return String.format("$%d\r\n%s\r\n", string.length(), EscapeUtils.escape(string));
+        var escaped = EscapeUtils.escape(string);
+        return String.format("$%d\r\n%s\r\n", escaped.length(), escaped);
     }
 }
