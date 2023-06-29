@@ -20,6 +20,8 @@ import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.model.domain.Booking;
 
 import jakarta.inject.Singleton;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.inject.Inject;
 
 @Singleton
@@ -103,5 +105,19 @@ public class BookingRepository {
         }
 
         return created;
+    }
+
+    public int deleteBooking(int bookingId) {
+        int removed = 0;
+
+        try {
+            removed = db.hdel("bookings", "" + bookingId);
+        } catch (NumberFormatException | IOException e) {
+            throw new ServerErrorResponseException();
+        } catch (RESPError e) {
+            throw new NotFoundResponseException();
+        }
+
+        return removed;
     }
 }

@@ -68,17 +68,26 @@ public class BookingService {
             //mapping the json body to a booking object
             CustomMapper objectMapper = new CustomMapper();
             Booking booking = objectMapper.mapBooking(body);
+            booking.setId(bookingId);
 
             //checks if the seats are still available/not wrong
             validateSeats(booking);
 
             int created =  bookingRepository.updateBooking(bookingId, body);
-            System.out.println("created1:" + created);
             if(created == DatabaseStatus.OBJECT_CREATED)
                 return created;
         }
 
         return -1;  
+    }
+
+    public int deleteBooking(int bookingId) {
+        //Retrieve the booking with the specified ID from the database
+        //Throws an error if does not exist
+        Booking booking = getBooking(bookingId);
+        
+        //Deletes the booking
+        return bookingRepository.deleteBooking(booking.getId());
     }
 
     private boolean areSeatsValid(List<Seat> seats, int proj_id){
@@ -108,7 +117,6 @@ public class BookingService {
     public boolean exists(int myBooking) {
         List<Booking> bookings = bookingRepository.getBookings();
         for(Booking booking: bookings){
-            System.out.println("bb" + booking.getId());
             if(booking.getId() == myBooking) return true;
         }
 
