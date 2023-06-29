@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.domain.Booking;
@@ -34,8 +35,7 @@ public class MovieRepository {
                 try {
                     return mapper.readValue(s, Movie.class);
                 } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                    return null;
+                    throw new BadRequestResponseException("server couldn't parse movies");
                 }
             }).collect(Collectors.toList());
         } catch (NumberFormatException | IOException | RESPError e) {

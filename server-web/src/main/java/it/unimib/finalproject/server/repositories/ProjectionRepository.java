@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
+import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.model.domain.Projection;
@@ -42,8 +43,10 @@ public class ProjectionRepository {
         Optional<String> resp;
         try {
             resp = db.hgetString("projections", ""+proj_id);
-        } catch (NumberFormatException | IOException | RESPError e) {
+        } catch (NumberFormatException | IOException e) {
             throw new ServerErrorResponseException();
+        }catch (RESPError e){
+            throw new NotFoundResponseException();
         }
 
         if(!resp.isPresent() || resp.get().isEmpty())  
@@ -65,8 +68,7 @@ public class ProjectionRepository {
                 try {
                     return mapper.readValue(s, Projection.class);
                 } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                    return null;
+                    throw new BadRequestResponseException("server couldn't parse projections");
                 }
             }).collect(Collectors.toList());
         } catch (NumberFormatException | IOException | RESPError e) {
