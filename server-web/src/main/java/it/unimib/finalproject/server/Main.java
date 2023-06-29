@@ -17,6 +17,7 @@ import it.unimib.finalproject.server.repositories.HallRepository;
 import it.unimib.finalproject.server.repositories.MovieRepository;
 import it.unimib.finalproject.server.repositories.ProjectionRepository;
 import it.unimib.finalproject.server.service.BookingService;
+import it.unimib.finalproject.server.service.HallService;
 import it.unimib.finalproject.server.service.MovieService;
 import it.unimib.finalproject.server.service.ProjectionService;
 import it.unimib.finalproject.server.service.SeatsService;
@@ -56,7 +57,9 @@ public class Main {
 
                         bind(ProjectionRepository.class).to(ProjectionRepository.class).in(Singleton.class);
                         bind(ProjectionService.class).to(ProjectionService.class).in(Singleton.class);
+                        
                         bind(HallRepository.class).to(HallRepository.class).in(Singleton.class);
+                        bind(HallService.class).to(HallService.class).in(Singleton.class);
 
                         bind(MovieRepository.class).to(MovieRepository.class).in(Singleton.class);
                         bind(MovieService.class).to(MovieService.class).in(Singleton.class);

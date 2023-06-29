@@ -14,11 +14,11 @@ public class MovieService {
     @Inject
     private MovieRepository movieRepository;
     
-    public List<Movie> getAllMovies() throws NumberFormatException, IOException, RESPError{
+    public List<Movie> getAllMovies(){
         return movieRepository.getMovies();
     }
 
-    public Movie getMovieById(int movieId) throws NumberFormatException, IOException, RESPError{
+    public Movie getMovieById(int movieId){
         return movieRepository.getMovieById(movieId);
     }
 }

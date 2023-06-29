@@ -16,7 +16,7 @@ public class SeatsService {
     @Inject
     BookingRepository bookingRepository;
 
-    public List<Seat> getProjectionSeats(int projectionId) throws NumberFormatException, IOException, RESPError{
+    public List<Seat> getProjectionSeats(int projectionId){
         List<Booking> bookings = bookingRepository.getBookings();
         List<Seat> bookedSeats = new ArrayList<>();
 

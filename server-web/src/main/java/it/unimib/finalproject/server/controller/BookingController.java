@@ -6,6 +6,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
+import it.unimib.finalproject.server.exceptions.NoContentResponseException;
+import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.domain.Booking;
@@ -34,15 +36,10 @@ public class BookingController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBookings(@PathParam("bookingId") int bookingId){
         Booking booking = null;
-        try{
-            booking = bookingService.getBooking(bookingId);
-        }catch(NumberFormatException | IOException | RESPError e){
-            e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        booking = bookingService.getBooking(bookingId);
 
         if(booking == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new NotFoundResponseException();
 
         return Response.ok(booking).build();
     }
@@ -50,36 +47,29 @@ public class BookingController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBookings(){
-        throw new BadRequestResponseException();
-        /*List<Booking> bookings = null;
-        try{
-            bookings = bookingService.getBookings();
-        }catch(NumberFormatException | IOException | RESPError e){
-            e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        List<Booking> bookings = null;
+        bookings = bookingService.getBookings();
 
         if(bookings == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new NotFoundResponseException();
         
         if(bookings.isEmpty())
-            return Response.status(Response.Status.NO_CONTENT).build();
+            throw new NoContentResponseException();
 
-        return Response.ok(bookings).build();*/
+        return Response.ok(bookings).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createBooking(String body) {
         try {
             int id = bookingService.createBooking(body);
             var uri = new URI("/contacts/" + id);
 
             return Response.created(uri).build();
-        } catch (ServerErrorResponseException | URISyntaxException e) {
-            return Response.serverError().build();
-        } catch (BadRequestResponseException | NumberFormatException | IOException | RESPError | ObjectNotCreatedException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (URISyntaxException e) {
+            throw new ServerErrorResponseException();
         }
     }
 

@@ -1,6 +1,7 @@
 package it.unimib.finalproject.server.controller;
 
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
+import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.service.MovieService;
 
@@ -20,11 +21,7 @@ public class MovieController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMovies() {
         List<Movie> movieList = null;
-        try {
-            movieList = movieService.getAllMovies();
-        } catch (NumberFormatException | IOException | RESPError e) {
-            Response.serverError().build();
-        }
+        movieList = movieService.getAllMovies();
 
         if(movieList == null || movieList.isEmpty()){
             Response.noContent().build();
@@ -38,14 +35,10 @@ public class MovieController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMovieById(@PathParam("movieId") int movieId) {
         Movie movie = null;
-        try {
-            movie = movieService.getMovieById(movieId);
-        } catch (NumberFormatException | IOException | RESPError e) {
-            Response.serverError().build();
-        }
+        movie = movieService.getMovieById(movieId);
 
         if(movie == null){
-            Response.status(Response.Status.NOT_FOUND).build();
+            throw new NotFoundResponseException();
         }
          
         return Response.ok(movie).build();

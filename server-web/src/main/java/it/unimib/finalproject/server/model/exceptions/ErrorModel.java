@@ -3,6 +3,7 @@ package it.unimib.finalproject.server.model.exceptions;
 public class ErrorModel {
     private int statusCode;
     private String message;
+    private String errorStack;
 
     public int getStatusCode() {
         return statusCode;
@@ -19,6 +20,4 @@ public class ErrorModel {
     public void setMessage(String message) {
         this.message = message;
     }
-
-    
 }
