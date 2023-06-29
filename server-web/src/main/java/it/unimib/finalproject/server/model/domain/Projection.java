@@ -1,20 +1,14 @@
 package it.unimib.finalproject.server.model.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-/*
- * "id": 1,
-    "hall_id": 1,
-    "movie_id": 1,
-    "date": "2023-06-26",
-    "timetable": "20:30"
- */
 public class Projection{
     private int id;
     private int hall_id;
     private int movie_id;
-    private String date;
-    private String timetable;
+    private LocalDate date;
+    private LocalTime timetable;
     
     public int getId() {
         return id;
@@ -41,20 +35,18 @@ public class Projection{
     }
 
     public String getDate() {
-        return date;
+        return this.date.toString();
     }
 
     public void setDate(String date) {
-        //TODO: add logic to convert date to DateTime
-        this.date = date;
+        this.date = LocalDate.parse(date);
     }
 
     public String getTimetable() {
-        return timetable;
+        return this.timetable.toString();
     }
 
     public void setTimetable(String timetable) {
-        //TODO: add logic to convert date to TimeTable
-        this.timetable = timetable;
+        this.timetable = LocalTime.parse(timetable);
     }  
 }

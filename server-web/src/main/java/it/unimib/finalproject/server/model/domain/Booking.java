@@ -1,14 +1,7 @@
 package it.unimib.finalproject.server.model.domain;
 
 import java.util.List;
-import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
-// TODO: Auto detect, cè da vedere come tratta id qunando lo prendi in input
-// DOCS: https://github.com/FasterXML/jackson-docs
-
-@JsonAutoDetect
 public class Booking {
     private int id;
     private int proj_id;

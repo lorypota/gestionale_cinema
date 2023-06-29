@@ -2,13 +2,6 @@ package it.unimib.finalproject.server.model.domain;
 
 import jakarta.ws.rs.Path;
 
-/*
- * "id": 1,
-    "name": "Pulp Fiction",
-    "description": "Un intricato intreccio di storie criminali",
-    "duration": "2h 34m",
-    "image": "https://pad.mymovies.it/filmclub/2006/08/102/locandinapg1.jpg"
- */
 @Path("movies")
 public class Movie {
     private int id;
