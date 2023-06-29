@@ -1,54 +1,137 @@
 const API_URL = "http://localhost:8080";
 
-//when the document is ready
+//global variables
+var projections;
+var movies;
+var loadedProjection = undefined;
+let selectedSeats = [];
+
+//once the document is ready
 $(document).ready(async () => {
 
   $('#seating-section').hide();
-  $('#submit-booking').hide();
-
-  let projections = await getAllProjections();
-  console.log(projections)
+  $('#insert-booking-informations').hide();
   
-  let movies = await(await fetch('./mocks testing/movies.json')).json();
+  projections = await getAllProjections();
+  movies = await getAllMovies();
 
   //show projections
-  projections.filter((_, index) => index < 5 ).forEach(proj => {
-    //const movie = getMovieById(proj.movie_id);
+  projections.filter((_, index) => index < 5 ).forEach(async proj => {
     const movie = movies.find(m => m.id === proj.movie_id);
+
     const projLabel = $('<button>').addClass('projLabel');
     const title = $('<div>').addClass('projTitle').text(movie.name);
     const dateTimetable = $('<div>').addClass('projDateTime');
     dateTimetable.append($('<div>').addClass('projDate').text(proj.date));
     dateTimetable.append($('<div>').addClass('projTimetable').text(proj.timetable));
     const duration = $('<div>').addClass('projDuration').text("Durata: " + movie.duration);
+
     projLabel.append(title, dateTimetable, duration);
     projLabel.css("background-image", `url('${movie.image}')`);
     projLabel.css("background-size", "cover");
     projLabel.click( async () => await showSeatsProj(proj.id));
+
     $('#projections-container').append(projLabel);
   });
 
   //load projections into drop-down
   loadProjections(projections, movies);
-
-  //load bookings into drop-down
-  loadBookings();
-
   
   $('#projections-selection').change(async function() {
     const selectedProjection = Number($(this).val());
     if(selectedProjection === -1){
       $('#seating-section').hide();
-      $('#submit-booking').hide();
+      $('#insert-booking-informations').hide();
+      loadedProjection = undefined;
+      selectedSeats = [];
     } else {
       await showSeatsProj(selectedProjection);
     }
   });
-})
 
-async function loadBookings(){
-  let bookings = await(await fetch('./mocks testing/bookings.json')).json();
-  
+  $('#booking-management-field').change(async function() {
+    const bookingId = Number($(this).val());
+    await loadBooking(bookingId);
+  });
+
+  // Quando l'utente clicca sul bottone, apri il modal 
+  $("#insert-booking-informations").click(function(event) {
+    event.preventDefault();
+    $("body").css("overflow", "hidden"); // Nasconde la barra di scorrimento
+
+    $('#seating-container .seat.selected').each(function(){
+      selectedSeats.push($(this).text());
+    });
+
+    $("#selected-seats").text(selectedSeats.join(', ')); 
+
+    $("#booking-infos").show();
+  });
+
+  // Quando l'utente clicca su <span> (x), chiudi il modal
+  $(".close").click(function() {
+    $("body").css("overflow", "auto"); // Riporta la barra di scorrimento
+    $("#booking-infos").hide();
+  });
+
+  // Quando l'utente clicca ovunque fuori dal modal, lo chiudi
+  $(window).click(function(event) {
+    if (event.target == $("#booking-infos")[0]) {
+      $("body").css("overflow", "auto"); // Riporta la barra di scorrimento
+      $("#booking-infos").hide();
+    }
+  });
+
+  $('#submit-booking').click(async function(event){
+    event.preventDefault();
+    //controllo con fetch che i posti siano ancora disponibili
+    if(loadedProjection === undefined)
+      throw new Error('Non è stata selezionata alcuna proiezione');
+    let bookedSeats = await getBookedSeats(loadedProjection);
+    
+    selectedSeatsTransformed = selectedSeats.map(seat => {
+      const column = seat.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+      const row = seat.slice(1);
+      return { "row": Number(row), "column": Number(column) };
+    })
+    
+    for(let i = 0; i < bookedSeats.length; i++) {
+      for(let j = 0; j < selectedSeatsTransformed.length; j++) {
+        if(bookedSeats[i].row === selectedSeatsTransformed[j].row && 
+           bookedSeats[i].column === selectedSeatsTransformed[j].column) {
+            //dico all'utente che i posti non sono più disponibili e ricarico la pagina
+            //DA TESTARE ATTENZIONE AAAA
+        }
+      }
+    }
+
+    //se disponibili confermo prenotazione e mostro dati prenotazione
+    let newBooking = {
+      "proj_id": loadedProjection,
+      "seats": selectedSeatsTransformed,
+      "name": $('#fname').val(),
+      "surname": $('#lname').val(),
+      "email": $('#email').val()
+    }
+    
+    response = await addBooking(newBooking);
+
+    switch (response.status) {
+      case 201: 
+        alert(`Booking has been completed with success! Your booking id is: ${response.json().id}`);
+        break;
+      case 400: alert("Booking failed due to missing fields!"); break;
+      case 500: alert("Booking failed due to server error!"); break;
+    }
+
+    location.reload();
+  });
+
+});
+
+async function loadBooking(id){
+  let booking = await getBookingById(id);
+  console.log(booking)
 }
 
 async function loadProjections(projections, movies){
@@ -58,26 +141,28 @@ async function loadProjections(projections, movies){
     var newOption = document.createElement('option');
     newOption.innerText = movie.name;
     newOption.value = proj.id;
+
     $('#projections-selection').append(newOption);
   });
 }
 
 async function showSeatsProj (projId){
-  let projections = await(await fetch('./mocks testing/projections.json')).json();
+  //salvo projId in una variabile globale per gestirla successivamente nel modal
+  loadedProjection = projId;
   let projection = projections.find(p => p.id === projId);
-  let seats = await(await fetch('./mocks testing/seats.json')).json();
   let halls = await(await fetch('./mocks testing/halls.json')).json();
-  console.log(projection)
   let hall = halls.find(h => h.id === projection.hall_id);
-  let occupiedSeats = seats.filter(s => s.proj_id === projId);
+  let occupiedSeats = await getBookedSeats(projId);
+  /* console.log(occupiedSeats) */
   await showSeats(hall.columns, hall.rows, occupiedSeats);
 }
 
 async function showSeats (columns, rows, occupiedSeats) {
 
   $('#seating-section').show();
-  $('#submit-booking').show();
+  $('#insert-booking-informations').show();
   
+  selectedSeats = [];
   const container = $('#seating-container');
   container.empty();
 
@@ -88,10 +173,13 @@ async function showSeats (columns, rows, occupiedSeats) {
       columnLabels.forEach(columnLabel => {
           var occupied = false;
           occupiedSeats.forEach(occupiedSeat => {
-            if(String.fromCharCode(occupiedSeat.column + 65) === columnLabel && occupiedSeat.row + 1 === rowLabel){
+            /* console.log("col:" + columnLabel + " row:" + rowLabel)
+            console.log("col:" + String.fromCharCode(occupiedSeat.column + 64) + " row: " + (occupiedSeat.row) */
+            if(String.fromCharCode(occupiedSeat.column + 64) === columnLabel && occupiedSeat.row === rowLabel){
               occupied = true;
             }
           })
+
           const seatButton = $('<button>').addClass('seat').text(columnLabel + rowLabel);
           if(occupied) {
             seatButton.addClass('occupied');
@@ -99,6 +187,12 @@ async function showSeats (columns, rows, occupiedSeats) {
             seatButton.click( function(event) {
               event.preventDefault();
               $(this).toggleClass('selected');
+
+              if ($('#seating-container .seat.selected').length > 0) {
+                $('#insert-booking-informations').prop('disabled', false);
+              } else {
+                $('#insert-booking-informations').prop('disabled', true);
+              }
             });
           }
           container.append(seatButton);
@@ -106,24 +200,31 @@ async function showSeats (columns, rows, occupiedSeats) {
       container.append('<br>');
   });
 
-
 }
-
 
 //APIs functions ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Movies
 async function getAllMovies() {
   res = await fetch(`${API_URL}/movies`);
-  return res.json();
+
+  switch(res.status){
+    case 200: return res.json();
+    case 500: return "Server error";
+  }
 }
 
 async function getMovieById(id) {
   res = await fetch(`${API_URL}/movies/${id}`);
-  return res.json();
+
+  switch(res.status){
+    case 200: return res.json();
+    case 404: return "Not found";
+    case 500: return "Server error";
+  }
 }
 
-function addMovie(movie) {
+/* function addMovie(movie) {
   return fetch(`${API_URL}/movies`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -144,7 +245,7 @@ function deleteMovie(id) {
     method: "DELETE"
   });
 }
-
+ */
 // Halls
 function getAllHalls() {
   return fetch(`${API_URL}/halls`).then(response => response.json());
@@ -154,7 +255,7 @@ function getHallById(id) {
   return fetch(`${API_URL}/halls/${id}`).then(response => response.json());
 }
 
-function addHall(hall) {
+/* function addHall(hall) {
   return fetch(`${API_URL}/halls`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -174,23 +275,32 @@ function deleteHall(id) {
   return fetch(`${API_URL}/halls/${id}`, {
     method: "DELETE"
   });
-}
+} */
 
 // Projections
-function getAllProjections(movieId = "") {
+async function getAllProjections(movieId = "") {
   if(movieId === "")
-    res = await(fetch(`${API_URL}/projections`));
+    res = await fetch(`${API_URL}/projections`);
   else
-    res = await(fetch(`${API_URL}/projections?movie_id=${movieId}`));
-  console.log(res)
-  return res.json();
+    res = await fetch(`${API_URL}/projections?movie_id=${movieId}`);
+
+  switch(res.status){
+    case 200: return res.json();
+    case 500: return "Server error";
+  }
 }
 
-function getProjectionById(id) {
-  return fetch(`${API_URL}/projections/${id}`).then(response => response.json());
+async function getProjectionById(id) {
+  res = await fetch(`${API_URL}/projections/${id}`);
+
+  switch(res.status){
+    case 200: return res.json();
+    case 404: return "Not found";
+    case 500: return "Server error";
+  }
 }
 
-function addProjection(projection) {
+/* function addProjection(projection) {
   return fetch(`${API_URL}/projections`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -210,18 +320,24 @@ function deleteProjection(id) {
   return fetch(`${API_URL}/projections/${id}`, {
     method: "DELETE"
   });
-}
+} */
 
 // Bookings
-function getAllBookings(projId = 0) {
+/* function getAllBookings(projId = 0) {
   return fetch(`${API_URL}/bookings?proj_id=${projId}`).then(response => response.json());
+} */
+
+async function getBookingById(id) {
+  res = await fetch(`${API_URL}/bookings/${id}`);
+
+  switch(res.status){
+    case 200: return res.json();
+    case 404: return "Not found";
+    case 500: return "Server error";
+  }
 }
 
-function getBookingById(id) {
-  return fetch(`${API_URL}/bookings/${id}`).then(response => response.json());
-}
-
-function addBooking(booking) {
+async function addBooking(booking) {
   return fetch(`${API_URL}/bookings`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -229,6 +345,7 @@ function addBooking(booking) {
   });
 }
 
+/*
 function updateBooking(id, booking) {
   return fetch(`${API_URL}/bookings/${id}`, {
     method: "PUT",
@@ -241,9 +358,15 @@ function deleteBooking(id) {
   return fetch(`${API_URL}/bookings/${id}`, {
     method: "DELETE"
   });
-}
+} */
 
 // Seats
-function getBookedSeats(projId) {
-  return fetch(`${API_URL}/projections/${projId}/seats`).then(response => response.json())
+async function getBookedSeats(projId) {
+  res = await fetch(`${API_URL}/projections/${projId}/seats`);
+
+  switch(res.status){
+    case 200: return res.json();
+    case 404: return "Not found";
+    case 500: return "Server error";
+  }
 }

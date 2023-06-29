@@ -39,14 +39,35 @@
           </div>
         </section>
 
-       <button type="submit-booking" id="submit-booking">Prenota</button>
+       <button id="insert-booking-informations" disabled>Inserisci i tuoi dati</button>
       </form>
     </section>
+
+    <!-- modal -->
+    <div id="booking-infos" class="modal">
+
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="info-form">
+          <label for="fname">Nome:</label><br>
+          <input type="text" id="fname" name="fname" required><br>
+          <label for="lname">Cognome:</label><br>
+          <input type="text" id="lname" name="lname" required><br>
+          <label for="email">Email:</label><br>
+          <input type="text" id="email" name="email" required><br>
+          <label for="row">Posti selezionati:</label><br>
+          <div type="text" id="selected-seats" name="row"></div><br>
+
+          <input type="submit" id="submit-booking" value="Conferma prenotazione">
+        </form>
+      </div>
+    
+    </div>
 
     <section id="booking-management-section">
       <h2>Gestisci la tua prenotazione</h2>
       <form id="booking-management-form">
-        <input type="number" id="booking-management-form" placeholder="Inserisci il numero di prenotazione">
+        <input type="number" id="booking-management-field" placeholder="Inserisci il numero di prenotazione">
       </form>
     </section>
   </body>
