@@ -1,15 +1,14 @@
-const API_URI = "http://localhost:8080";
+const API_URL = "http://localhost:8080";
 
 //when the document is ready
 $(document).ready(async () => {
-  //fetch projections
-  //let projections = await getAllProjections();
 
   $('#seating-section').hide();
   $('#submit-booking').hide();
 
-  //to delete
-  let projections = await (await fetch('./mocks testing/projections.json')).json();
+  let projections = await getAllProjections();
+  console.log(projections)
+  
   let movies = await(await fetch('./mocks testing/movies.json')).json();
 
   //show projections
@@ -178,8 +177,12 @@ function deleteHall(id) {
 }
 
 // Projections
-function getAllProjections(movieId = 0) {
-  res = fetch(`${API_URL}/projections?movie_id=${movieId}`);
+function getAllProjections(movieId = "") {
+  if(movieId === "")
+    res = await(fetch(`${API_URL}/projections`));
+  else
+    res = await(fetch(`${API_URL}/projections?movie_id=${movieId}`));
+  console.log(res)
   return res.json();
 }
 
