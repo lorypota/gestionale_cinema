@@ -7,7 +7,7 @@ import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
-import it.unimib.finalproject.server.exceptions.ServerErrorResponseExcpetion;
+import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.model.Booking;
 import it.unimib.finalproject.server.service.BookingService;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
@@ -74,7 +74,7 @@ public class BookingController {
             var uri = new URI("/contacts/" + id);
 
             return Response.created(uri).build();
-        } catch (ServerErrorResponseExcpetion | URISyntaxException e) {
+        } catch (ServerErrorResponseException | URISyntaxException e) {
             return Response.serverError().build();
         } catch (BadRequestResponseException | NumberFormatException | IOException | RESPError | ObjectNotCreatedException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
