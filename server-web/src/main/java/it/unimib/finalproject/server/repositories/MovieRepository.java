@@ -6,9 +6,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import it.unimib.finalproject.server.model.domain.Booking;
+import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
-import it.unimib.finalproject.server.model.Booking;
-import it.unimib.finalproject.server.model.Movie;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;

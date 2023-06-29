@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unimib.finalproject.server.model.Booking;
-import it.unimib.finalproject.server.model.Seat;
+import it.unimib.finalproject.server.model.domain.Booking;
+import it.unimib.finalproject.server.model.domain.Seat;
 import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;

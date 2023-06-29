@@ -8,7 +8,7 @@ import java.util.List;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.model.Booking;
+import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.service.BookingService;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import jakarta.inject.Inject;
@@ -20,6 +20,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -49,7 +50,8 @@ public class BookingController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBookings(){
-        List<Booking> bookings = null;
+        throw new BadRequestResponseException();
+        /*List<Booking> bookings = null;
         try{
             bookings = bookingService.getBookings();
         }catch(NumberFormatException | IOException | RESPError e){
@@ -63,7 +65,7 @@ public class BookingController {
         if(bookings.isEmpty())
             return Response.status(Response.Status.NO_CONTENT).build();
 
-        return Response.ok(bookings).build();
+        return Response.ok(bookings).build();*/
     }
 
     @POST
@@ -80,7 +82,7 @@ public class BookingController {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
-    
+
     /* 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
