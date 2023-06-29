@@ -1,30 +1,40 @@
 package it.unimib.finalproject.server.controller;
 
 import jakarta.ws.rs.core.*;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.finalproject.server.service.ProjectionService;
+import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.model.Projection;
 
 @Path("projections")
 public class ProjectionController {
-    
-    private final ProjectionService projectionService = new ProjectionService(); 
+    @Inject
+    ProjectionService projectionService;
 
-    @POST
+    @GET
     @Path("/{movieId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getProjections(@PathParam("movieId") int movieId) {
-        List<Projection> lista = projectionService.getProjectionsByMovie(movieId);
+        List<Projection> projections = null;
         
-        if(lista == null){
-            Response.noContent().build();
+        try {
+            projections = projectionService.getProjectionsByMovie(movieId);
+        } catch (NumberFormatException | IOException | RESPError e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        }
+        
+        if(projections == null || projections.isEmpty()){
+            return Response.noContent().build();
         }
          
-        return Response.ok(lista).build();
+        return Response.ok(projections).build();
     }
        
 }

@@ -5,12 +5,6 @@ public class Hall{
     private int rows;
     private int columns;
 
-    public Hall(int id, int rows, int columns) {
-        this.id = id;
-        this.rows = rows;
-        this.columns = columns;
-    }
-
     public int getId() {
         return id;
     }

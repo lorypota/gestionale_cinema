@@ -12,7 +12,12 @@ import org.glassfish.jersey.server.ResourceConfig;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import it.unimib.finalproject.server.repositories.BookingRepository;
+import it.unimib.finalproject.server.repositories.HallRepository;
+import it.unimib.finalproject.server.repositories.MovieRepository;
+import it.unimib.finalproject.server.repositories.ProjectionRepository;
 import it.unimib.finalproject.server.service.BookingService;
+import it.unimib.finalproject.server.service.MovieService;
+import it.unimib.finalproject.server.service.ProjectionService;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
 import jakarta.inject.Singleton;
 
@@ -46,6 +51,15 @@ public class Main {
                         }
                         bind(BookingRepository.class).to(BookingRepository.class).in(Singleton.class);
                         bind(BookingService.class).to(BookingService.class).in(Singleton.class);
+
+                        bind(ProjectionRepository.class).to(ProjectionRepository.class).in(Singleton.class);
+                        bind(ProjectionService.class).to(ProjectionService.class).in(Singleton.class);
+                        bind(HallRepository.class).to(HallRepository.class).in(Singleton.class);
+
+                        bind(MovieRepository.class).to(MovieRepository.class).in(Singleton.class);
+                        bind(MovieService.class).to(MovieService.class).in(Singleton.class);
+
+
                         bind(JsonMapper.class).to(JsonMapper.class).in(Singleton.class);
                     }
                 })
