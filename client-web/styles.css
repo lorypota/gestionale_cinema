@@ -1,5 +1,48 @@
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #F0F0F0;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+h1, h2 {
+  margin: 0;
+  padding: 10px 0;
+}
+
+section {
+  margin: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px #ccc;
+}
+
+section.inset {
+  box-shadow: inset 0px 0px 10px #ccc;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+select, input, button {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  cursor: pointer;
 }
 
 .container {
@@ -42,6 +85,7 @@ body {
 /*#endregion */
 
 /*#region projLabel*/
+
 .projContainer{
   display: flex;
   flex-direction: row;
@@ -59,6 +103,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  min-width: 250px;
 }
 
 .projLabel:hover{
@@ -93,3 +138,11 @@ body {
   font-size: 3vh;
 }
 /*#endregion */
+
+#projections-selection{
+  width: 250px;
+}
+
+#booking-management-form{
+  width: 250px;
+}
