@@ -43,10 +43,8 @@ public class ProjectionRepository {
         Optional<String> resp;
         try {
             resp = db.hgetString("projections", ""+proj_id);
-        } catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
-        }catch (RESPError e){
-            throw new NotFoundResponseException();
         }
 
         if(!resp.isPresent() || resp.get().isEmpty())  

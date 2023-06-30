@@ -5,16 +5,16 @@ import java.util.List;
 import java.net.URI;
 
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.NoContentResponseException;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
+import it.unimib.finalproject.server.config.DatabaseStatus;
 
 import it.unimib.finalproject.server.service.BookingService;
 import it.unimib.finalproject.server.model.domain.Booking;
 
+import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;

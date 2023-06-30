@@ -96,6 +96,10 @@ public class BookingService {
         int hallId = projection.getHall_id();
         Hall hall = hallRepository.getHallById(hallId);
 
+        if(hall == null){
+            throw new NotFoundResponseException();
+        }
+
         //checks if the seats are valid by confronting the hall's size with the seats' position
         for(Seat seat: seats){
             if(seat.getColumn() > hall.getColumns() || seat.getRow() > hall.getRows() || seat.getRow() < 1 || seat.getColumn() < 1)

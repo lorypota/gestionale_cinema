@@ -48,11 +48,9 @@ public class MovieRepository {
         Optional<String> resp;
         try {
             resp = db.hgetString("movies", ""+movieId);
-        } catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
-        } catch (RESPError e){
-            throw new NotFoundResponseException();
-        }
+        } 
 
         if(!resp.isPresent() || resp.get().isEmpty())  
             return null;
