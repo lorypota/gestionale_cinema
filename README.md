@@ -9,6 +9,13 @@
 * Damiano Pellegrini 886261 <d.pellegrini10@campus.unimib.it>
 * Youness Karzal 879430 <y.karzal@campus.unimib.it>
 
+## Documentazione
+
+* **[API REST](TCP.mc)**
+* **[PROTOCOLLO TCP](TCP.mc)**
+* **[PDF FUNZIONAMENTO CLIENT](documentazione%20client-web/funzionamento.pdf)**
+* **[BREVE VIDEO FUNZIONAMENTO CLIENT](documentazione%20client-web/video%20funzionamento.mp4)**
+
 ## Compilazione ed esecuzione
 
 Il server Web e il database sono dei progetti Java che utilizano Maven per gestire le dipendenze, la compilazione e l'esecuzione. È necessario eseguire in seguente i seguenti obiettivi per compilare ed eseguire: `clean`, che rimuove la cartella `target`, `compile` per compilare e `exec:java` per avviare il

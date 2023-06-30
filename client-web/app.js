@@ -40,12 +40,17 @@ $(document).ready(async () => {
     if(selectedProjection === -1){
       resetSeats();
     } else {
-      console.log(selectedProjection);
       await showSeats(selectedProjection);
     }
   });
 
-  $('#booking-management-field').change(async function(){
+  $('#booking-management-field').keydown(function(event){
+    if (event.keyCode === 13) {  // 13 è il keyCode per il tasto Invio
+        event.preventDefault();
+    }
+  });
+
+  $('#booking-management-field').change(async function(event){
     const bookingId = Number($(this).val());
     const booking = await getBookingById(bookingId);
 
@@ -258,7 +263,6 @@ async function loadProjections(movieId){
   projections.forEach(proj => {
     var newOption = document.createElement('option');
     newOption.innerText = proj.date + " " + proj.timetable;
-    console.log(proj.id);
     newOption.value = proj.id;
 
     $('#projections-selection').append(newOption);
@@ -279,11 +283,8 @@ async function showSeats (projId, oldBooking = undefined) {
 
   let hall = await getHallById(projection);
 
-  console.log(projId);
-
   let occupiedSeats = await getBookedSeats(projId);
 
-  console.log(2);
   columns = hall.columns;
   rows = hall.rows;
 

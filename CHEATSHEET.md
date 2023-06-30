@@ -1,8 +1,6 @@
 # API Cheatsheet
 
-## Models
-
-### Movies
+## Movies
 
 Movie model
 
@@ -24,7 +22,7 @@ Movie model
 | Update movie | PUT | `/movies/{movie_id}` | movie_id: int, body: Movie | HTTP 204 |
 | Delete movie | DELETE | `/movies/{movie_id}` | movie_id: int | HTTP 204 |
 
-### Halls
+## Halls
 
 Hall model
 
@@ -41,10 +39,10 @@ Hall model
 | Get all halls | GET | `/halls` | N/A | Hall[] |
 | Get hall by id | GET | `/halls/{hall_id}` | hall_id: int | Hall |
 | Insert new hall | POST | `/halls` | body: Hall | HTTP 201 |
-| Update hall | PUT | `/halls/{hall_id}` | hall_id: int, body: Hall |  HTTP 204 |
-| Delete hall | DELETE | `/halls/{hall_id}` | hall_id: int |  HTTP 204 |
+| Update hall | PUT | `/halls/{hall_id}` | hall_id: int, body: Hall | HTTP 204 |
+| Delete hall | DELETE | `/halls/{hall_id}` | hall_id: int | HTTP 204 |
 
-### Projections
+## Projections
 
 Projection model
 
@@ -63,10 +61,11 @@ Projection model
 | Get all projections | GET | `/projections?movie_id=0` | movie_id?: int (opzionale) | Projection[] |
 | Get projection by id | GET | `/projections/{proj_id}` | proj_id: int | Projection |
 | Insert new projection | POST | `/projections` | body: Projection | HTTP 201 |
-| Update projection | PUT | `/projections/{proj_id}` | proj_id: int, body: Projection |  HTTP 204 |
-| Delete projection | DELETE | `/projections/{proj_id}` | proj_id: int |  HTTP 204 |
+| Update projection | PUT | `/projections/{proj_id}` | proj_id: int, body: Projection | HTTP 204 |
+| Delete projection | DELETE | `/projections/{proj_id}` | proj_id: int | HTTP 204 |
+| Get all booked seats | GET | `/projections/{proj_id}/seats` | proj_id: int | Seat[] |
 
-### Bookings
+## Bookings
 
 Booking model
 
@@ -74,8 +73,16 @@ Booking model
 {
     "id": 0,
     "proj_id": 0,
-    "row": 2,
-    "column": 4,
+    "seats": [
+        {
+            "row": 3,
+            "column": 4
+        },
+        {
+            "row": 2,
+            "column": 1
+        }
+    ],
     "name": "Lorenzo",
     "surname": "Karzal Pellegrini",
     "email": "damiano.rota@youness.ma"
@@ -87,23 +94,5 @@ Booking model
 | Get all bookings | GET | `/bookings?proj_id=0` | proj_id?: int (opzionale) | Booking[] |
 | Get booking by id | GET | `/bookings/{book_id}` | book_id: int | Booking |
 | Insert new booking | POST | `/bookings` | body: Booking | HTTP 201 |
-| Update booking | PUT | `/bookings/{book_id}` | book_id: int, body: Booking |  HTTP 204 |
-| Delete booking | DELETE | `/bookings/{book_id}` | book_id: int |  HTTP 204 |
-
-## Helper
-
-### Seats
-
-Seat model
-
-```json
-{
-    "proj_id": 0,
-    "row": 2,
-    "column": 4
-}
-```
-
-| Description | Method | Endpoint | Request | Response |
-| --- | --- | --- | --- | --- |
-| Get all booked seats | GET | `/projections/{proj_id}/seats` | proj_id: int | Seat[] |
+| Update booking | PUT | `/bookings/{book_id}` | book_id: int, body: Booking | HTTP 204 |
+| Delete booking | DELETE | `/bookings/{book_id}` | book_id: int | HTTP 204 |

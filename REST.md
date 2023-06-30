@@ -2,6 +2,11 @@
 
 Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
+***NOTA*** Abbiamo stilato un [CHEATSHEET](CHEATSHEET.md) per avere una rapida e semplice panoramica delle API REST.
+
+
+---
+
 ## `/movies`
 
 ### GET
@@ -40,6 +45,8 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Codici di stato restituiti**:
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+
+---
 
 ## `/movies/{movie_id}`
 
@@ -95,6 +102,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * 204 No Content
 * 404 Not Found: Film non trovato.
 
+
+---
+
 ## `/halls`
 
 ### GET
@@ -129,6 +139,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Codici di stato restituiti**:
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+
+
+---
 
 ## `/halls/{hall_id}`
 
@@ -180,6 +193,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * 204 No Content
 * 404 Not Found: Sala non trovata.
 
+
+---
+
 ## `/projections`
 
 ### GET
@@ -218,6 +234,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Codici di stato restituiti**:
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+
+
+---
 
 ## `/projections/{proj_id}`
 
@@ -273,6 +292,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * 204 No Content
 * 404 Not Found: Proiezione non trovata.
 
+
+---
+
 ## `/bookings`
 
 ### GET
@@ -286,8 +308,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: Un array di oggetti, ognuno rappresentante una prenotazione. Ogni prenotazione ha i seguenti campi:
 * `id` (un intero)
 * `proj_id` (un intero)
-* `row` (un intero)
-* `column` (un intero)
+* `seats` (un array di oggetti)
+    * `row` (un intero)
+    * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
@@ -304,8 +327,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la nuova prenotazione, con i seguenti campi:
 * `proj_id` (un intero)
-* `row` (un intero)
-* `column` (un intero)
+* `seats` (un array di oggetti)
+    * `row` (un intero)
+    * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
@@ -315,8 +339,11 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Codici di stato restituiti**:
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
-* 404 Not Found: la proiezione non esiste
-* 409 Conflict: i posti sono già stati prenotati
+* 404 Not Found: La proiezione non esiste
+* 409 Conflict: I posti sono già stati prenotati
+
+
+---
 
 ## `/bookings/{book_id}`
 
@@ -331,8 +358,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: Un oggetto che rappresenta la prenotazione, con i seguenti campi:
 * `id` (un intero)
 * `proj_id` (un intero)
-* `row` (un intero)
-* `column` (un intero)
+* `seats` (un array di oggetti)
+    * `row` (un intero)
+    * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
@@ -349,8 +377,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la prenotazione aggiornata, con i seguenti campi:
 * `proj_id` (un intero)
-* `row` (un intero)
-* `column` (un intero)
+* `seats` (un array di oggetti)
+    * `row` (un intero)
+    * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
@@ -376,6 +405,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Codici di stato restituiti**:
 * 204 No Content
 * 404 Not Found: Prenotazione non trovata.
+
+
+---
 
 ## `/projections/{proj_id}/seats`
 
