@@ -50,7 +50,7 @@ $(document).ready(async () => {
     }
   });
 
-  $('#booking-management-field').change(async function(event){
+  $('#booking-management-field').change(async function(){
     const bookingId = Number($(this).val());
     const booking = await getBookingById(bookingId);
 
@@ -380,7 +380,7 @@ async function loadBooking(id){
     $('#booking-timetable').text(projection.timetable);
     
     // Mostra i posti prenotati
-    $('#booking-seats').empty();  // Rimuove eventuali posti prenotati precedenti
+    $('#booking-seats').empty();  // Rimuovo eventuali posti prenotati precedenti
     for (let seat of booking.seats) {
       $('#booking-seats').append(`<li>Riga: ${seat.row}, Colonna: ${seat.column}</li>`);
     }
