@@ -1,4 +1,4 @@
-package it.unimib.finalproject.server.utils;
+package it.unimib.finalproject.server;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;

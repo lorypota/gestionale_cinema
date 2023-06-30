@@ -71,7 +71,7 @@ public class BookingRepository {
             throw new ServerErrorResponseException();
         } 
 
-        if(!resp.isPresent() || resp.get().isEmpty())  
+        if(!resp.isPresent() || resp.get() == null || resp.get().isEmpty())  
             throw new NotFoundResponseException();
         
         Booking booking;
@@ -108,11 +108,9 @@ public class BookingRepository {
 
         try {
             removed = db.hdel("bookings", "" + bookingId);
-        } catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
-        } catch (RESPError e) {
-            throw new NotFoundResponseException();
-        }
+        } 
 
         return removed;
     }

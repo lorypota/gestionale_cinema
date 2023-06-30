@@ -93,7 +93,7 @@ public class BookingController {
     public Response deleteBooking(@PathParam("bookingId") int bookingId){
         int deleted = bookingService.deleteBooking(bookingId);
 
-        if(deleted == DatabaseStatus.OBJECT_DELETED){
+        if(deleted == DatabaseStatus.OBJECT_UPDATED){
             //Object deleted, server processed the request successfully
             return Response.noContent().build(); // 204 No Content
         }else{
