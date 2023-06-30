@@ -33,9 +33,20 @@
           </div>
           
           <div id="seating-legend" class="legend-half">
-            <button class="seat occupied not-clickable"></button>Posto occupato<br>
-            <button class="seat not-clickable"></button>Posto libero<br>
-            <button class="seat selected not-clickable"></button>Posto selezionato
+            <div class="legend-border">
+              <div class="legend-item">
+                <button class="seat occupied not-clickable"></button>
+                <span>Posto occupato</span>
+              </div>
+              <div class="legend-item">
+                <button class="seat not-clickable"></button>
+                <span>Posto libero</span>
+              </div>
+              <div class="legend-item">
+                <button class="seat selected not-clickable"></button>
+                <span>Posto selezionato</span>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -43,8 +54,8 @@
       </form>
     </section>
 
-    <!-- modal -->
-    <div id="booking-infos" class="modal">
+    <!-- booking input modal -->
+    <div id="booking-infos" class="booking-input-modal">
 
       <div class="modal-content">
         <span class="close">&times;</span>
@@ -69,7 +80,17 @@
       <form id="booking-management-form">
         <input type="number" id="booking-management-field" placeholder="Inserisci il numero di prenotazione">
       </form>
+      <div id="booking-details" style="display: none;">
+        <h3>Dettagli della prenotazione</h3>
+        <p>Nome: <span id="booking-name"></span></p>
+        <p>Cognome: <span id="booking-surname"></span></p>
+        <p>Email: <span id="booking-email"></span></p>
+        <p>Posti prenotati: </p>
+        <ul id="booking-seats">
+        </ul>
+      </div>
     </section>
+    
   </body>
 
 </html>

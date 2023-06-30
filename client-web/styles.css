@@ -22,7 +22,7 @@ section {
   margin: 20px;
   padding: 20px;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0px 0px 10px #ccc;
 }
 
@@ -38,37 +38,24 @@ form {
 select, input, button {
   margin: 10px 0;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid #ccc;
 }
 
-button {
-  cursor: pointer;
+#projections-selection{
+  width: 250px;
 }
 
-button:disabled{
-  cursor: auto;
-}
-
-.container {
-  display: flex;
-}
-
-.seats-half {
-  margin: 2vh;
-}
-
-.legend-half{
-  margin: 2vh;
-  flex-grow: 1;
+#booking-management-form{
+  width: 250px;
 }
 
 /*#region seat*/
 .seat {
-  height: 7vh;
-  width: 7vh;
-  margin: 1vh;
-  padding: 2vh;
+  height: 60px;
+  width: 60px;
+  margin: 5px;
+  padding: 5px;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -87,6 +74,42 @@ button:disabled{
 .not-clickable {
   pointer-events: none;
 }
+
+button {
+  cursor: pointer;
+}
+
+button:disabled{
+  cursor: auto;
+}
+
+.container {
+  display: flex;
+}
+
+.seats-half {
+  margin: 2vh;
+  flex-grow: 1;
+}
+
+.legend-half {
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.legend-border {
+  padding: 10px;
+  flex-grow: 0;
+  box-shadow: 0px 0px 10px #ccc;
+  border-radius: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Aggiungi un po' di spazio tra le righe */
+}
 /*#endregion */
 
 /*#region projLabel*/
@@ -96,16 +119,16 @@ button:disabled{
   flex-wrap: nowrap;
   height: 50vh;
   overflow-x: scroll;
-  scroll-snap-type: x mandatory;
   padding: 10px;
   min-height: 225px;
+  scroll-behavior: smooth;
 }
 
 .projLabel{
   position: relative;
   background-color: transparent;
   padding: 10px;
-  margin: 0 10px 0 10px;
+  margin: 10px;
   border-radius: 15px;
   width: 20%;
   color: #f7e6e6;
@@ -116,6 +139,7 @@ button:disabled{
   flex-direction: column;
   min-width: 35vh;
   scroll-snap-align: start;
+  z-index: 1;
 }
 
 .projLabel:before {
@@ -125,14 +149,18 @@ button:disabled{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000; /* O qualsiasi colore tu preferisca */
+  background-color: #000;
   opacity: 0.5;
   z-index: 1;
-  border-radius: inherit; /* Mantiene la stessa forma dell'elemento padre */
+  border-radius: inherit; 
 }
 
 .projLabel:hover{
   cursor: pointer;
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+  transform-origin: center center;
+  z-index: 2; 
 }
 
 .projTitle, .projDateTime, .projDate, .projTimetable, .projDuration {
@@ -169,30 +197,31 @@ button:disabled{
 }
 /*#endregion */
 
-/*#region modal*/
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+/*#region booking-input-modal*/
+.booking-input-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
   position: relative;
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   animation-name: animatetop;
   animation-duration: 0.4s;
+  border-radius: 10px;
 }
 
 @keyframes animatetop {
@@ -221,10 +250,17 @@ button:disabled{
 
 /*#endregion*/
 
-#projections-selection{
-  width: 250px;
+
+#booking-details {
+  margin: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px #ccc;
 }
 
-#booking-management-form{
-  width: 250px;
+#booking-details h3 {
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
 }

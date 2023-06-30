@@ -15,6 +15,9 @@ $(document).ready(async () => {
   projections = await getAllProjections();
   movies = await getAllMovies();
 
+  //load projections into drop-down
+  loadProjections(projections, movies);
+
   //show projections
   projections.forEach(async proj => {
     const movie = movies.find(m => m.id === proj.movie_id);
@@ -29,13 +32,13 @@ $(document).ready(async () => {
     projLabel.append(title, dateTimetable, duration);
     projLabel.css("background-image", `url('${movie.image}')`);
     projLabel.css("background-size", "cover");
-    projLabel.click( async () => await showSeatsProj(proj.id));
+    projLabel.click( async () => {
+      $("#projections-selection").val(proj.id);
+      await showSeatsProj(proj.id);
+    });
 
     $('#projections-container').append(projLabel);
   });
-
-  //load projections into drop-down
-  loadProjections(projections, movies);
   
   $('#projections-selection').change(async function() {
     const selectedProjection = Number($(this).val());
@@ -54,7 +57,7 @@ $(document).ready(async () => {
     await loadBooking(bookingId);
   });
 
-  // Quando l'utente clicca sul bottone, apri il modal 
+  // Quando l'utente clicca sul bottone, apro il modal 
   $("#insert-booking-informations").click(function(event) {
     event.preventDefault();
     $("body").css("overflow", "hidden"); // Nasconde la barra di scorrimento
@@ -68,16 +71,16 @@ $(document).ready(async () => {
     $("#booking-infos").show();
   });
 
-  // Quando l'utente clicca su <span> (x), chiudi il modal
+  // Quando l'utente clicca su <span> (x), chiudo il modal
   $(".close").click(function() {
-    $("body").css("overflow", "auto"); // Riporta la barra di scorrimento
+    $("body").css("overflow", "auto"); // Mostra la barra di scorrimento
     $("#booking-infos").hide();
   });
 
-  // Quando l'utente clicca ovunque fuori dal modal, lo chiudi
+  // Quando l'utente clicca ovunque fuori dal modal, lo chiudo
   $(window).click(function(event) {
     if (event.target == $("#booking-infos")[0]) {
-      $("body").css("overflow", "auto"); // Riporta la barra di scorrimento
+      $("body").css("overflow", "auto");
       $("#booking-infos").hide();
     }
   });
@@ -124,6 +127,8 @@ $(document).ready(async () => {
       case 500: alert("Booking failed due to server error!"); break;
     }
 
+    console.log(response);
+    console.log(response.status);
     console.log(response.body);
     console.log(response.json());
 
@@ -202,8 +207,27 @@ async function showSeats (columns, rows, occupiedSeats) {
       });
       container.append('<br>');
   });
-
 }
+
+async function loadBooking(id){
+  let booking = await getBookingById(id);
+  console.log(booking)
+
+  // Mostra i dettagli della prenotazione
+  $('#booking-name').text(booking.name);
+  $('#booking-surname').text(booking.surname);
+  $('#booking-email').text(booking.email);
+  
+  // Mostra i posti prenotati
+  $('#booking-seats').empty();  // Rimuove eventuali posti prenotati precedenti
+  for (let seat of booking.seats) {
+    $('#booking-seats').append(`<li>Riga: ${seat.row}, Colonna: ${seat.column}</li>`);
+  }
+
+  // Mostra la sezione dei dettagli
+  $('#booking-details').show();
+}
+
 
 //APIs functions ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
