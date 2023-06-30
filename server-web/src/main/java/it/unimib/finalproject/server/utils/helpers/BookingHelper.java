@@ -7,6 +7,7 @@ import it.unimib.finalproject.server.exceptions.DuplicatedObjectResponseError;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.model.domain.Hall;
+import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.model.domain.Projection;
 import it.unimib.finalproject.server.model.domain.Seat;
 import it.unimib.finalproject.server.repositories.BookingRepository;
@@ -27,11 +28,17 @@ public class BookingHelper {
     @Inject
     HallRepository hallRepository;
 
+    @Inject
+    ProjectionHelper projectionHelper;
+
     @Inject 
     SeatsService seatsService;
 
     private boolean areSeatsValid(List<Seat> seats, int proj_id){
         Projection projection = projectionService.getProjectionById(proj_id);
+
+        if(projection == null)
+            throw new NotFoundResponseException();
         
         int hallId = projection.getHall_id();
         Hall hall = hallRepository.getHallById(hallId);
@@ -76,5 +83,9 @@ public class BookingHelper {
         //checks if the seats are still available
         if(!areSeatsAvailable(booking.getProj_id(), booking.getSeats(), booking.getId()))
             throw new DuplicatedObjectResponseError("seats are no longer available.");
+    }
+
+    public int getMovieIdFromBooking(Booking booking) {
+        return projectionHelper.getMovieIdFromProjectionId(booking.getProj_id());
     }
 }

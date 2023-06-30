@@ -1,5 +1,6 @@
 package it.unimib.finalproject.server.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
@@ -8,9 +9,10 @@ import it.unimib.finalproject.server.repositories.BookingRepository;
 
 import it.unimib.finalproject.server.repositories.HallRepository;
 import it.unimib.finalproject.server.model.domain.Booking;
+import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.utils.CustomMapper;
 import it.unimib.finalproject.server.utils.helpers.BookingHelper;
-
+import it.unimib.finalproject.server.utils.helpers.ProjectionHelper;
 import jakarta.inject.Singleton;
 import jakarta.inject.Inject;
 
@@ -80,5 +82,21 @@ public class BookingService {
         
         //Deletes the booking
         return bookingRepository.deleteBooking(bookingId);
+    }
+
+    public List<Booking> getBookingsByMovieId(int movieId) {
+        List<Booking> newBookings = new ArrayList<>();
+
+        //Retrieve the bookings from the database 
+        List<Booking> bookings = bookingRepository.getBookings();
+
+        for(Booking booking: bookings){
+            int bookingMovieId = bookingHelper.getMovieIdFromBooking(booking);
+            
+            if(bookingMovieId == movieId)
+                newBookings.add(booking);
+        }
+
+        return newBookings;
     }
 }
