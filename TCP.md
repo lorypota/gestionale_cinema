@@ -236,6 +236,8 @@ Il seguente outpute di COMMAND per il comando GET:
 6) (integer) 1
 ```
 
+---
+
 #### **PING**
 
 <h5>Sintassi</h5>
@@ -263,6 +265,8 @@ C: PING
 S: PONG
 ```
 
+---
+
 #### **STRINGS**
 
 <h5> Sintassi </h5>
@@ -287,6 +291,8 @@ S: 1) "key1"
    2) "key2"
 ```
 
+---
+
 #### **HASHES**
 
 <h5> Sintassi </h5>
@@ -310,6 +316,8 @@ C: HASHES
 S: 1) "hkey1"
    2) "hkey2"
 ```
+
+---
 
 ### Comandi Strings
 
@@ -342,6 +350,8 @@ C: SET key 11
 S: (integer) 10
 ```
 
+---
+
 #### **GET**
 
 <h5> Sintassi </h5>
@@ -370,6 +380,8 @@ C: GET ciao
 S: (nil)
 ```
 
+---
+
 #### **DEL**
 
 <h5> Sintassi </h5>
@@ -397,6 +409,8 @@ C: DEL ciao
 S: (integer) 0
 ```
 
+---
+
 #### **STRLEN**
 
 <h5> Sintassi </h5>
@@ -421,6 +435,8 @@ S: OK
 C: STRLEN key
 S: (integer) 5
 ```
+
+---
 
 ### Comandi Integers
 
@@ -449,6 +465,8 @@ C: INCR key
 S: (integer) 2
 ```
 
+---
+
 #### **DECR**
 
 <h5> Sintassi </h5>
@@ -473,6 +491,8 @@ S: (integer) -1
 C: DECR key
 S: (integer) -2
 ```
+
+---
 
 ### Comandi Hashes
 
@@ -503,6 +523,8 @@ C: HDEL anotherhash field1
 S: (integer) 0
 ```
 
+---
+
 #### **HEXISTS**
 
 <h5> Sintassi </h5>
@@ -529,6 +551,8 @@ S: (integer) 0
 C: HEXISTS anotherhash field1
 S: (integer) 0
 ```
+
+---
 
 #### **HGETALL**
 
@@ -558,6 +582,8 @@ C: HGETALL anotherhash
 S: (empty array)
 ```
 
+---
+
 #### **HGET**
 
 <h5> Sintassi </h5>
@@ -585,6 +611,8 @@ C: HGET anotherhash field1
 S: (nil)
 ```
 
+---
+
 #### **HKEYS**
 
 <h5> Sintassi </h5>
@@ -611,6 +639,8 @@ C: HKEYS anotherhash
 S: (empty array)
 ```
 
+---
+
 #### **HLEN**
 
 <h5> Sintassi </h5>
@@ -635,6 +665,8 @@ S: (integer) 2
 C: HLEN anotherhash
 S: (integer) 0
 ```
+
+---
 
 #### **HSET**
 
@@ -667,6 +699,8 @@ C: HSET myhash field1 notstringornumber
 S: (integer) 0
 ```
 
+---
+
 #### **HSTRLEN**
 
 <h5> Sintassi </h5>
@@ -695,6 +729,8 @@ S: (integer) 0
 C: HSTRLEN myhash field3
 S: (integer) 0
 ```
+
+---
 
 #### **HVALS**
 
