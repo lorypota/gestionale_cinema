@@ -1,12 +1,12 @@
 const API_URL = "http://localhost:8080";
 
-//global variables
+//variabili globali
 var projections;
 var movies;
 var loadedProjection = undefined;
 var selectedSeats = [];
 
-//once the document is ready
+//azioni su caricamento del documento
 $(document).ready(async () => {
 
   $('#booking-section').hide();
@@ -17,7 +17,7 @@ $(document).ready(async () => {
   projections = await getAllProjections();
   movies = await getAllMovies();
 
-  //show projections
+  //mostra protiezioni
   movies.forEach(async movie => {
     const projLabel = $('<button>').addClass('projLabel');
     const title = $('<div>').addClass('projTitle').text(movie.name);
@@ -245,7 +245,7 @@ $(document).ready(async () => {
   })
 });
 
-//END DOCUMENT READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+//end document ready
 
 function resetSeats(){
   $('#seating-section').hide();
@@ -392,7 +392,7 @@ async function loadBooking(id){
 }
 
 
-//APIs functions ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//funzioni API ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Movies
 async function getAllMovies() {
@@ -442,6 +442,7 @@ function deleteMovie(id) {
   });
 }
  */
+
 // Halls
 async function getAllHalls() {
   res = await fetch(`${API_URL}/halls`);
