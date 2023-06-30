@@ -32,6 +32,7 @@ public class SetCommand extends Command {
         var key = ((RESPString) args[0]).getString();
         var respValue = args[1];
 
+        // Se la chiave non contiene un intero o una stringa, restituisce un errore
         if (store.containsKey(key) && !((store.get(key) instanceof String) || (store.get(key) instanceof Integer))) {
             return RESPString.NULL;
         }
@@ -43,6 +44,7 @@ public class SetCommand extends Command {
             previous = store.put(key, ((RESPNumber) respValue).getNumber());
         }
 
+        // Se non c'era un valore precedente, restituisce OK
         if (previous == null) {
             return RESPString.OK;
         }

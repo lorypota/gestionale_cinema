@@ -25,9 +25,6 @@ In RESP, il primo byte determina il tipo del dato:
 
 In RESP, parti differenti del protocollo terminano sempre con "\r\n" (CRLF).
 
-***Sintassi ed esempi si basano sull'input/output del tool `redis-cli`, encoding RESP adeguato dovrebbe essere usato.***
-***Syntax and examples are based on `redis-cli` input/output, proper RESP encoding should be used.***
-
 ### Stringhe semplici RESP
 
 Le Stringhe semplici sono codificate come segue: il carattere più, seguito da una stringa che non può contenere un carattere CR o LF (i newlines non sono ammessi), e terminate da CRLF (ovvero "\r\n").
@@ -187,39 +184,45 @@ Il secondo elemento è un Null. La libreria Client dovrebbe ritornare qualcosa d
 
 Questa tuttavia non rappresenta un eccesione rispetto a ciò che è stato detto nelle sezioni precedenti, ma un esempio per spiegare nel dettaglio questo funzionamento del protocollo.
 
-## Comandi utili
+## Comandi
 
-### **COMMAND**
+***Sintassi ed esempi si basano sull'input/output del tool `redis-cli`, encoding RESP adeguato dovrebbe essere usato.***
+***Syntax and examples are based on `redis-cli` input/output, proper RESP encoding should be used.***
 
-<h4>Syntax<h4>
+### Comandi utili
+
+#### **COMMAND**
+
+<h4>Sintassi<h4>
 
 ```plaintext
 COMMAND [command:string]
 ```
 
-Return an array with details about every Server  command.
+Ritorna un array con dettagli riguardo ogni comando Server.
 
-The command's array consists of a fixed number of elements. The exact number of elements in the array depends on the server's version.
+L'array di dettaglio è di un numero prefissato di elementi.
 
-- Name --> This is the command's name.
-- Arity --> Arity is the number of arguments a command expects. It follows a simple pattern:
-  - A positive integer means a fixed number of arguments.
-  - A negative integer means a minimal number of arguments.
-Command arity always includes the command's name itself (and the subcommand when applicable).
+- Nome --> Nome del comando.
+- Arità --> Arità è il numero di argomenti che il comando si aspetta. Segue un pattern semplice:
+  - Un intero positivo significa un numero fisso di argomenti.
+  - Un intero negativo significa un numero minimo di argomenti.
+
+  L'arità dei comandi include sempre il nome del comando stesso.
 - Flags --> N/A
-- First key --> The position of the command's first key name argument. For most commands, the first key's position is 1. Position 0 is always the command name itself.
-- Last key --> The position of the command's last key name argument.
-- Step --> The step, or increment, between the first key and the position of the next key.
+- Prima chiave --> La posizione del primo argomento. Per la maggior parte dei comandi, la posizione della prima chiave è 1. La posizione 0 rappresenta sempre il nome del comando in sè.
+- Ultima chiave --> La posizione dell'ultimo argomento.
+- Step --> Lo step, o incremento, tra la posizione del primo argomento e quella dopo.
 
-<h4> Returns </h4>
+<h4> Ritorno </h4>
 
-Array reply: a nested list of command details.
+Risposta RESP Array: una lista di dettagli di comandi.
 
-The order of commands in the array is random.
+L'ordine è randomico.
 
-<h4> Example </h4>
+<h4> Esempio </h4>
 
-The following is COMMAND's output for the GET command:
+Il seguente outpute di COMMAND per il comando GET:
 
 ```plaintext
 1) "get"
@@ -230,25 +233,25 @@ The following is COMMAND's output for the GET command:
 6) (integer) 1
 ```
 
-### **PING**
+#### **PING**
 
-<h4>Syntax<h4>
+<h4>Sintassi<h4>
 
 ```plaintext
 PING
 ```
 
-Returns PONG.
-This command is useful for:
+Ritorna PONG.
+Questo comando è utile per:
 
-1. Testing whether a connection is still alive.
-2. Measuring latency.
+1. Testare se una connessione è ancora in vita.
+2. Misurare la latenza.
 
-<h4> Returns </h4>
+<h4> Ritorno </h4>
 
-Simple string reply: PONG
+Risposta RESP Stringa semplica: PONG
 
-<h4> Example </h4>
+<h4> Esempio </h4>
 
 > C = Client, S = Server
 
@@ -257,33 +260,461 @@ C: PING
 S: PONG
 ```
 
-## Comandi Strings
+#### **STRINGS**
 
-## Comandi Integers
+<h4> Sintassi <h4>
 
-### **DECR**
+```plaintext
+STRINGS
+```
 
-<h4> Syntax <h4>
+Ritorna un array con tutte le chiavi di tipo Stringa o Intero presenti nel database.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Array: Un array contenenete le chiavi in tipo Stringa di tutti i valori di tipo Stringa o Intero presenti nel database.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: STRINGS
+S: 1) "key1"
+   2) "key2"
+```
+
+#### **HASHES**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HASHES
+```
+
+Ritorna un array con tutte le chiavi di tipo Hash presenti nel database.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Array: Un array contenenete le chiavi di tipo Hash presenti nel database.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HASHES
+S: 1) "hkey1"
+   2) "hkey2"
+```
+
+### Comandi Strings
+
+#### **SET**
+
+<h4> Sintassi <h4>
+
+```plaintext
+SET <key:string> <value:string|number>
+```
+
+Setta la chiave `key` con il valore `value`. Se la chiave esiste già, il valore è sovrascritto, indipendentemente dal tipo di dati precedentemente memorizzato. Null è ritornato se la chiave memorizza un valore del tipo sbagliato. OK è ritornato se non aveva un valore precedente.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Stringa semplice: OK se la chiave non aveva valori precedenti.
+Risposta RESP Null: Se la chiave memorizza un valore del tipo sbagliato.
+Risposta RESP Stringa Bulk: Il valore precedentemente memorizzato, se presente.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: SET key value
+S: OK
+C: SET key 10
+S: "value"
+C: SET key 11
+S: (integer) 10
+```
+
+#### **GET**
+
+<h4> Sintassi <h4>
+
+```plaintext
+GET <key:string>
+```
+
+Ritorna il valore memorizzato in `key`. Se la chiave non esiste, è ritornato un Null.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Stringa Bulk o Intera: Il valore memorizzato in `key`, se la chiave esiste.
+Risposta RESP Null: Se la chiave non esiste.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: SET key value
+S: OK
+C: GET key
+S: "value"
+C: GET ciao
+S: (nil)
+```
+
+#### **DEL**
+
+<h4> Sintassi <h4>
+
+```plaintext
+DEL <key:string>
+```
+
+Elimina la chiave `key` e ritorna 1. Altrimenti, 0 è ritornato.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Intera: 1 se la chiave è stata eliminata, 0 altrimenti. (booleano)
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: SET key value
+S: OK
+C: DEL key
+S: (integer) 1
+C: DEL ciao
+S: (integer) 0
+```
+
+#### **STRLEN**
+
+<h4> Sintassi <h4>
+
+```plaintext
+STRLEN <key:string>
+```
+
+Ritorna la lunghezza della stringa memorizzata in `key`. Se la chiave non esiste, 0 è ritornato. Se la chiave memorizza un valore del tipo sbagliato, un errore è ritornato.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Intera: La lunghezza della stringa memorizzata in `key`, 0 se la chiave non esiste.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: SET key value
+S: OK
+C: STRLEN key
+S: (integer) 5
+```
+
+### Comandi Integers
+
+#### **INCR**
+
+<h4> Sintassi <h4>
+
+```plaintext
+INCR <key:string>
+```
+
+Incrementa il numero memorizzato in `key` di uno. Se la `key` non esiste, è settata a `0` prima di effetuare l'operazione. Un errore è ritornato se `key` memorizza un valore del tipo sbagliato. Questa operazione è limitata a interi a 32-bit con segno.
+
+<h4> Ritorno </h4>
+
+Risposta RESP intera: Il valore della chiave incrementato
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: INCR key
+S: (integer) 1
+C: INCR key
+S: (integer) 2
+```
+
+#### **DECR**
+
+<h4> Sintassi <h4>
 
 ```plaintext
 DECR <key:string>
 ```
 
-Decrements the number stored at key by one. If the key does not exist, it is set to 0 before performing the operation. An error is returned if the key contains a value of the wrong type. This operation is limited to 32 bit signed integers.
+Decrementa il numero memorizzato in `key` di uno. Se la `key` non esiste, è settata a `0` prima di effetuare l'operazione. Un errore è ritornato se `key` memorizza un valore del tipo sbagliato. Questa operazione è limitata a interi a 32-bit con segno.
 
-<h4> Returns </h4>
+<h4> Ritorno </h4>
 
-Integer reply: the value of key after the decrement
+Risposta RESP intera: Il valore della chiave decrementato
 
-<h4> Example </h4>
+<h4> Esempio </h4>
 
 > C = Client, S = Server
 
 ```plaintext
 C: DECR key
-S: -1
+S: (integer) -1
 C: DECR key
-S: -2
+S: (integer) -2
 ```
 
-## Comandi Hashes
+### Comandi Hashes
+
+#### **HDEL**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HDEL <key:string> <field:string>
+```
+
+Rimuove il campo `field` specificato dalla hashmap identificata dalla chiave `key`. Se la chiave non esiste o il campo non esiste nella hashmap, viene ritornato 0. Se il campo viene rimosso con successo, viene ritornato 1.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Intera: 1 se il campo viene rimosso con successo dalla hashmap, 0 se la chiave non esiste o il campo non esiste nella hashmap.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HDEL myhash field1
+S: (integer) 1
+C: HDEL myhash field2
+S: (integer) 0
+C: HDEL anotherhash field1
+S: (integer) 0
+```
+
+#### **HEXISTS**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HEXISTS <key:string> <field:string>
+```
+
+Verifica l'esistenza del campo `field` specificato nella hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene ritornato 0. Se il campo esiste nella hashmap, viene ritornato 1.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Intera: 1 se il campo esiste nella hashmap, 0 se la chiave non esiste o il campo non esiste nella hashmap.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HEXISTS myhash field1
+S: (integer) 1
+C: HEXISTS myhash field2
+S: (integer) 0
+C: HEXISTS anotherhash field1
+S: (integer) 0
+```
+
+#### **HGETALL**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HGETALL <key:string>
+```
+
+Restituisce tutti i campi e i loro valori dalla hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito un array vuoto.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Array: Un array di stringhe rappresentanti campi e valori dalla hashmap. Ogni nome del campo è seguito dal suo valore. Se la chiave non esiste o la hashmap non esiste, viene ritornato un array vuoto.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HGETALL myhash
+S: 1) "field1"
+   2) "value1"
+   3) "field2"
+   4) "value2"
+C: HGETALL anotherhash
+S: (empty array)
+```
+
+#### **HGET**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HGET <key:string> <field:string>
+```
+
+Restituisce il valore del campo `field` specificato nella hashmap identificata dalla chiave `key`. Se la chiave non esiste, la hashmap non esiste o il campo non esiste nella hashmap, viene restituito un valore null.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Bulk String o RESP Number: Il valore del campo specificato nella hashmap. Se il campo non esiste, ritorna una stringa bulk null.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HGET myhash field1
+S: "value1"
+C: HGET myhash field2
+S: (nil)
+C: HGET anotherhash field1
+S: (nil)
+```
+
+#### **HKEYS**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HKEYS <key:string>
+```
+
+Restituisce tutte le chiavi (campi) della hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito un array vuoto.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Array: Un array di stringhe rappresentanti le chiavi della hashmap. Se la chiave non esiste o la hashmap non esiste, viene ritornato un array vuoto.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HKEYS myhash
+S: 1) "field1"
+   2) "field2"
+C: HKEYS anotherhash
+S: (empty array)
+```
+
+#### **HLEN**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HLEN <key:string>
+```
+
+Restituisce la lunghezza (numero di campi) della hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito 0.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Numero: Il numero di campi presenti nella hashmap. Se la chiave non esiste o la hashmap non esiste, viene ritornato 0.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HLEN myhash
+S: (integer) 2
+C: HLEN anotherhash
+S: (integer) 0
+```
+
+#### **HSET**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HSET <key:string> <field:string> <value:string|number>
+```
+
+Imposta il campo `field` nella hashmap identificata dalla chiave `key` al `value`. Se la chiave non esiste, viene creata una nuova hashmap. Se il campo esiste già nella hashmap, il valore viene sovrascritto. Se la chiave esiste ma non è una hashmap, viene ritornato 0. Se la chiave e il campo esistono nella hashmap ma il valore non è stringa o intero, viene ritornato 0.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Numero: 1 se il campo è stato impostato con successo nella hashmap. 0 se la chiave esiste ma non è una hashmap o se il campo esistente nella hashmap non contiene un valore che è una stringa o un numero.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HSET myhash field1 value1
+S: (integer) 1
+C: HSET myhash field2 value2
+S: (integer) 1
+C: HSET anotherhash field1 value1
+S: (integer) 1
+C: HSET notanhash field1 value1
+S: (integer) 0
+C: HSET myhash field1 notstringornumber
+S: (integer) 0
+```
+
+#### **HSTRLEN**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HSTRLEN <key:string> <field:string>
+```
+
+Restituisce la lunghezza della stringa del campo `field` specificato nella hashmap identificata dalla chiave `key`. Se la chiave non esiste, la hashmap non esiste, il campo non esiste nella hashmap o il valore non è di tipo stringa, viene restituito 0.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Numero: La lunghezza della stringa del campo specificato nella hashmap. Se la chiave non esiste, la hashmap non esiste, il campo non esiste nella hashmap o il valore non è di tipo stringa, viene ritornato 0.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HSTRLEN myhash field1
+S: (integer) 6
+C: HSTRLEN myhash field2
+S: (integer) 0
+C: HSTRLEN anotherhash field1
+S: (integer) 0
+C: HSTRLEN myhash field3
+S: (integer) 0
+```
+
+#### **HVALS**
+
+<h4> Sintassi <h4>
+
+```plaintext
+HVALS <key:string>
+```
+
+Restituisce tutti i valori dei campi dalla hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito un array vuoto.
+
+<h4> Ritorno </h4>
+
+Risposta RESP Array: Un array di stringhe e numeri rappresentanti i valori dei campi della hashmap. Se la chiave non esiste o la hashmap non esiste, viene ritornato un array vuoto.
+
+<h4> Esempio </h4>
+
+> C = Client, S = Server
+
+```plaintext
+C: HVALS myhash
+S: 1) "value1"
+   2) "value2"
+C: HVALS anotherhash
+S: (empty array)
+```
