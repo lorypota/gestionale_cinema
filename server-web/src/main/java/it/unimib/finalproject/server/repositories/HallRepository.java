@@ -10,10 +10,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
+import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
-import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
+import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.model.domain.Hall;
 
 import jakarta.inject.Singleton;
@@ -31,13 +33,11 @@ public class HallRepository {
         Optional<String> resp;
         try {
             resp = db.hgetString("halls", ""+hallId);
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
-        } catch (RESPError e){
-            throw new NotFoundResponseException();
-        }
+        } 
 
-        if(!resp.isPresent() || resp.get().isEmpty())  
+        if(!resp.isPresent() || resp.get() == null || resp.get().isEmpty())  
             return null;
         
         Hall hall;
@@ -63,5 +63,55 @@ public class HallRepository {
         } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
         }
+    }
+
+
+    public int deleteHall(int hallId) {
+        int removed = 0;
+
+        try {
+            removed = db.hdel("halls", "" + hallId);
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        } 
+        
+        return removed;
+    }
+
+
+    public int updateHall(int hallId, String body) {
+        int created;
+        
+        try {
+            //adds the id to the body
+            Hall hall = mapper.readValue(body, Hall.class);
+            hall.setId(hallId);
+            body = mapper.writeValueAsString(hall);
+
+            created = db.hset("halls", ""+hallId, body);
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException("error during update of hall");
+        }
+
+        return created;
+    }
+
+
+    public int createHall(Hall hall) {
+        try {
+            int id = db.incr("halls_id");
+            
+            hall.setId(id);
+            String jsonHall = mapper.writeValueAsString(hall);
+
+            int created = db.hset("halls", "" + id, jsonHall);
+
+            if(created == DatabaseStatus.OBJECT_NOT_CREATED)
+                throw new ObjectNotCreatedException("Object not created");
+
+            return id;
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        } 
     }
 }

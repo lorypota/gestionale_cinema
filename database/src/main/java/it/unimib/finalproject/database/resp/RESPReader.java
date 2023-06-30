@@ -26,7 +26,7 @@ public class RESPReader implements Closeable {
             return null;
         }
 
-        if (!input.matches("([+\\-:$*])\\w+")) {
+        if (!input.matches("([+\\-:$*])-?\\w+")) {
             throw new RESPError(String.format("Unknown command: %s", input));
         }
 
@@ -50,6 +50,9 @@ public class RESPReader implements Closeable {
                 return new RESPBulkString(new String(buffer));
             case '*':
                 var count = Integer.parseInt(input.substring(1));
+                if (count == -1) {
+                    return RESPBulkString.NULL;
+                }
                 var array = new RESPType[count];
 
                 for (int i = 0; i < count; i++) {

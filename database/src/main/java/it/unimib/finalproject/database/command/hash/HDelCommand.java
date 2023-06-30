@@ -31,7 +31,7 @@ public class HDelCommand extends Command {
         var key = ((RESPString) args[0]).getString();
         var field = ((RESPString) args[1]).getString();
 
-        // Returns (nil) if not a hash, or hash non-existent
+        // Returns 0 if not a hash, or hash non-existent
         var hash = store.get(key);
         if (!(hash instanceof AbstractMap<?, ?>)) {
             return RESPNumber.ZERO;

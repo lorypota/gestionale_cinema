@@ -22,6 +22,10 @@ import it.unimib.finalproject.server.service.MovieService;
 import it.unimib.finalproject.server.service.ProjectionService;
 import it.unimib.finalproject.server.service.SeatsService;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.utils.helpers.BookingHelper;
+import it.unimib.finalproject.server.utils.helpers.HallHelper;
+import it.unimib.finalproject.server.utils.helpers.MovieHelper;
+import it.unimib.finalproject.server.utils.helpers.ProjectionHelper;
 import jakarta.inject.Singleton;
 
 /**
@@ -54,15 +58,19 @@ public class Main {
                         }
                         bind(BookingRepository.class).to(BookingRepository.class).in(Singleton.class);
                         bind(BookingService.class).to(BookingService.class).in(Singleton.class);
+                        bind(BookingHelper.class).to(BookingHelper.class).in(Singleton.class);
 
                         bind(ProjectionRepository.class).to(ProjectionRepository.class).in(Singleton.class);
                         bind(ProjectionService.class).to(ProjectionService.class).in(Singleton.class);
+                        bind(ProjectionHelper.class).to(ProjectionHelper.class).in(Singleton.class);
                         
                         bind(HallRepository.class).to(HallRepository.class).in(Singleton.class);
                         bind(HallService.class).to(HallService.class).in(Singleton.class);
+                        bind(HallHelper.class).to(HallHelper.class).in(Singleton.class);
 
                         bind(MovieRepository.class).to(MovieRepository.class).in(Singleton.class);
                         bind(MovieService.class).to(MovieService.class).in(Singleton.class);
+                        bind(MovieHelper.class).to(MovieHelper.class).in(Singleton.class);
 
                         bind(SeatsService.class).to(SeatsService.class).in(Singleton.class);
 

@@ -10,11 +10,14 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
+import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
+import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
+import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.model.domain.Projection;
 
 import jakarta.inject.Singleton;
@@ -43,13 +46,11 @@ public class ProjectionRepository {
         Optional<String> resp;
         try {
             resp = db.hgetString("projections", ""+proj_id);
-        } catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
-        }catch (RESPError e){
-            throw new NotFoundResponseException();
         }
 
-        if(!resp.isPresent() || resp.get().isEmpty())  
+        if(!resp.isPresent() || resp.get() == null || resp.get().isEmpty())  
             return null;
         
         Projection projection;
@@ -74,5 +75,54 @@ public class ProjectionRepository {
         } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
         }
+    }
+
+    public int deleteProjection(int projectionId) {
+        int removed = 0;
+
+        try {
+            removed = db.hdel("projections", "" + projectionId);
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        } 
+        
+        return removed;
+    }
+
+
+    public int updateProjection(int projectionId, String body) {
+        int created;
+        
+        try {
+            //adds the id to the body
+            Projection projection = mapper.readValue(body, Projection.class);
+            projection.setId(projectionId);
+            body = mapper.writeValueAsString(projection);
+
+            created = db.hset("projections", ""+projectionId, body);
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException("error during update of movie");
+        }
+
+        return created;
+    }
+
+
+    public int createProjection(Projection projection) {
+        try {
+            int id = db.incr("projections_id");
+            
+            projection.setId(id);
+            String jsonProjection = mapper.writeValueAsString(projection);
+
+            int created = db.hset("projections", "" + id, jsonProjection);
+
+            if(created == DatabaseStatus.OBJECT_NOT_CREATED)
+                throw new ObjectNotCreatedException("Object not created");
+
+            return id;
+        } catch (NumberFormatException | IOException | RESPError e) {
+            throw new ServerErrorResponseException();
+        } 
     }
 }
