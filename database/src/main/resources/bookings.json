@@ -9,6 +9,10 @@
       {
         "row": 2,
         "column": 4
+      },
+      {
+        "row": 2,
+        "column": 5
       }
     ]
   },
@@ -257,6 +261,43 @@
         "row": 9,
         "column": 4
       }
+    ]
+  },
+  {
+    "id": 20,
+    "proj_id": 21,
+    "name": "Simone",
+    "surname": "Ferraro",
+    "email": "simone.ferraro@example.com",
+    "seats": [
+      { "row": 1, "column": 1 },
+      { "row": 1, "column": 2 }
+    ]
+  },
+  {
+    "id": 21,
+    "proj_id": 22,
+    "name": "Beatrice",
+    "surname": "Moretti",
+    "email": "beatrice.moretti@example.com",
+    "seats": [
+      { "row": 2, "column": 2 },
+      { "row": 2, "column": 3 },
+      { "row": 2, "column": 4 }
+    ]
+  },
+  {
+    "id": 22,
+    "proj_id": 80,
+    "name": "Vittorio",
+    "surname": "Rinaldi",
+    "email": "vittorio.rinaldi@example.com",
+    "seats": [
+      { "row": 7, "column": 1 },
+      { "row": 7, "column": 2 },
+      { "row": 7, "column": 3 },
+      { "row": 7, "column": 4 },
+      { "row": 7, "column": 5 }
     ]
   }
 ]

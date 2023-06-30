@@ -9,6 +9,7 @@ var selectedSeats = [];
 //once the document is ready
 $(document).ready(async () => {
 
+  $('#booking-section').hide();
   $('#seating-section').hide();
   $('#insert-booking-informations').hide();
   $('#seating-section-modify').hide();
@@ -16,26 +17,19 @@ $(document).ready(async () => {
   projections = await getAllProjections();
   movies = await getAllMovies();
 
-  //load projections into drop-down
-  loadProjections(projections, movies);
-
   //show projections
-  projections.forEach(async proj => {
-    const movie = movies.find(m => m.id === proj.movie_id);
-
+  movies.forEach(async movie => {
     const projLabel = $('<button>').addClass('projLabel');
     const title = $('<div>').addClass('projTitle').text(movie.name);
-    const dateTimetable = $('<div>').addClass('projDateTime');
-    dateTimetable.append($('<div>').addClass('projDate').text(proj.date));
-    dateTimetable.append($('<div>').addClass('projTimetable').text(proj.timetable));
     const duration = $('<div>').addClass('projDuration').text("Durata: " + movie.duration);
 
-    projLabel.append(title, dateTimetable, duration);
+    projLabel.append(title, duration);
     projLabel.css("background-image", `url('${movie.image}')`);
     projLabel.css("background-size", "cover");
     projLabel.click( async () => {
-      $("#projections-selection").val(proj.id);
-      await showSeats(proj.id);
+      $('#booking-section').show();
+      resetSeats();
+      loadProjections(movie.id);
     });
 
     $('#projections-container').append(projLabel);
@@ -46,6 +40,7 @@ $(document).ready(async () => {
     if(selectedProjection === -1){
       resetSeats();
     } else {
+      console.log(selectedProjection);
       await showSeats(selectedProjection);
     }
   });
@@ -137,6 +132,7 @@ $(document).ready(async () => {
 
     closeModal();
     resetSeats();
+    $('#booking-section').hide();
 
     $("#booking-management-field").val(res.id);
     loadBooking(res.id);
@@ -222,9 +218,29 @@ $(document).ready(async () => {
     $('#booking-surname').replaceWith($("<span id='booking-surname'>").val($('#booking-surname').text()));
     $('#booking-email').replaceWith($("<span id='booking-email'>").val($('#booking-email').text()));
   })
+
+  $('#delete-booking').click(async function(){
+    res = await deleteBooking($('#booking-management-field').val());
+
+    switch (res.status){
+      case 204: 
+        alert(`Booking deletion has been completed with success!`);
+        break;
+      case 404: 
+        alert("Booking deletion failed due to booking-id not found!"); 
+        location.reload();
+        break;
+      case 500: 
+        alert("Booking deletion failed due to server error!");
+        location.reload();
+        break;
+    }
+
+    location.reload();
+  })
 });
 
-//END DOCUMENT READY
+//END DOCUMENT READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 
 function resetSeats(){
   $('#seating-section').hide();
@@ -235,12 +251,14 @@ function resetSeats(){
   $('#seating-section-modify').hide();
 }
 
-async function loadProjections(projections, movies){
+async function loadProjections(movieId){
+  let projections = await getAllProjections(movieId);
+  $('#projections-selection').empty();
+  $('#projections-selection').append(new Option("Seleziona una proiezione", -1));
   projections.forEach(proj => {
-    const movie = movies.find(m => m.id === proj.movie_id);
-    
     var newOption = document.createElement('option');
-    newOption.innerText = movie.name;
+    newOption.innerText = proj.date + " " + proj.timetable;
+    console.log(proj.id);
     newOption.value = proj.id;
 
     $('#projections-selection').append(newOption);
@@ -257,16 +275,15 @@ async function showSeats (projId, oldBooking = undefined) {
 
   loadedProjection = projId;
 
-  console.log(projections);
-
   let projection = projections.find(p => p.id === projId).hall_id;
-  console.log(projection);
 
   let hall = await getHallById(projection);
-  console.log(hall);
+
+  console.log(projId);
 
   let occupiedSeats = await getBookedSeats(projId);
 
+  console.log(2);
   columns = hall.columns;
   rows = hall.rows;
 
@@ -293,16 +310,20 @@ async function showSeats (projId, oldBooking = undefined) {
     columnLabels.forEach(columnLabel => {
         var occupied = false;
         var selected = false;
-        occupiedSeats.forEach(occupiedSeat => {
-          if(String.fromCharCode(occupiedSeat.column + 64) === columnLabel && occupiedSeat.row === rowLabel){
-            occupied = true;
-          }
-        })
-        selectedSeats.forEach(selectedSeat => {
-          if(String.fromCharCode(selectedSeat.column + 64) === columnLabel && selectedSeat.row === rowLabel){
-            selected = true;
-          }
-        })
+        if(occupiedSeats !== undefined){
+          occupiedSeats.forEach(occupiedSeat => {
+            if(String.fromCharCode(occupiedSeat.column + 64) === columnLabel && occupiedSeat.row === rowLabel){
+              occupied = true;
+            }
+          })
+        }
+        if(selectedSeats !== undefined){
+          selectedSeats.forEach(selectedSeat => {
+            if(String.fromCharCode(selectedSeat.column + 64) === columnLabel && selectedSeat.row === rowLabel){
+              selected = true;
+            }
+          })
+        }
 
         const seatButton = $('<button>').addClass('seat').text(columnLabel + rowLabel);
         if(occupied && !selected) {
@@ -349,12 +370,10 @@ async function loadBooking(id){
     $('#booking-surname').text(booking.surname);
     $('#booking-email').text(booking.email);
 
-    let projection = await getProjectionById(booking.proj_id)[0];
-
-    console.log(projection);
+    let projection = await getProjectionById(booking.proj_id);
     let movie = await getMovieById(projection.movie_id);
 
-    $('#booking-hall').text(projection.proj_id);
+    $('#booking-hall').text(projection.hall_id);
     $('#booking-movie').text(movie.name);
     $('#booking-date').text(projection.date);
     $('#booking-timetable').text(projection.timetable);
@@ -555,12 +574,12 @@ async function updateBooking(id, booking) {
   });
 }
 
-/*
-function deleteBooking(id) {
-  return fetch(`${API_URL}/bookings/${id}`, {
+
+async function deleteBooking(id) {
+  return await fetch(`${API_URL}/bookings/${id}`, {
     method: "DELETE"
   });
-} */
+}
 
 // Seats
 async function getBookedSeats(projId) {

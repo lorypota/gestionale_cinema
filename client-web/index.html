@@ -6,6 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="app.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
   </head>
   
   <body>
@@ -14,13 +15,13 @@
     </header>
 
     <section id="projections-section">
-      <h2>Prossime proiezioni</h2>
+      <h2>Collezione di film</h2>
       <div id="projections-container" class="projContainer">
         <!-- mostro prossime proiezioni -->
       </div>
     </section>
 
-    <section id="booking-section">
+    <section id="booking-section" hidden>
       <h2>Prenota i tuoi posti</h2>
       <form id="booking-form">
         <select id="projections-selection">
@@ -84,7 +85,9 @@
         <span id="booking-details-title">
           <h3>Dettagli della prenotazione</h3>
           <button id="update-booking"></button>
+          <button id="delete-booking"></button>
         </span>
+
         <p>Nome: <span id="booking-name"></span></p>
         <p>Cognome: <span id="booking-surname"></span></p>
         <p>Email: <span id="booking-email"></span></p>

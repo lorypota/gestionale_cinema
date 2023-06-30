@@ -3,140 +3,707 @@
     "id": 0,
     "hall_id": 0,
     "movie_id": 0,
-    "date": "2023-06-25",
-    "timetable": "19:00"
+    "date": "2023-09-01",
+    "timetable": "17:30"
   },
   {
     "id": 1,
     "hall_id": 1,
     "movie_id": 1,
-    "date": "2023-06-26",
-    "timetable": "20:30"
+    "date": "2023-09-02",
+    "timetable": "19:00"
   },
   {
     "id": 2,
     "hall_id": 2,
     "movie_id": 2,
-    "date": "2023-06-27",
-    "timetable": "18:45"
+    "date": "2023-09-03",
+    "timetable": "20:30"
   },
   {
     "id": 3,
     "hall_id": 3,
     "movie_id": 3,
-    "date": "2023-06-28",
-    "timetable": "21:15"
+    "date": "2023-09-04",
+    "timetable": "18:45"
   },
   {
     "id": 4,
     "hall_id": 4,
     "movie_id": 4,
-    "date": "2023-06-29",
-    "timetable": "17:30"
+    "date": "2023-09-05",
+    "timetable": "21:15"
   },
   {
     "id": 5,
     "hall_id": 5,
     "movie_id": 5,
-    "date": "2023-06-30",
-    "timetable": "19:45"
+    "date": "2023-09-06",
+    "timetable": "16:30"
   },
   {
     "id": 6,
     "hall_id": 6,
     "movie_id": 6,
-    "date": "2023-07-01",
-    "timetable": "16:30"
+    "date": "2023-09-07",
+    "timetable": "20:00"
   },
   {
     "id": 7,
     "hall_id": 7,
     "movie_id": 7,
-    "date": "2023-07-02",
-    "timetable": "20:00"
+    "date": "2023-09-08",
+    "timetable": "18:15"
   },
   {
     "id": 8,
     "hall_id": 8,
     "movie_id": 8,
-    "date": "2023-07-03",
-    "timetable": "18:15"
+    "date": "2023-09-09",
+    "timetable": "21:30"
   },
   {
     "id": 9,
     "hall_id": 9,
     "movie_id": 9,
-    "date": "2023-07-04",
-    "timetable": "21:30"
+    "date": "2023-09-10",
+    "timetable": "19:45"
   },
   {
     "id": 10,
     "hall_id": 10,
     "movie_id": 10,
-    "date": "2023-07-05",
-    "timetable": "19:15"
+    "date": "2023-09-11",
+    "timetable": "17:00"
   },
   {
     "id": 11,
     "hall_id": 11,
     "movie_id": 11,
-    "date": "2023-07-06",
-    "timetable": "20:45"
+    "date": "2023-09-12",
+    "timetable": "20:15"
   },
   {
     "id": 12,
     "hall_id": 12,
     "movie_id": 12,
-    "date": "2023-07-07",
-    "timetable": "17:00"
+    "date": "2023-09-13",
+    "timetable": "19:30"
   },
   {
     "id": 13,
     "hall_id": 13,
     "movie_id": 13,
-    "date": "2023-07-08",
-    "timetable": "19:30"
+    "date": "2023-09-14",
+    "timetable": "16:45"
   },
   {
     "id": 14,
     "hall_id": 14,
     "movie_id": 14,
-    "date": "2023-07-09",
-    "timetable": "16:45"
+    "date": "2023-09-15",
+    "timetable": "20:45"
   },
   {
     "id": 15,
     "hall_id": 15,
     "movie_id": 15,
-    "date": "2023-07-10",
-    "timetable": "20:15"
+    "date": "2023-09-16",
+    "timetable": "18:00"
   },
   {
     "id": 16,
     "hall_id": 16,
     "movie_id": 16,
-    "date": "2023-07-11",
-    "timetable": "18:30"
+    "date": "2023-09-17",
+    "timetable": "21:15"
   },
   {
     "id": 17,
     "hall_id": 17,
     "movie_id": 17,
-    "date": "2023-07-12",
-    "timetable": "21:45"
+    "date": "2023-09-18",
+    "timetable": "19:30"
   },
   {
     "id": 18,
     "hall_id": 18,
     "movie_id": 18,
-    "date": "2023-07-13",
-    "timetable": "19:30"
+    "date": "2023-09-19",
+    "timetable": "20:00"
   },
   {
     "id": 19,
     "hall_id": 19,
     "movie_id": 19,
-    "date": "2023-07-14",
+    "date": "2023-09-20",
+    "timetable": "17:15"
+  },
+  {
+    "id": 20,
+    "hall_id": 0,
+    "movie_id": 1,
+    "date": "2023-09-21",
+    "timetable": "19:30"
+  },
+  {
+    "id": 21,
+    "hall_id": 1,
+    "movie_id": 2,
+    "date": "2023-09-22",
     "timetable": "20:00"
+  },
+  {
+    "id": 22,
+    "hall_id": 2,
+    "movie_id": 3,
+    "date": "2023-09-23",
+    "timetable": "18:15"
+  },
+  {
+    "id": 23,
+    "hall_id": 3,
+    "movie_id": 4,
+    "date": "2023-09-24",
+    "timetable": "21:30"
+  },
+  {
+    "id": 24,
+    "hall_id": 4,
+    "movie_id": 5,
+    "date": "2023-09-25",
+    "timetable": "19:45"
+  },
+  {
+    "id": 25,
+    "hall_id": 5,
+    "movie_id": 6,
+    "date": "2023-09-26",
+    "timetable": "17:00"
+  },
+  {
+    "id": 26,
+    "hall_id": 6,
+    "movie_id": 7,
+    "date": "2023-09-27",
+    "timetable": "20:15"
+  },
+  {
+    "id": 27,
+    "hall_id": 7,
+    "movie_id": 8,
+    "date": "2023-09-28",
+    "timetable": "19:30"
+  },
+  {
+    "id": 28,
+    "hall_id": 8,
+    "movie_id": 9,
+    "date": "2023-09-29",
+    "timetable": "16:45"
+  },
+  {
+    "id": 29,
+    "hall_id": 9,
+    "movie_id": 10,
+    "date": "2023-09-30",
+    "timetable": "20:45"
+  },
+  {
+    "id": 30,
+    "hall_id": 10,
+    "movie_id": 11,
+    "date": "2023-10-01",
+    "timetable": "18:00"
+  },
+  {
+    "id": 31,
+    "hall_id": 11,
+    "movie_id": 12,
+    "date": "2023-10-02",
+    "timetable": "21:15"
+  },
+  {
+    "id": 32,
+    "hall_id": 12,
+    "movie_id": 13,
+    "date": "2023-10-03",
+    "timetable": "19:30"
+  },
+  {
+    "id": 33,
+    "hall_id": 13,
+    "movie_id": 14,
+    "date": "2023-10-04",
+    "timetable": "20:00"
+  },
+  {
+    "id": 34,
+    "hall_id": 14,
+    "movie_id": 15,
+    "date": "2023-10-05",
+    "timetable": "17:15"
+  },
+  {
+    "id": 35,
+    "hall_id": 15,
+    "movie_id": 16,
+    "date": "2023-10-06",
+    "timetable": "19:30"
+  },
+  {
+    "id": 36,
+    "hall_id": 16,
+    "movie_id": 17,
+    "date": "2023-10-07",
+    "timetable": "20:00"
+  },
+  {
+    "id": 37,
+    "hall_id": 17,
+    "movie_id": 18,
+    "date": "2023-10-08",
+    "timetable": "18:15"
+  },
+  {
+    "id": 38,
+    "hall_id": 18,
+    "movie_id": 19,
+    "date": "2023-10-09",
+    "timetable": "21:30"
+  },
+  {
+    "id": 39,
+    "hall_id": 19,
+    "movie_id": 0,
+    "date": "2023-10-10",
+    "timetable": "19:45"
+  },
+  {
+    "id": 40,
+    "hall_id": 0,
+    "movie_id": 1,
+    "date": "2023-10-11",
+    "timetable": "17:00"
+  },
+  {
+    "id": 41,
+    "hall_id": 1,
+    "movie_id": 2,
+    "date": "2023-10-12",
+    "timetable": "20:15"
+  },
+  {
+    "id": 42,
+    "hall_id": 2,
+    "movie_id": 3,
+    "date": "2023-10-13",
+    "timetable": "19:30"
+  },
+  {
+    "id": 43,
+    "hall_id": 3,
+    "movie_id": 4,
+    "date": "2023-10-14",
+    "timetable": "16:45"
+  },
+  {
+    "id": 44,
+    "hall_id": 4,
+    "movie_id": 5,
+    "date": "2023-10-15",
+    "timetable": "20:45"
+  },
+  {
+    "id": 45,
+    "hall_id": 5,
+    "movie_id": 6,
+    "date": "2023-10-16",
+    "timetable": "18:00"
+  },
+  {
+    "id": 46,
+    "hall_id": 6,
+    "movie_id": 7,
+    "date": "2023-10-17",
+    "timetable": "21:15"
+  },
+  {
+    "id": 47,
+    "hall_id": 7,
+    "movie_id": 8,
+    "date": "2023-10-18",
+    "timetable": "19:30"
+  },
+  {
+    "id": 48,
+    "hall_id": 8,
+    "movie_id": 9,
+    "date": "2023-10-19",
+    "timetable": "20:00"
+  },
+  {
+    "id": 49,
+    "hall_id": 9,
+    "movie_id": 10,
+    "date": "2023-10-20",
+    "timetable": "17:15"
+  },
+  {
+    "id": 50,
+    "hall_id": 10,
+    "movie_id": 11,
+    "date": "2023-10-21",
+    "timetable": "19:30"
+  },
+  {
+    "id": 51,
+    "hall_id": 11,
+    "movie_id": 12,
+    "date": "2023-10-22",
+    "timetable": "20:00"
+  },
+  {
+    "id": 52,
+    "hall_id": 12,
+    "movie_id": 13,
+    "date": "2023-10-23",
+    "timetable": "18:15"
+  },
+  {
+    "id": 53,
+    "hall_id": 13,
+    "movie_id": 14,
+    "date": "2023-10-24",
+    "timetable": "21:30"
+  },
+  {
+    "id": 54,
+    "hall_id": 14,
+    "movie_id": 15,
+    "date": "2023-10-25",
+    "timetable": "19:45"
+  },
+  {
+    "id": 55,
+    "hall_id": 15,
+    "movie_id": 16,
+    "date": "2023-10-26",
+    "timetable": "17:00"
+  },
+  {
+    "id": 56,
+    "hall_id": 16,
+    "movie_id": 17,
+    "date": "2023-10-27",
+    "timetable": "20:15"
+  },
+  {
+    "id": 57,
+    "hall_id": 17,
+    "movie_id": 18,
+    "date": "2023-10-28",
+    "timetable": "19:30"
+  },
+  {
+    "id": 58,
+    "hall_id": 18,
+    "movie_id": 19,
+    "date": "2023-10-29",
+    "timetable": "16:45"
+  },
+  {
+    "id": 59,
+    "hall_id": 19,
+    "movie_id": 0,
+    "date": "2023-10-30",
+    "timetable": "20:45"
+  },
+  {
+    "id": 60,
+    "hall_id": 0,
+    "movie_id": 1,
+    "date": "2023-10-31",
+    "timetable": "18:00"
+  },
+  {
+    "id": 61,
+    "hall_id": 1,
+    "movie_id": 2,
+    "date": "2023-11-01",
+    "timetable": "21:15"
+  },
+  {
+    "id": 62,
+    "hall_id": 2,
+    "movie_id": 3,
+    "date": "2023-11-02",
+    "timetable": "19:30"
+  },
+  {
+    "id": 63,
+    "hall_id": 3,
+    "movie_id": 4,
+    "date": "2023-11-03",
+    "timetable": "20:00"
+  },
+  {
+    "id": 64,
+    "hall_id": 4,
+    "movie_id": 5,
+    "date": "2023-11-04",
+    "timetable": "17:15"
+  },
+  {
+    "id": 65,
+    "hall_id": 5,
+    "movie_id": 6,
+    "date": "2023-11-05",
+    "timetable": "19:30"
+  },
+  {
+    "id": 66,
+    "hall_id": 6,
+    "movie_id": 7,
+    "date": "2023-11-06",
+    "timetable": "20:00"
+  },
+  {
+    "id": 67,
+    "hall_id": 7,
+    "movie_id": 8,
+    "date": "2023-11-07",
+    "timetable": "18:15"
+  },
+  {
+    "id": 68,
+    "hall_id": 8,
+    "movie_id": 9,
+    "date": "2023-11-08",
+    "timetable": "21:30"
+  },
+  {
+    "id": 69,
+    "hall_id": 9,
+    "movie_id": 10,
+    "date": "2023-11-09",
+    "timetable": "19:45"
+  },
+  {
+    "id": 70,
+    "hall_id": 10,
+    "movie_id": 11,
+    "date": "2023-11-10",
+    "timetable": "17:00"
+  },
+  {
+    "id": 71,
+    "hall_id": 11,
+    "movie_id": 12,
+    "date": "2023-11-11",
+    "timetable": "20:15"
+  },
+  {
+    "id": 72,
+    "hall_id": 12,
+    "movie_id": 13,
+    "date": "2023-11-12",
+    "timetable": "19:30"
+  },
+  {
+    "id": 73,
+    "hall_id": 13,
+    "movie_id": 14,
+    "date": "2023-11-13",
+    "timetable": "16:45"
+  },
+  {
+    "id": 74,
+    "hall_id": 14,
+    "movie_id": 15,
+    "date": "2023-11-14",
+    "timetable": "20:45"
+  },
+  {
+    "id": 75,
+    "hall_id": 15,
+    "movie_id": 16,
+    "date": "2023-11-15",
+    "timetable": "18:00"
+  },
+  {
+    "id": 76,
+    "hall_id": 16,
+    "movie_id": 17,
+    "date": "2023-11-16",
+    "timetable": "21:15"
+  },
+  {
+    "id": 77,
+    "hall_id": 17,
+    "movie_id": 18,
+    "date": "2023-11-17",
+    "timetable": "19:30"
+  },
+  {
+    "id": 78,
+    "hall_id": 18,
+    "movie_id": 19,
+    "date": "2023-11-18",
+    "timetable": "20:00"
+  },
+  {
+    "id": 79,
+    "hall_id": 19,
+    "movie_id": 0,
+    "date": "2023-11-19",
+    "timetable": "17:15"
+  },
+  {
+    "id": 80,
+    "hall_id": 0,
+    "movie_id": 1,
+    "date": "2023-11-20",
+    "timetable": "19:30"
+  },
+  {
+    "id": 81,
+    "hall_id": 1,
+    "movie_id": 2,
+    "date": "2023-11-21",
+    "timetable": "20:00"
+  },
+  {
+    "id": 82,
+    "hall_id": 2,
+    "movie_id": 3,
+    "date": "2023-11-22",
+    "timetable": "18:15"
+  },
+  {
+    "id": 83,
+    "hall_id": 3,
+    "movie_id": 4,
+    "date": "2023-11-23",
+    "timetable": "21:30"
+  },
+  {
+    "id": 84,
+    "hall_id": 4,
+    "movie_id": 5,
+    "date": "2023-11-24",
+    "timetable": "19:45"
+  },
+  {
+    "id": 85,
+    "hall_id": 5,
+    "movie_id": 6,
+    "date": "2023-11-25",
+    "timetable": "17:00"
+  },
+  {
+    "id": 86,
+    "hall_id": 6,
+    "movie_id": 7,
+    "date": "2023-11-26",
+    "timetable": "20:15"
+  },
+  {
+    "id": 87,
+    "hall_id": 7,
+    "movie_id": 8,
+    "date": "2023-11-27",
+    "timetable": "19:30"
+  },
+  {
+    "id": 88,
+    "hall_id": 8,
+    "movie_id": 9,
+    "date": "2023-11-28",
+    "timetable": "16:45"
+  },
+  {
+    "id": 89,
+    "hall_id": 9,
+    "movie_id": 10,
+    "date": "2023-11-29",
+    "timetable": "20:45"
+  },
+  {
+    "id": 90,
+    "hall_id": 10,
+    "movie_id": 11,
+    "date": "2023-11-30",
+    "timetable": "18:00"
+  },
+  {
+    "id": 91,
+    "hall_id": 11,
+    "movie_id": 12,
+    "date": "2023-12-01",
+    "timetable": "21:15"
+  },
+  {
+    "id": 92,
+    "hall_id": 12,
+    "movie_id": 13,
+    "date": "2023-12-02",
+    "timetable": "19:30"
+  },
+  {
+    "id": 93,
+    "hall_id": 13,
+    "movie_id": 14,
+    "date": "2023-12-03",
+    "timetable": "20:00"
+  },
+  {
+    "id": 94,
+    "hall_id": 14,
+    "movie_id": 15,
+    "date": "2023-12-04",
+    "timetable": "17:15"
+  },
+  {
+    "id": 95,
+    "hall_id": 15,
+    "movie_id": 16,
+    "date": "2023-12-05",
+    "timetable": "19:30"
+  },
+  {
+    "id": 96,
+    "hall_id": 16,
+    "movie_id": 17,
+    "date": "2023-12-06",
+    "timetable": "20:00"
+  },
+  {
+    "id": 97,
+    "hall_id": 17,
+    "movie_id": 18,
+    "date": "2023-12-07",
+    "timetable": "18:15"
+  },
+  {
+    "id": 98,
+    "hall_id": 18,
+    "movie_id": 19,
+    "date": "2023-12-08",
+    "timetable": "21:30"
+  },
+  {
+    "id": 99,
+    "hall_id": 19,
+    "movie_id": 0,
+    "date": "2023-12-09",
+    "timetable": "19:45"
+  },
+  {
+    "id": 100,
+    "hall_id": 0,
+    "movie_id": 1,
+    "date": "2023-12-10",
+    "timetable": "17:00"
   }
 ]
