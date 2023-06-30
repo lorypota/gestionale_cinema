@@ -21,6 +21,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 **Codici di stato restituiti**:
 * 200 OK
+* 204 No Content
 
 ### POST
 
@@ -34,7 +35,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `duration` (una stringa)
 * `image` (una stringa)
 
-**Risposta**: In caso di successo, il body è vuoto.
+**Risposta**: In caso di successo, il body di ritorno è il film creato.
 
 **Codici di stato restituiti**:
 * 201 Created
@@ -106,11 +107,12 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 **Risposta**: Un array di oggetti, ognuno rappresentante una sala. Ogni sala ha i seguenti campi:
 * `id` (un intero)
-* `name` (una stringa)
-* `description` (una stringa)
+* `rows` (un intero)
+* `columns` (un intero)
 
 **Codici di stato restituiti**:
 * 200 OK
+* 204 No Content
 
 ### POST
 
@@ -119,10 +121,10 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la nuova sala, con i seguenti campi:
-* `name` (una stringa)
-* `description` (una stringa)
+* `rows` (un intero)
+* `columns` (un intero)
 
-**Risposta**: In caso di successo, il body è vuoto.
+**Risposta**: In caso di successo, il body di ritorno avrà la sala creata.
 
 **Codici di stato restituiti**:
 * 201 Created
@@ -140,8 +142,8 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 **Risposta**: Un oggetto che rappresenta la sala, con i seguenti campi:
 * `id` (un intero)
-* `name` (una stringa)
-* `description` (una stringa)
+* `rows` (un intero)
+* `columns` (un intero)
 
 **Codici di stato restituiti**:
 * 200 OK
@@ -154,10 +156,10 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: `hall_id` (un intero) nell'URL, che rappresenta l'ID della sala da aggiornare. L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la sala aggiornata, con i seguenti campi:
-* `name` (una stringa)
-* `description` (una stringa)
+* `rows` (un intero)
+* `columns` (un intero)
 
-**Risposta**: In caso di successo, il body è vuoto.
+**Risposta**: In caso di successo, il body di ritorno è vuoto.
 
 **Codici di stato restituiti**:
 * 204 No Content
@@ -182,7 +184,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 ### GET
 
-**Descrizione**: Restituisce tutte le proiezioni. Se viene fornito un `movie_id`, restituisce solo le proiezioni per quel film.
+**Descrizione**: Restituisce tutte le proiezioni. Le proiezioni già avvenute vengono scartate. Se viene fornito un `movie_id`, restituisce solo le proiezioni per quel film.
 
 **Parametri**: `movie_id` (un intero) nella query string dell'URL, opzionale.
 
@@ -197,6 +199,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 **Codici di stato restituiti**:
 * 200 OK
+* 204 No Content
 
 ### POST
 
@@ -210,7 +213,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `date` (una stringa nel formato "gg/mm/aaaa")
 * `timetable` (una stringa nel formato "hh:mm")
 
-**Risposta**: In caso di successo, il body è vuoto.
+**Risposta**: In caso di successo, il body di ritorno è la proiezione creata.
 
 **Codici di stato restituiti**:
 * 201 Created
@@ -254,7 +257,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Codici di stato restituiti**:
 * 204 No Content
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
-* 404 Not Found: Proiezione non trovata.
+* 404 Not Found: Proiezione, Sala o Film non trovato.
 
 ### DELETE
 
@@ -291,6 +294,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 **Codici di stato restituiti**:
 * 200 OK
+* 204 No Content
 
 ### POST
 
@@ -311,6 +315,8 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Codici di stato restituiti**:
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
+* 404 Not Found: la proiezione non esiste
+* 409 Conflict: i posti sono già stati prenotati
 
 ## `/bookings/{book_id}`
 
@@ -355,6 +361,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * 204 No Content
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 * 404 Not Found: Prenotazione non trovata.
+* 409 Conflict: i posti sono già stati prenotati
 
 ### DELETE
 

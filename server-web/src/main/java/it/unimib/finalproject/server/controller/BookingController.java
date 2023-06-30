@@ -18,8 +18,10 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PUT;
@@ -44,15 +46,19 @@ public class BookingController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllBookings(){
+    public Response getAllBookings(@DefaultValue("-1") @QueryParam("movie_id") int movieId){
         List<Booking> bookings = null;
-        bookings = bookingService.getBookings();
+
+        if(movieId == -1)
+            bookings = bookingService.getBookings();
+        else
+            bookings = bookingService.getBookingsByMovieId(movieId);
 
         if(bookings == null)
             throw new NotFoundResponseException();
         
         if(bookings.isEmpty())
-            throw new NoContentResponseException();
+            return Response.noContent().build();
 
         return Response.ok(bookings).build();
     }

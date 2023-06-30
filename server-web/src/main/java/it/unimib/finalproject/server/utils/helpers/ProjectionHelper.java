@@ -3,6 +3,7 @@ package it.unimib.finalproject.server.utils.helpers;
 import java.util.List;
 
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
+import it.unimib.finalproject.server.model.domain.Movie;
 import it.unimib.finalproject.server.model.domain.Projection;
 import it.unimib.finalproject.server.repositories.ProjectionRepository;
 import jakarta.inject.Inject;
@@ -48,4 +49,11 @@ public class ProjectionHelper {
         return movieHelper.exists(movieId);
     }
 
+    public int getMovieIdFromProjectionId(int proj_id) {
+        Projection projection = projectionRepository.getProjectionById(proj_id);
+        
+        if(projection == null)
+            throw new NotFoundResponseException();
+        return projection.getMovie_id();
+    }
 }
