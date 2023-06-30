@@ -26,30 +26,33 @@ public class ProjectionController {
     SeatsService seatService;
 
     @GET
-    @Path("/{movieId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProjectionByMovieId(@PathParam("movieId") int movieId) {
+    public Response getProjections(@DefaultValue("-1") @QueryParam("movie_id") int movieId) {
         List<Projection> projections = null;
-        projections = projectionService.getProjectionsByMovie(movieId);
 
+        if(movieId == -1)
+            projections = projectionService.getProjections();
+        else   
+            projections = projectionService.getProjectionsByMovie(movieId);
+ 
         if(projections == null || projections.isEmpty()){
-            throw new NotFoundResponseException();
-        }
-         
-        return Response.ok(projections).build();
+            return Response.noContent().build();
+        } 
+            
+        return Response.ok(projections).build();     
     }
 
     @GET
+    @Path("/{projectionId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProjections() {
-        List<Projection> projections = null;
-        projections = projectionService.getProjections();
+    public Response getProjectionById(@PathParam("projectionId") int projectionId) {
+        Projection projection = null;
+        projection = projectionService.getProjectionById(projectionId);
+
+        if(projection == null)
+            throw new NotFoundResponseException();
         
-        if(projections == null || projections.isEmpty()){
-            return Response.noContent().build();
-        }
-         
-        return Response.ok(projections).build();
+        return Response.ok(projection).build();
     }
     
     @GET
