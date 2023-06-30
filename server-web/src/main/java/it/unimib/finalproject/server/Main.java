@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.UnknownHostException;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.hk2.api.PerLookup;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -49,7 +50,7 @@ public class Main {
                     @Override
                     protected void configure() {
                         try {
-                            bind(new DbConnector("localhost", 3030)).to(DbConnector.class);
+                            bind(new DbConnector("localhost", 3030)).to(DbConnector.class).in(PerLookup.class);
                         } catch (UnknownHostException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
