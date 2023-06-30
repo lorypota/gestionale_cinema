@@ -26,7 +26,7 @@ public class RESPReader implements Closeable {
             return null;
         }
 
-        if (!input.matches("([+\\-:$*])\\w+")) {
+        if (!input.matches("([+\\-:$*])-?\\w+")) {
             throw new RESPError(String.format("Unknown command: %s", input));
         }
 
