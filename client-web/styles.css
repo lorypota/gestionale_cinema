@@ -4,6 +4,7 @@ body {
   padding: 0;
   background-color: #F0F0F0;
   min-height: 100vh;
+  min-width: 100vh;
 }
 
 header {
@@ -50,6 +51,14 @@ select, input, button {
   width: 250px;
 }
 
+button {
+  cursor: pointer;
+}
+
+button:disabled{
+  cursor: auto;
+}
+
 /*#region seat*/
 .seat {
   height: 60px;
@@ -73,14 +82,6 @@ select, input, button {
 
 .not-clickable {
   pointer-events: none;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:disabled{
-  cursor: auto;
 }
 
 .container {
@@ -108,7 +109,11 @@ button:disabled{
 .legend-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px; /* Aggiungi un po' di spazio tra le righe */
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
 }
 /*#endregion */
 
@@ -259,8 +264,41 @@ button:disabled{
   box-shadow: 0px 0px 10px #ccc;
 }
 
-#booking-details h3 {
+#booking-details-title {
+  display: flex;
+  align-items: center;
   margin: 0;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
+}
+
+#booking-details-title h3 {
+  margin-right: 15px;
+}
+
+#booking-details-title button {
+  background-image: url('./assets/iconmonstr-pencil-text-filled.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+  border: none;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+#booking-details-title button:hover {
+  transform: scale(1.1);
+  background-color: #f0f0f0;
+}
+
+#seating-section-modify {
+
+}
+
+#seating-container-modify {
+  
+}
+
+#seating-legend-modify {
+  
 }

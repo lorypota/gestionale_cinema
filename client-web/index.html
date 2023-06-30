@@ -81,14 +81,32 @@
         <input type="number" id="booking-management-field" placeholder="Inserisci il numero di prenotazione">
       </form>
       <div id="booking-details" style="display: none;">
-        <h3>Dettagli della prenotazione</h3>
+        <span id="booking-details-title">
+          <h3>Dettagli della prenotazione</h3>
+          <button id="update-booking"></button>
+        </span>
         <p>Nome: <span id="booking-name"></span></p>
         <p>Cognome: <span id="booking-surname"></span></p>
         <p>Email: <span id="booking-email"></span></p>
+        <p>Sala: <span id="booking-hall"></span></p>
+        <p>Film: <span id="booking-movie"></span></p>
+        <p>Data: <span id="booking-date"></span></p>
+        <p>Ora: <span id="booking-timetable"></span></p>
         <p>Posti prenotati: </p>
         <ul id="booking-seats">
         </ul>
+
+        <section id="seating-section-modify" class="inset">
+          <div id="seating-container-modify">
+              <!-- mostro elenco posti -->
+          </div>
+        </section>
+
+        <button id="submit-changes" hidden>Conferma modifiche</button>
       </div>
+      <h3 id="booking-not-found" hidden>
+        Prenotazione non trovata
+      </h3>
     </section>
     
   </body>
