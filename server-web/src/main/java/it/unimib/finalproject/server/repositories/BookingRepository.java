@@ -20,8 +20,6 @@ import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.model.domain.Booking;
 
 import jakarta.inject.Singleton;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.inject.Inject;
 
 @Singleton
@@ -69,11 +67,9 @@ public class BookingRepository {
         Optional<String> resp;
         try {
             resp = db.hgetString("bookings", ""+bookingId);
-        } catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException | RESPError e) {
             throw new ServerErrorResponseException();
-        } catch(RESPError e){
-            throw new NotFoundResponseException();
-        }
+        } 
 
         if(!resp.isPresent() || resp.get().isEmpty())  
             throw new NotFoundResponseException();
