@@ -3,6 +3,9 @@
 ## Preface
 
 Il protocollo che abbiamo deciso di implementare è lo stesso che usa Redis, data la sua semplicità e della specifica così dettagliata.
+Per testarlo è stato utilizzato il tool `nc` presente su alcuni sistemi Unix oltre al tool `redis-cli`.
+
+> *Nota: Durante l'utilizzo di `redis-cli`, potrebbe verificarsi un errore relativo ai caratteri `\n` o `\r` quando viene eseguito il comando `HVALS movies`. Tuttavia, abbiamo riscontrato che tale problema riguarda esclusivamente i dati di esempio (Mock), e il comando funziona correttamente quando viene inviato tramite `nc` (Netcat). Dopo una ricerca approfondita, abbiamo dedotto che `redis-cli` gestisce gli escape dei caratteri in modo differente rispetto alla nostra interpretazione. Pertanto, nonostante il messaggio di errore restituito da `redis-cli`, il server sembra fornire una risposta corretta. Pertanto, per eventuali test, consigliamo di utilizzare `redis-cli`, e nel caso si riscontrino problemi di escape, suggeriamo di utilizzare `nc`.*
 
 ## Descrizione protocollo RESP
 
