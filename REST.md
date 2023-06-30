@@ -4,7 +4,6 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 
 ***NOTA*** Abbiamo stilato un [CHEATSHEET](CHEATSHEET.md) per avere una rapida e semplice panoramica delle API REST.
 
-
 ---
 
 ## `/movies`
@@ -18,6 +17,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un array di oggetti, ognuno rappresentante un film disponibile. Ogni film ha i seguenti campi:
+
 * `id` (un intero)
 * `name` (una stringa)
 * `description` (una stringa)
@@ -25,6 +25,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `image` (una stringa)
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 204 No Content
 
@@ -35,6 +36,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta il nuovo film, con i seguenti campi:
+
 * `name` (una stringa)
 * `description` (una stringa)
 * `duration` (una stringa)
@@ -43,6 +45,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body di ritorno è il film creato.
 
 **Codici di stato restituiti**:
+
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 
@@ -59,6 +62,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un oggetto che rappresenta il film, con i seguenti campi:
+
 * `id` (un intero)
 * `name` (una stringa)
 * `description` (una stringa)
@@ -66,6 +70,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `image` (una stringa)
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 404 Not Found: Film non trovato.
 
@@ -76,6 +81,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: `movie_id` (un intero) nell'URL, che rappresenta l'ID del film da aggiornare. L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta il film aggiornato, con i seguenti campi:
+
 * `name` (una stringa)
 * `description` (una stringa)
 * `duration` (una stringa)
@@ -84,6 +90,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 * 404 Not Found: Film non trovato.
@@ -99,9 +106,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 404 Not Found: Film non trovato.
-
 
 ---
 
@@ -116,11 +123,13 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un array di oggetti, ognuno rappresentante una sala. Ogni sala ha i seguenti campi:
+
 * `id` (un intero)
 * `rows` (un intero)
 * `columns` (un intero)
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 204 No Content
 
@@ -131,15 +140,16 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la nuova sala, con i seguenti campi:
+
 * `rows` (un intero)
 * `columns` (un intero)
 
 **Risposta**: In caso di successo, il body di ritorno avrà la sala creata.
 
 **Codici di stato restituiti**:
+
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
-
 
 ---
 
@@ -154,11 +164,13 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un oggetto che rappresenta la sala, con i seguenti campi:
+
 * `id` (un intero)
 * `rows` (un intero)
 * `columns` (un intero)
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 404 Not Found: Sala non trovata.
 
@@ -169,12 +181,14 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: `hall_id` (un intero) nell'URL, che rappresenta l'ID della sala da aggiornare. L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la sala aggiornata, con i seguenti campi:
+
 * `rows` (un intero)
 * `columns` (un intero)
 
 **Risposta**: In caso di successo, il body di ritorno è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 * 404 Not Found: Sala non trovata.
@@ -190,9 +204,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 404 Not Found: Sala non trovata.
-
 
 ---
 
@@ -207,6 +221,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un array di oggetti, ognuno rappresentante una proiezione. Ogni proiezione ha i seguenti campi:
+
 * `id` (un intero)
 * `hall_id` (un intero)
 * `movie_id` (un intero)
@@ -214,6 +229,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `timetable` (una stringa nel formato "hh:mm")
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 204 No Content
 
@@ -224,6 +240,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la nuova proiezione, con i seguenti campi:
+
 * `hall_id` (un intero)
 * `movie_id` (un intero)
 * `date` (una stringa nel formato "gg/mm/aaaa")
@@ -232,9 +249,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body di ritorno è la proiezione creata.
 
 **Codici di stato restituiti**:
+
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
-
 
 ---
 
@@ -249,6 +266,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un oggetto che rappresenta la proiezione, con i seguenti campi:
+
 * `id` (un intero)
 * `hall_id` (un intero)
 * `movie_id` (un intero)
@@ -256,6 +274,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 * `timetable` (una stringa nel formato "hh:mm")
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 404 Not Found: Proiezione non trovata.
 
@@ -266,6 +285,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: `proj_id` (un intero) nell'URL, che rappresenta l'ID della proiezione da aggiornare. L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la proiezione aggiornata, con i seguenti campi:
+
 * `hall_id` (un intero)
 * `movie_id` (un intero)
 * `date` (una stringa nel formato "gg/mm/aaaa")
@@ -274,6 +294,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 * 404 Not Found: Proiezione, Sala o Film non trovato.
@@ -289,9 +310,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 404 Not Found: Proiezione non trovata.
-
 
 ---
 
@@ -306,16 +327,18 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un array di oggetti, ognuno rappresentante una prenotazione. Ogni prenotazione ha i seguenti campi:
+
 * `id` (un intero)
 * `proj_id` (un intero)
 * `seats` (un array di oggetti)
-    * `row` (un intero)
-    * `column` (un intero)
+  * `row` (un intero)
+  * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 204 No Content
 
@@ -326,10 +349,11 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la nuova prenotazione, con i seguenti campi:
+
 * `proj_id` (un intero)
 * `seats` (un array di oggetti)
-    * `row` (un intero)
-    * `column` (un intero)
+  * `row` (un intero)
+  * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
@@ -337,11 +361,11 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 201 Created
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 * 404 Not Found: La proiezione non esiste
 * 409 Conflict: I posti sono già stati prenotati
-
 
 ---
 
@@ -356,16 +380,18 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un oggetto che rappresenta la prenotazione, con i seguenti campi:
+
 * `id` (un intero)
 * `proj_id` (un intero)
 * `seats` (un array di oggetti)
-    * `row` (un intero)
-    * `column` (un intero)
+  * `row` (un intero)
+  * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 404 Not Found: Prenotazione non trovata.
 
@@ -376,10 +402,11 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Parametri**: `book_id` (un intero) nell'URL, che rappresenta l'ID della prenotazione da aggiornare. L'header `Content-Type: application/json`.
 
 **Body richiesta**: Un oggetto JSON che rappresenta la prenotazione aggiornata, con i seguenti campi:
+
 * `proj_id` (un intero)
 * `seats` (un array di oggetti)
-    * `row` (un intero)
-    * `column` (un intero)
+  * `row` (un intero)
+  * `column` (un intero)
 * `name` (una stringa)
 * `surname` (una stringa)
 * `email` (una stringa)
@@ -387,6 +414,7 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 400 Bad Request: Errore del client (JSON non valido, campo mancante o altro).
 * 404 Not Found: Prenotazione non trovata.
@@ -403,9 +431,9 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Risposta**: In caso di successo, il body è vuoto.
 
 **Codici di stato restituiti**:
+
 * 204 No Content
 * 404 Not Found: Prenotazione non trovata.
-
 
 ---
 
@@ -420,10 +448,12 @@ Documentazione delle API REST. I dati vengono scambiati in formato JSON.
 **Body richiesta**: Non previsto.
 
 **Risposta**: Un array di oggetti, ognuno rappresentante un posto prenotato. Ogni posto ha i seguenti campi:
+
 * `proj_id` (un intero)
 * `row` (un intero)
 * `column` (un intero)
 
 **Codici di stato restituiti**:
+
 * 200 OK
 * 404 Not Found: Proiezione non trovata.
