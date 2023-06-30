@@ -33,7 +33,7 @@ Le Stringhe semplici sono usate per trasmettere stringhe non bynary-safe con un 
 
 ```plaintext
 "+OK\r\n"
-
+```
 
 Per inviare stringhe binary-safe si fa utilizzo si Stringhe bulk.
 
@@ -193,7 +193,7 @@ Questa tuttavia non rappresenta un eccesione rispetto a ciò che è stato detto 
 
 #### **COMMAND**
 
-<h4>Sintassi<h4>
+<h5>Sintassi</h5>
 
 ```plaintext
 COMMAND [command:string]
@@ -214,13 +214,13 @@ L'array di dettaglio è di un numero prefissato di elementi.
 - Ultima chiave --> La posizione dell'ultimo argomento.
 - Step --> Lo step, o incremento, tra la posizione del primo argomento e quella dopo.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Array: una lista di dettagli di comandi.
 
 L'ordine è randomico.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 Il seguente outpute di COMMAND per il comando GET:
 
@@ -235,7 +235,7 @@ Il seguente outpute di COMMAND per il comando GET:
 
 #### **PING**
 
-<h4>Sintassi<h4>
+<h5>Sintassi</h5>
 
 ```plaintext
 PING
@@ -247,11 +247,11 @@ Questo comando è utile per:
 1. Testare se una connessione è ancora in vita.
 2. Misurare la latenza.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Stringa semplica: PONG
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -262,7 +262,7 @@ S: PONG
 
 #### **STRINGS**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 STRINGS
@@ -270,11 +270,11 @@ STRINGS
 
 Ritorna un array con tutte le chiavi di tipo Stringa o Intero presenti nel database.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Array: Un array contenenete le chiavi in tipo Stringa di tutti i valori di tipo Stringa o Intero presenti nel database.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -286,7 +286,7 @@ S: 1) "key1"
 
 #### **HASHES**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HASHES
@@ -294,11 +294,11 @@ HASHES
 
 Ritorna un array con tutte le chiavi di tipo Hash presenti nel database.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Array: Un array contenenete le chiavi di tipo Hash presenti nel database.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -312,7 +312,7 @@ S: 1) "hkey1"
 
 #### **SET**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 SET <key:string> <value:string|number>
@@ -320,13 +320,13 @@ SET <key:string> <value:string|number>
 
 Setta la chiave `key` con il valore `value`. Se la chiave esiste già, il valore è sovrascritto, indipendentemente dal tipo di dati precedentemente memorizzato. Null è ritornato se la chiave memorizza un valore del tipo sbagliato. OK è ritornato se non aveva un valore precedente.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Stringa semplice: OK se la chiave non aveva valori precedenti.
 Risposta RESP Null: Se la chiave memorizza un valore del tipo sbagliato.
 Risposta RESP Stringa Bulk: Il valore precedentemente memorizzato, se presente.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -341,7 +341,7 @@ S: (integer) 10
 
 #### **GET**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 GET <key:string>
@@ -349,12 +349,12 @@ GET <key:string>
 
 Ritorna il valore memorizzato in `key`. Se la chiave non esiste, è ritornato un Null.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Stringa Bulk o Intera: Il valore memorizzato in `key`, se la chiave esiste.
 Risposta RESP Null: Se la chiave non esiste.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -369,7 +369,7 @@ S: (nil)
 
 #### **DEL**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 DEL <key:string>
@@ -377,11 +377,11 @@ DEL <key:string>
 
 Elimina la chiave `key` e ritorna 1. Altrimenti, 0 è ritornato.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Intera: 1 se la chiave è stata eliminata, 0 altrimenti. (booleano)
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -396,7 +396,7 @@ S: (integer) 0
 
 #### **STRLEN**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 STRLEN <key:string>
@@ -404,11 +404,11 @@ STRLEN <key:string>
 
 Ritorna la lunghezza della stringa memorizzata in `key`. Se la chiave non esiste, 0 è ritornato. Se la chiave memorizza un valore del tipo sbagliato, un errore è ritornato.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Intera: La lunghezza della stringa memorizzata in `key`, 0 se la chiave non esiste.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -423,7 +423,7 @@ S: (integer) 5
 
 #### **INCR**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 INCR <key:string>
@@ -431,11 +431,11 @@ INCR <key:string>
 
 Incrementa il numero memorizzato in `key` di uno. Se la `key` non esiste, è settata a `0` prima di effetuare l'operazione. Un errore è ritornato se `key` memorizza un valore del tipo sbagliato. Questa operazione è limitata a interi a 32-bit con segno.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP intera: Il valore della chiave incrementato
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -448,7 +448,7 @@ S: (integer) 2
 
 #### **DECR**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 DECR <key:string>
@@ -456,11 +456,11 @@ DECR <key:string>
 
 Decrementa il numero memorizzato in `key` di uno. Se la `key` non esiste, è settata a `0` prima di effetuare l'operazione. Un errore è ritornato se `key` memorizza un valore del tipo sbagliato. Questa operazione è limitata a interi a 32-bit con segno.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP intera: Il valore della chiave decrementato
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -475,7 +475,7 @@ S: (integer) -2
 
 #### **HDEL**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HDEL <key:string> <field:string>
@@ -483,11 +483,11 @@ HDEL <key:string> <field:string>
 
 Rimuove il campo `field` specificato dalla hashmap identificata dalla chiave `key`. Se la chiave non esiste o il campo non esiste nella hashmap, viene ritornato 0. Se il campo viene rimosso con successo, viene ritornato 1.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Intera: 1 se il campo viene rimosso con successo dalla hashmap, 0 se la chiave non esiste o il campo non esiste nella hashmap.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -502,7 +502,7 @@ S: (integer) 0
 
 #### **HEXISTS**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HEXISTS <key:string> <field:string>
@@ -510,11 +510,11 @@ HEXISTS <key:string> <field:string>
 
 Verifica l'esistenza del campo `field` specificato nella hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene ritornato 0. Se il campo esiste nella hashmap, viene ritornato 1.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Intera: 1 se il campo esiste nella hashmap, 0 se la chiave non esiste o il campo non esiste nella hashmap.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -529,7 +529,7 @@ S: (integer) 0
 
 #### **HGETALL**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HGETALL <key:string>
@@ -537,11 +537,11 @@ HGETALL <key:string>
 
 Restituisce tutti i campi e i loro valori dalla hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito un array vuoto.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Array: Un array di stringhe rappresentanti campi e valori dalla hashmap. Ogni nome del campo è seguito dal suo valore. Se la chiave non esiste o la hashmap non esiste, viene ritornato un array vuoto.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -557,7 +557,7 @@ S: (empty array)
 
 #### **HGET**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HGET <key:string> <field:string>
@@ -565,11 +565,11 @@ HGET <key:string> <field:string>
 
 Restituisce il valore del campo `field` specificato nella hashmap identificata dalla chiave `key`. Se la chiave non esiste, la hashmap non esiste o il campo non esiste nella hashmap, viene restituito un valore null.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Bulk String o RESP Number: Il valore del campo specificato nella hashmap. Se il campo non esiste, ritorna una stringa bulk null.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -584,7 +584,7 @@ S: (nil)
 
 #### **HKEYS**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HKEYS <key:string>
@@ -592,11 +592,11 @@ HKEYS <key:string>
 
 Restituisce tutte le chiavi (campi) della hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito un array vuoto.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Array: Un array di stringhe rappresentanti le chiavi della hashmap. Se la chiave non esiste o la hashmap non esiste, viene ritornato un array vuoto.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -610,7 +610,7 @@ S: (empty array)
 
 #### **HLEN**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HLEN <key:string>
@@ -618,11 +618,11 @@ HLEN <key:string>
 
 Restituisce la lunghezza (numero di campi) della hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito 0.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Numero: Il numero di campi presenti nella hashmap. Se la chiave non esiste o la hashmap non esiste, viene ritornato 0.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -635,7 +635,7 @@ S: (integer) 0
 
 #### **HSET**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HSET <key:string> <field:string> <value:string|number>
@@ -643,11 +643,11 @@ HSET <key:string> <field:string> <value:string|number>
 
 Imposta il campo `field` nella hashmap identificata dalla chiave `key` al `value`. Se la chiave non esiste, viene creata una nuova hashmap. Se il campo esiste già nella hashmap, il valore viene sovrascritto. Se la chiave esiste ma non è una hashmap, viene ritornato 0. Se la chiave e il campo esistono nella hashmap ma il valore non è stringa o intero, viene ritornato 0.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Numero: 1 se il campo è stato impostato con successo nella hashmap. 0 se la chiave esiste ma non è una hashmap o se il campo esistente nella hashmap non contiene un valore che è una stringa o un numero.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -666,7 +666,7 @@ S: (integer) 0
 
 #### **HSTRLEN**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HSTRLEN <key:string> <field:string>
@@ -674,11 +674,11 @@ HSTRLEN <key:string> <field:string>
 
 Restituisce la lunghezza della stringa del campo `field` specificato nella hashmap identificata dalla chiave `key`. Se la chiave non esiste, la hashmap non esiste, il campo non esiste nella hashmap o il valore non è di tipo stringa, viene restituito 0.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Numero: La lunghezza della stringa del campo specificato nella hashmap. Se la chiave non esiste, la hashmap non esiste, il campo non esiste nella hashmap o il valore non è di tipo stringa, viene ritornato 0.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
@@ -695,7 +695,7 @@ S: (integer) 0
 
 #### **HVALS**
 
-<h4> Sintassi <h4>
+<h5> Sintassi </h5>
 
 ```plaintext
 HVALS <key:string>
@@ -703,11 +703,11 @@ HVALS <key:string>
 
 Restituisce tutti i valori dei campi dalla hashmap identificata dalla chiave `key`. Se la chiave non esiste o la hashmap non esiste, viene restituito un array vuoto.
 
-<h4> Ritorno </h4>
+<h5> Ritorno </h5>
 
 Risposta RESP Array: Un array di stringhe e numeri rappresentanti i valori dei campi della hashmap. Se la chiave non esiste o la hashmap non esiste, viene ritornato un array vuoto.
 
-<h4> Esempio </h4>
+<h5> Esempio </h5>
 
 > C = Client, S = Server
 
