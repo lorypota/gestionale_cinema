@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unimib.finalproject.database.command.CommandRegistry;
 import it.unimib.finalproject.database.command.hash.HDelCommand;
@@ -111,37 +115,34 @@ public class Main {
         var projectionsJson = Main.readJsonFile(projectionsStream);
         var bookingsJson = Main.readJsonFile(bookingsStream);
 
-        var moviesArray = moviesJson.substring(1, moviesJson.length() - 1).split("},");
-        var hallsArray = hallsJson.substring(1, hallsJson.length() - 1).split("},");
-        var projectionsArray = projectionsJson.substring(1, projectionsJson.length() - 1).split("},");
-        var bookingsArray = bookingsJson.substring(1, bookingsJson.length() - 1).split("},");
+        var mapper = new ObjectMapper();
+        @SuppressWarnings("unchecked")
+        List<LinkedHashMap<String, Object>> moviesArray = mapper.readValue(moviesJson, List.class);
+        @SuppressWarnings("unchecked")
+        List<LinkedHashMap<String, Object>> hallsArray = mapper.readValue(hallsJson, List.class);
+        @SuppressWarnings("unchecked")
+        List<LinkedHashMap<String, Object>> projectionsArray = mapper.readValue(projectionsJson, List.class);
+        @SuppressWarnings("unchecked")
+        List<LinkedHashMap<String, Object>> bookingsArray = mapper.readValue(bookingsJson, List.class);
 
         for (var movie : moviesArray) {
-            var movieId = movie.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
-            if (!movie.endsWith("}"))
-                movie += "}";
-            movies.put(movieId, EscapeUtils.escape(movie));
+            var movieId = movie.get("id").toString();
+            movies.put(movieId, EscapeUtils.escape(mapper.writeValueAsString(movie)));
         }
 
         for (var hall : hallsArray) {
-            var hallId = hall.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
-            if (!hall.endsWith("}"))
-                hall += "}";
-            halls.put(hallId, EscapeUtils.escape(hall));
+            var hallId = hall.get("id").toString();
+            halls.put(hallId, EscapeUtils.escape(mapper.writeValueAsString(hall)));
         }
 
         for (var projection : projectionsArray) {
-            var projectionId = projection.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
-            if (!projection.endsWith("}"))
-                projection += "}";
-            projections.put(projectionId, EscapeUtils.escape(projection));
+            var projectionId = projection.get("id").toString();
+            projections.put(projectionId, EscapeUtils.escape(mapper.writeValueAsString(projection)));
         }
 
         for (var booking : bookingsArray) {
-            var bookingId = booking.split(",")[0].split(":")[1].replace("\"", "").replace("{", "").stripLeading();
-            if (!booking.endsWith("}"))
-                booking += "}";
-            bookings.put(bookingId, EscapeUtils.escape(booking));
+            var bookingId = booking.get("id").toString();
+            bookings.put(bookingId, EscapeUtils.escape(mapper.writeValueAsString(booking)));
         }
 
         store.put("movies", movies);
