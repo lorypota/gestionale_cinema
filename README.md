@@ -1,13 +1,12 @@
 # Progetto Sistemi Distribuiti 2022-2023
 
-Lo scheletro propone degli esempi dei tre componenti da cui partire.
-
 ## Componenti del gruppo
 
-* Nome Cognome (Matricola) <email>
-* Lorenzo Rota 887451 l.rota37@campus.unimib.it
-* Damiano Pellegrini 886261 d.pellegrini10@campus.unimib.it
-* Youness Karzal 879430 y.karzal@campus.unimib.it
+> Nome Cognome (Matricola) `<email>`
+---
+* Lorenzo Rota 887451 <l.rota37@campus.unimib.it>
+* Damiano Pellegrini 886261 <d.pellegrini10@campus.unimib.it>
+* Youness Karzal 879430 <y.karzal@campus.unimib.it>
 
 ## Compilazione ed esecuzione
 
