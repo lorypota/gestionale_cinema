@@ -8,7 +8,6 @@ import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.service.HallService;
-import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.model.domain.Hall;
 
 import jakarta.ws.rs.core.MediaType;

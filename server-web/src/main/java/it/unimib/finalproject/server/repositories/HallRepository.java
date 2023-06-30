@@ -15,7 +15,6 @@ import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.utils.dbclient.resp.types.RESPError;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
-import it.unimib.finalproject.server.model.domain.Booking;
 import it.unimib.finalproject.server.model.domain.Hall;
 
 import jakarta.inject.Singleton;

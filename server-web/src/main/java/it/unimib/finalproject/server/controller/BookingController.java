@@ -5,7 +5,6 @@ import java.util.List;
 import java.net.URI;
 
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
-import it.unimib.finalproject.server.exceptions.NoContentResponseException;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.config.DatabaseStatus;
 
@@ -46,13 +45,13 @@ public class BookingController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllBookings(@DefaultValue("-1") @QueryParam("movie_id") int movieId){
+    public Response getAllBookings(@DefaultValue("-1") @QueryParam("proj_id") int projId){
         List<Booking> bookings = null;
 
-        if(movieId == -1)
+        if(projId == -1)
             bookings = bookingService.getBookings();
         else
-            bookings = bookingService.getBookingsByMovieId(movieId);
+            bookings = bookingService.getBookingsByProjId(projId);
 
         if(bookings == null)
             throw new NotFoundResponseException();

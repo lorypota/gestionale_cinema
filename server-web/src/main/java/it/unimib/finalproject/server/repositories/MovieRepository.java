@@ -10,10 +10,8 @@ import java.util.List;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.BadRequestResponseException;
-import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ObjectNotCreatedException;
 import it.unimib.finalproject.server.utils.dbclient.DbConnector;
-import it.unimib.finalproject.server.model.domain.Hall;
 import it.unimib.finalproject.server.model.domain.Movie;
 
 import com.fasterxml.jackson.core.JsonProcessingException;

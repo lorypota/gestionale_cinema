@@ -11,7 +11,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
-import it.unimib.finalproject.server.exceptions.HTTPExceptionMapper;
 import it.unimib.finalproject.server.repositories.BookingRepository;
 import it.unimib.finalproject.server.repositories.HallRepository;
 import it.unimib.finalproject.server.repositories.MovieRepository;

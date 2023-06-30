@@ -4,7 +4,6 @@ import it.unimib.finalproject.server.config.DatabaseStatus;
 import it.unimib.finalproject.server.exceptions.NotFoundResponseException;
 import it.unimib.finalproject.server.exceptions.ServerErrorResponseException;
 import it.unimib.finalproject.server.service.MovieService;
-import it.unimib.finalproject.server.model.domain.Hall;
 import it.unimib.finalproject.server.model.domain.Movie;
 
 import java.net.URI;
