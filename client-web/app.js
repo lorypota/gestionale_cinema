@@ -7,36 +7,44 @@ var loadedProjection = undefined;
 var selectedSeats = [];
 
 //azioni su caricamento del documento
-$(document).ready(async () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-  $('#booking-section').hide();
-  $('#seating-section').hide();
-  $('#insert-booking-informations').hide();
-  $('#seating-section-modify').hide();
+  document.getElementById('booking-section').style.display = 'none';
+  document.getElementById('seating-section').style.display = 'none';
+  document.getElementById('insert-booking-informations').style.display = 'none';
+  document.getElementById('seating-section-modify').style.display = 'none';
   
   projections = await getAllProjections();
   movies = await getAllMovies();
 
   //mostra protiezioni
   movies.forEach(async movie => {
-    const projLabel = $('<button>').addClass('projLabel');
-    const title = $('<div>').addClass('projTitle').text(movie.name);
-    const duration = $('<div>').addClass('projDuration').text("Durata: " + movie.duration);
+    const projLabel = document.createElement('button');
+    projLabel.className = 'projLabel';
+
+    const title = document.createElement('div');
+    title.className = 'projTitle';
+    title.innerText = movie.name;
+
+    const duration = document.createElement('div');
+    duration.className = 'projDuration';
+    duration.innerText = "Durata: " + movie.duration;
 
     projLabel.append(title, duration);
-    projLabel.css("background-image", `url('${movie.image}')`);
-    projLabel.css("background-size", "cover");
-    projLabel.click( async () => {
-      $('#booking-section').show();
+    projLabel.style.backgroundImage = `url('${movie.image}')`;
+    projLabel.style.backgroundSize = "cover";
+
+    projLabel.addEventListener("click", async () => {
+      document.getElementById('booking-section').style.display = 'block';
       resetSeats();
       loadProjections(movie.id);
     });
 
-    $('#projections-container').append(projLabel);
+    document.getElementById('projections-container').append(projLabel);
   });
   
-  $('#projections-selection').change(async function() {
-    const selectedProjection = Number($(this).val());
+  document.getElementById('projections-selection').addEventListener('change', async function() {
+    const selectedProjection = Number(this.value);
     if(selectedProjection === -1){
       resetSeats();
     } else {
@@ -44,57 +52,56 @@ $(document).ready(async () => {
     }
   });
 
-  $('#booking-management-field').keydown(function(event){
+  document.querySelector('#booking-management-field').addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {  // 13 è il keyCode per il tasto Invio
-        event.preventDefault();
+      event.preventDefault();
     }
   });
 
-  $('#booking-management-field').change(async function(){
-    const bookingId = Number($(this).val());
+  document.querySelector('#booking-management-field').addEventListener('change', async function() {
+    const bookingId = Number(this.value);
     const booking = await getBookingById(bookingId);
-
+  
     if(projections.some(proj => proj.id === booking.proj_id)){
-      $('#update-booking').show();
+      document.querySelector('#update-booking').style.display = 'block';
     } else {
-      $('#update-booking').hide();
+      document.querySelector('#update-booking').style.display = 'none';
     }
-
+  
     await loadBooking(bookingId);
   });
 
   // Quando l'utente clicca sul bottone, apro il modal 
-  $("#insert-booking-informations").click(function(event) {
+  document.querySelector("#insert-booking-informations").addEventListener('click', function(event) {
     event.preventDefault();
-    $("body").css("overflow", "hidden"); // Nasconde la barra di scorrimento
-
-    $('#seating-container .seat.selected').each(function(){
-      selectedSeats.push($(this).text());
+    document.body.style.overflow = "hidden"; // Nasconde la barra di scorrimento
+  
+    selectedSeats = [];
+    let seats = document.querySelectorAll('#seating-container .seat.selected');
+    seats.forEach(function(seat){
+      selectedSeats.push(seat.textContent);
     });
-
-    $("#selected-seats").text(selectedSeats.join(', ')); 
-
-    $("#booking-infos").show();
+  
+    document.querySelector("#selected-seats").textContent = selectedSeats.join(', ');
+    document.querySelector("#booking-infos").style.display = 'block';
   });
 
   // Quando l'utente clicca su <span> (x), chiudo il modal
-  $(".close").click(function() {
-    closeModal();
-  });
+  document.querySelectorAll(".close").forEach(closeButton => closeButton.addEventListener('click', closeModal));
 
   // Quando l'utente clicca ovunque fuori dal modal, lo chiudo
-  $(window).click(function(event) {
-    if (event.target == $("#booking-infos")[0]) {
+  window.addEventListener('click', function(event) {
+    if (event.target === document.querySelector("#booking-infos")) {
       closeModal();
     }
   });
 
-  function closeModal(){
-    $("body").css("overflow", "auto"); // Mostra la barra di scorrimento
-    $("#booking-infos").hide();
+  function closeModal() {
+    document.body.style.overflow = "auto"; // Mostra la barra di scorrimento
+    document.querySelector("#booking-infos").style.display = 'none';
   }
 
-  $('#submit-booking').click(async function(event){
+  document.getElementById('submit-booking').addEventListener('click', async (event) => {
     event.preventDefault();
 
     if(loadedProjection === undefined)
@@ -109,9 +116,9 @@ $(document).ready(async () => {
     let newBooking = {
       "proj_id": loadedProjection,
       "seats": selectedSeatsTransformed,
-      "name": $('#fname').val(),
-      "surname": $('#lname').val(),
-      "email": $('#email').val()
+      "name": document.querySelector('#fname').value,
+      "surname": document.querySelector('#lname').value,
+      "email": document.querySelector('#email').value
     }
     
     res = await addBooking(newBooking);
@@ -137,28 +144,28 @@ $(document).ready(async () => {
 
     closeModal();
     resetSeats();
-    $('#booking-section').hide();
+    document.querySelector('#booking-section').style.display = "none";
 
-    $("#booking-management-field").val(res.id);
+    document.querySelector("#booking-management-field").value = res.id;
     loadBooking(res.id);
   });
 
-  $('#update-booking').click(async function(){
-    let oldBooking = await getBookingById($('#booking-management-field').val());
+  document.getElementById('update-booking').addEventListener('click', async (event) => {
+    let oldBooking = await getBookingById(document.querySelector('#booking-management-field').value);
     
-    $('#update-booking').hide();
-    $('#booking-seats').hide();
-    $('#submit-changes').show();
-    $('#seating-section-modify').show();
+    document.querySelector('#update-booking').style.display = 'none';
+    document.querySelector('#booking-seats').style.display = 'none';
+    document.querySelector('#submit-changes').style.display = 'block';
+    document.querySelector('#seating-section-modify').style.display = 'block';
 
-    $('#booking-name').replaceWith($("<input type='text' id='booking-name'>").val($('#booking-name').text()));
-    $('#booking-surname').replaceWith($("<input type='text' id='booking-surname'>").val($('#booking-surname').text()));
-    $('#booking-email').replaceWith($("<input type='text' id='booking-email'>").val($('#booking-email').text()));
+    document.querySelector('#booking-name').outerHTML = `<input type='text' id='booking-name' value='${document.querySelector('#booking-name').textContent}'>`;
+    document.querySelector('#booking-surname').outerHTML = `<input type='text' id='booking-surname' value='${document.querySelector('#booking-surname').textContent}'>`;
+    document.querySelector('#booking-email').outerHTML = `<input type='text' id='booking-email' value='${document.querySelector('#booking-email').textContent}'>`;
 
     showSeats(oldBooking.proj_id, oldBooking);
   })
 
-  $('#submit-changes').click(async function(event){
+  document.querySelector('#submit-changes').addEventListener('click', async function(event){
     event.preventDefault();
 
     if(loadedProjection === undefined)
@@ -166,8 +173,9 @@ $(document).ready(async () => {
 
     selectedSeats = [];
     
-    $('#seating-container-modify .seat.selected').each(function () {
-        selectedSeats.push($(this).text());
+    let tempSeats = document.querySelectorAll('#seating-container-modify .seat.selected');
+    tempSeats.forEach(function(seat) {
+      selectedSeats.push(seat.textContent);
     });
 
     selectedSeatsTransformed = selectedSeats.map(seat => {
@@ -176,7 +184,7 @@ $(document).ready(async () => {
       return { "row": Number(row), "column": Number(column) };
     })
     
-    let oldBooking = await getBookingById($('#booking-management-field').val());
+    let oldBooking = await getBookingById(document.getElementById('booking-management-field').value);
     let idBooking = oldBooking.id;
 
     delete oldBooking.id;
@@ -184,9 +192,9 @@ $(document).ready(async () => {
     let newBooking = {
       "proj_id": loadedProjection,
       "seats": selectedSeatsTransformed,
-      "name": $('#booking-name').val(),
-      "surname": $('#booking-surname').val(),
-      "email": $('#booking-email').val()
+      "name": document.getElementById('booking-name').value,
+      "surname": document.getElementById('booking-surname').value,
+      "email": document.getElementById('booking-email').value
     }
 
     let res = await updateBooking(idBooking, newBooking);
@@ -211,21 +219,21 @@ $(document).ready(async () => {
 
     resetSeats();
 
-    $("#booking-management-field").val(idBooking);
+    document.getElementById('booking-management-field').value = idBooking;
     loadBooking(idBooking);
 
-    $('#update-booking').show();
-    $('#booking-seats').show();
-    $('#submit-changes').hide();
-    $('#seating-section-modify').hide();
+    document.querySelector('#update-booking').style.display = 'block';
+    document.querySelector('#booking-seats').style.display = 'block';
+    document.querySelector('#submit-changes').style.display = 'none';
+    document.querySelector('#seating-section-modify').style.display = 'none';
 
-    $('#booking-name').replaceWith($("<span id='booking-name'>").val($('#booking-name').text()));
-    $('#booking-surname').replaceWith($("<span id='booking-surname'>").val($('#booking-surname').text()));
-    $('#booking-email').replaceWith($("<span id='booking-email'>").val($('#booking-email').text()));
+    document.querySelector('#booking-name').outerHTML = `<span id='booking-name'>${document.querySelector('#booking-name').value}</span>`;
+    document.querySelector('#booking-surname').outerHTML = `<span id='booking-surname'>${document.querySelector('#booking-surname').value}</span>`;
+    document.querySelector('#booking-email').outerHTML = `<span id='booking-email'>${document.querySelector('#booking-email').value}</span>`;
   })
 
-  $('#delete-booking').click(async function(){
-    res = await deleteBooking($('#booking-management-field').val());
+  document.querySelector('#delete-booking').addEventListener('click', async function(){
+    res = await deleteBooking(document.getElementById('booking-management-field').value);
 
     switch (res.status){
       case 204: 
@@ -248,24 +256,23 @@ $(document).ready(async () => {
 //end document ready
 
 function resetSeats(){
-  $('#seating-section').hide();
-  $('#insert-booking-informations').hide();
+  document.querySelector('#seating-section').style.display = "none";
+  document.querySelector('#insert-booking-informations').style.display = "none";
   loadedProjection = undefined;
   selectedSeats = [];
-  $("#projections-selection").val(-1);
-  $('#seating-section-modify').hide();
+  document.querySelector("#projections-selection").value = -1;
+  document.querySelector('#seating-section-modify').style.display = "none";
 }
 
 async function loadProjections(movieId){
   let projections = await getAllProjections(movieId);
-  $('#projections-selection').empty();
-  $('#projections-selection').append(new Option("Seleziona una proiezione", -1));
+  let select = document.getElementById('projections-selection');
+  select.innerHTML = '';
+  let defaultOption = new Option("Seleziona una proiezione", -1);
+  select.append(defaultOption);
   projections.forEach(proj => {
-    var newOption = document.createElement('option');
-    newOption.innerText = proj.date + " " + proj.timetable;
-    newOption.value = proj.id;
-
-    $('#projections-selection').append(newOption);
+      var newOption = new Option(proj.date + " " + proj.timetable, proj.id);
+      select.append(newOption);
   });
 }
 
@@ -291,104 +298,133 @@ async function showSeats (projId, oldBooking = undefined) {
   let container;
 
   if(modifying) {
-    $('#seating-section-modify').show();
-    $('#seating-legend-modify').show();
+    let seatingSectionModify = document.querySelector('#seating-section-modify');
+    if (seatingSectionModify !== null) {
+        seatingSectionModify.style.display = "block";
+    }
+
+    let seatingLegendModify = document.querySelector('#seating-legend-modify')
+    if(seatingLegendModify !== null){
+      seatingLegendModify.style.display = "block";
+    }
+
     selectedSeats = oldBooking.seats; //[{"row":4, "column": 4}, ...]
-    container = $('#seating-container-modify');
+    container = document.querySelector('#seating-container-modify');
   } else {
-    $('#seating-section').show();
-    $('#insert-booking-informations').show();
+    let seatingSection = document.querySelector('#seating-section');
+    if(seatingSection !== null){
+      seatingSection.style.display = "block";
+    }
+
+    let insertBookingInformations = document.querySelector('#insert-booking-informations');
+    if(insertBookingInformations !== null){
+      insertBookingInformations.style.display = "block";
+    }
+
     selectedSeats = [];
-    container = $('#seating-container');
+    container = document.querySelector('#seating-container');
   }
   
-  container.empty();
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
 
   const columnLabels = [...Array(columns).keys()].map(i => String.fromCharCode(i + 65));
   const rowLabels = [...Array(rows).keys()].map(i => i + 1);
 
   rowLabels.forEach(rowLabel => {
     columnLabels.forEach(columnLabel => {
-        var occupied = false;
-        var selected = false;
-        if(occupiedSeats !== undefined){
-          occupiedSeats.forEach(occupiedSeat => {
-            if(String.fromCharCode(occupiedSeat.column + 64) === columnLabel && occupiedSeat.row === rowLabel){
-              occupied = true;
-            }
-          })
-        }
-        if(selectedSeats !== undefined){
-          selectedSeats.forEach(selectedSeat => {
-            if(String.fromCharCode(selectedSeat.column + 64) === columnLabel && selectedSeat.row === rowLabel){
-              selected = true;
-            }
-          })
-        }
-
-        const seatButton = $('<button>').addClass('seat').text(columnLabel + rowLabel);
-        if(occupied && !selected) {
-          seatButton.addClass('occupied');
-        } else {
-          seatButton.click( function(event) {
-            event.preventDefault();
-            $(this).toggleClass('selected');
-            
-            if (!modifying && $('#seating-container .seat.selected').length > 0) {
-              $('#insert-booking-informations').prop('disabled', false);
-            } else {
-              $('#insert-booking-informations').prop('disabled', true);
-            }
-
-            if (modifying && $('#seating-container-modify .seat.selected').length > 0) {
-              $('#submit-changes').prop('disabled', false);
-            } else {
-              $('#submit-changes').prop('disabled', true);
-            }
-          });
-
-          if(selected){
-            seatButton.addClass('selected');
+      var occupied = false;
+      var selected = false;
+      if(occupiedSeats !== undefined){
+        occupiedSeats.forEach(occupiedSeat => {
+          if(String.fromCharCode(occupiedSeat.column + 64) === columnLabel && occupiedSeat.row === rowLabel){
+            occupied = true;
           }
+        })
+      }
+      if(selectedSeats !== undefined){
+        selectedSeats.forEach(selectedSeat => {
+          if(String.fromCharCode(selectedSeat.column + 64) === columnLabel && selectedSeat.row === rowLabel){
+            selected = true;
+          }
+        })
+      }
+
+      const seatButton = document.createElement('button');
+      seatButton.classList.add('seat');
+      seatButton.innerText = columnLabel + rowLabel;
+
+      if(occupied && !selected) {
+        seatButton.classList.add('occupied');
+      } else {
+        seatButton.addEventListener('click', function(event) {
+          event.preventDefault();
+          this.classList.toggle('selected');
+
+          let insertBooking = document.getElementById('insert-booking-informations');
+          let submitChanges = document.getElementById('submit-changes');
+
+          if (!modifying && document.querySelectorAll('#seating-container .seat.selected').length > 0) {
+              insertBooking.disabled = false;
+          } else {
+              insertBooking.disabled = true;
+          }
+
+          if (modifying && document.querySelectorAll('#seating-container-modify .seat.selected').length > 0) {
+              submitChanges.disabled = false;
+          } else {
+              submitChanges.disabled = true;
+          }
+        });
+
+        if(selected){
+            seatButton.classList.add('selected');
         }
-        container.append(seatButton);
+      }
+      container.append(seatButton);
     });
-    container.append('<br>');
+    container.append(document.createElement('br'));
   });
 }
 
 async function loadBooking(id){
-  let booking = await getBookingById(id);
+    let booking = await getBookingById(id);
   
-  if(booking === "Not found") {
-    $('#booking-details').hide();
-    $('#booking-not-found').show();
-  } else {
-    $('#booking-not-found').hide();
+    let bookingDetails = document.getElementById('booking-details');
+    let bookingNotFound = document.getElementById('booking-not-found');
 
-    // Mostra i dettagli della prenotazione
-    $('#booking-name').text(booking.name);
-    $('#booking-surname').text(booking.surname);
-    $('#booking-email').text(booking.email);
+    if(booking === "Not found") {
+        bookingDetails.style.display = 'none';
+        bookingNotFound.style.display = 'block';
+    } else {
+        bookingNotFound.style.display = 'none';
 
-    let projection = await getProjectionById(booking.proj_id);
-    let movie = await getMovieById(projection.movie_id);
+        // Mostra i dettagli della prenotazione
+        document.getElementById('booking-name').textContent = booking.name;
+        document.getElementById('booking-surname').textContent = booking.surname;
+        document.getElementById('booking-email').textContent = booking.email;
 
-    $('#booking-hall').text(projection.hall_id);
-    $('#booking-movie').text(movie.name);
-    $('#booking-date').text(projection.date);
-    $('#booking-timetable').text(projection.timetable);
+        let projection = await getProjectionById(booking.proj_id);
+        let movie = await getMovieById(projection.movie_id);
+
+        document.getElementById('booking-hall').textContent = projection.hall_id;
+        document.getElementById('booking-movie').textContent = movie.name;
+        document.getElementById('booking-date').textContent = projection.date;
+        document.getElementById('booking-timetable').textContent = projection.timetable;
     
-    // Mostra i posti prenotati
-    $('#booking-seats').empty();  // Rimuovo eventuali posti prenotati precedenti
-    for (let seat of booking.seats) {
-      $('#booking-seats').append(`<li>Riga: ${seat.row}, Colonna: ${seat.column}</li>`);
+        // Mostra i posti prenotati
+        let bookingSeats = document.getElementById('booking-seats');
+        bookingSeats.innerHTML = '';  // Rimuovo eventuali posti prenotati precedenti
+        for (let seat of booking.seats) {
+            let li = document.createElement('li');
+            li.textContent = `Riga: ${seat.row}, Colonna: ${seat.column}`;
+            bookingSeats.append(li);
+        }
+    
+        // Mostra la sezione dei dettagli
+        bookingDetails.style.display = 'block';
     }
-  
-    // Mostra la sezione dei dettagli
-    $('#booking-details').show();
-  }
-
 }
 
 
